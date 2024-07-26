@@ -23,8 +23,11 @@ public class SleepOnUserController {
             userService.registerUser(user);
 
             // 회원가입 후 자동 로그인 처리
-            HttpSession session = request.getSession();
+            HttpSession session = request.getSession(true);
             session.setAttribute("user", user);
+            session.setAttribute("isManager", user.isManager());
+            session.setMaxInactiveInterval(60 * 60); // 세션 타임아웃을 60분으로 설정
+
 
             return "회원가입이 성공적으로 완료되었습니다.";
         } catch (Exception e) {
@@ -36,11 +39,16 @@ public class SleepOnUserController {
     public String loginUser(@RequestBody SleepOnUser loginUser, HttpServletRequest request) {
         SleepOnUser user = userService.authenticate(loginUser.getId(), loginUser.getPass());
         if (user != null) {
-            HttpSession session = request.getSession();
+// 로그인 후 세션 설정
+            HttpSession session = request.getSession(true);
             session.setAttribute("user", user);
-            return "로그인 성공";
+            session.setAttribute("isManager", user.isManager());
+            session.setMaxInactiveInterval(60 * 60); // 세션 타임아웃을 60분으로 설정
+
+            System.out.println("\n" + user.isManager() + "\n");
+            return "success";
         } else {
-            return "아이디 또는 비밀번호가 잘못되었습니다.";
+            return "false";
         }
     }
 

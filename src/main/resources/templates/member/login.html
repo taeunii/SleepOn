@@ -106,8 +106,13 @@
                     pass: $('#password').val()
                 }),
                 success: function (response) {
-                    alert(response);
-                    window.location.href = '/SleepOn';
+                    if(response.toString() === "false"){
+                        alert("아이디 또는 비밀번호가 잘못되었습니다.");
+                        $('#loginForm')[0].reset();
+                    }
+                    else{
+                        window.location.href = '/SleepOn';
+                    }
                 },
                 error: function (xhr, status, error) {
                     alert("로그인 중 오류 발생: " + xhr.responseText);

@@ -78,7 +78,7 @@
                     </div>
                     <div class="custom-form-group">
                         <label for="password">비밀번호</label>
-                        <input type="password" class="custom-form-control" id="password" name="pass" placeholder="비밀번호를 입력하세요" required>
+                        <input type="text" class="custom-form-control" id="password" name="pass" placeholder="비밀번호를 입력하세요" required>
                     </div>
                     <div class="custom-form-group">
                         <label for="confirmPassword">비밀번호 확인</label>
@@ -113,25 +113,31 @@
             event.preventDefault();
             var formData = $(this).serialize();
 
-            $.ajax({
-                url: '/users/register',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    id: $('#email').val(),
-                    pass: $('#password').val(),
-                    name: $('#name').val(),
-                    age: $('#birthDate').val(),
-                    tel: $('#tel').val()
-                }),
-                success: function (response) {
-                    alert(response);
-                    window.location.href = '/SleepOn';
-                },
-                error: function (xhr, status, error) {
-                    alert("회원가입 중 오류 발생: " + xhr.responseText);
-                }
-            });
+            if ($('#password').val() === $('#confirmPassword').val()) {
+                $.ajax({
+                    url: '/users/register',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        id: $('#email').val(),
+                        pass: $('#password').val(),
+                        name: $('#name').val(),
+                        age: $('#birthDate').val(),
+                        tel: $('#tel').val()
+                    }),
+                    success: function (response) {
+                        alert(response);
+                        window.location.href = '/SleepOn';
+                    },
+                    error: function (xhr, status, error) {
+                        alert("회원가입 중 오류 발생: " + xhr.responseText);
+                    }
+                });
+            }
+            else{
+                alert("입력하신 비밀번호가 다릅니다.");
+                $('#confirmPassword').val("");
+            }
         });
     });
 </script>

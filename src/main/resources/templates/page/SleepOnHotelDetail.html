@@ -1,34 +1,40 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>title</title>
-    <meta lang="UTF-8">
+    <title>Hotel Details</title>
+    <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <link href="/css/bootstrap.css" rel="stylesheet">
     <link href="/css/styles.css" rel="stylesheet">
-    <script src=/js/bootstrap.bundle.js></script>
+    <script src="/js/bootstrap.bundle.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
-            const contentId = $('#contentId').val();
-
-            function loadInforData() {
+            function loadInfoData() {
+                const contentId = $('#contentId').val();
                 $.ajax({
                     url: "/SleepOn/HotelDetailInfo",
                     type: "post",
                     data: {contentId: contentId},
                     success: function (respData) {
-                        const container = $('#container');
+                        const container = $('#InfoContainer');
                         container.empty();
 
                         if (respData.length > 0) {
                             for (let i = 0; i < respData.length; i++) {
-                                const tag = `<div>
-                                            <h1>${respData[i].title}</h1>
-                                            <div>
-                                                ${respData[i].overview}
-                                            </div>
-                                        </div>`;
+                                let imgToUrl = respData[i].firstimage || '/img/noimg.jpg';
+                                const tag = `
+                                <div class="card">
+                                        <img class="card-img-top" src="${imgToUrl}" alt="">
+                                    </div>
+                                    <div class="card">
+                                        <h5 class="card-title">${respData[i].title}</h5>
+                                            <p class="card-text">${respData[i].overview}</p>
+                                            <p class="card-text"><strong>주소:</strong> ${respData[i].addr1}</p>
+                                            <p class="card-text"><strong>지역 코드:</strong> ${respData[i].areacode}</p>
+                                            <p class="card-text"><strong>카테고리 코드:</strong> ${respData[i].catcode}</p>
+                                    </div>
+                                `;
                                 container.append(tag);
                             }
                         } else {
@@ -36,24 +42,132 @@
                         }
                     },
                     error: function () {
-                        alert("통신 중 오류 발생");
+                        alert("호텔 공통 정보 통신 중 오류 발생");
                     }
                 });
             }
-            loadInforData();
+
+            function loadRoomInfoData(){
+                const contentId = $('#contentId').val();
+                console.log(contentId);
+                $.ajax({
+                    url: "/SleepOn/HotelDetailRoom",
+                    type: "post",
+                    data: {contentId: contentId},
+                    success: function (respData) {
+                        const container = $('#roomInfoContainer');
+                        container.empty();
+
+                        if (respData.length > 0) {
+                            for (let i = 0; i < respData.length; i++) {
+                                const tag = `
+                                <div class="col-12 col-md-6 mb-4">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <h5 class="card-title">객실 이름: ${respData[i].roomtitle}</h5>
+                                            <p class="card-text"><strong>기준 인원:</strong> ${respData[i].roombasecount}</p>
+                                            <p class="card-text"><strong>최대 인원:</strong> ${respData[i].roommaxcount}</p>
+                                            <p class="card-text"><strong>가격:</strong> ${respData[i].roomoffseasonminfee1}원</p>
+                                            <p class="card-text">${respData[i].roomintro}</p>
+                                            <button class btn btn-primary type="button" onclick="PayMentPage(this)" value="${respData[i].roomtitle}">예약</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                `;
+                                container.append(tag);
+                            }
+                        } else {
+                            container.append('<div class="col-12"><p>조회된 데이터가 없습니다.</p></div>');
+                        }
+                    },
+                    error: function () {
+                        alert("객실 상세 정보 통신 중 오류 발생");
+                    }
+                });
+            }
+            loadInfoData();
+            loadRoomInfoData();
+
+            // 결제 창 이동
+            window.PayMentPage = function (button){
+                const roomTitle = $(button).val();
+                console.log("roomTitle : " + roomTitle);
+                const contentId = $('#contentId').val();
+                const user = $('#user').val();
+                console.log(user.toString());
+                const checkIn = $('#checkIn').val();
+                const checkOut = $('#checkOut').val();
+                const userCnt = $('#userCnt').val();
+                if (user.toString() === '') {
+                    console.log("회원가입");
+                    alert("회원가입 후 사용");
+                    return false;
+                }
+                else{
+                    if (!checkIn || !checkOut || !userCnt) {
+                        alert("체크인과 체크아웃 날짜, 인원수를 선택해주세요.")
+                        return false;
+                    }
+                    // 선택된 값들을 URL 파라미터로 넘겨 페이지 이동
+                    window.location.href = "/SleepOn/Credit?contentId=" + encodeURIComponent(contentId)
+                        + "&checkIn=" + encodeURIComponent(checkIn)
+                        + "&checkOut=" + encodeURIComponent(checkOut)
+                        + "&userCnt=" + encodeURIComponent(userCnt) + "&roomtitle=" + encodeURIComponent(roomTitle);
+                }
+            }
+
+            // 체크인 날짜가 오늘 이전으로 선택되지 않도록 설정
+            const today = new Date().toISOString().split("T")[0];
+            $('#checkIn').attr('min', today);
+
+            // 체크인 날짜 선택 시 체크아웃 날짜 제약 설정
+            $('#checkIn').on('change', function () {
+                const checkinDate = $(this).val();
+                $('#checkOut').attr('min', checkinDate);
+            });
+
+            // 체크아웃 날짜 선택 시 체크인 날짜가 체크아웃 날짜보다 이후일 수 없도록 설정
+            $('#checkOut').on('change', function () {
+                const checkinDate = $('#checkIn').val();
+                if ($(this).val() <= checkinDate) {
+                    alert("체크아웃 날짜는 체크인 날짜보다 이후여야 합니다.");
+                    $(this).val('');
+                }
+            });
         });
     </script>
 </head>
 <body>
 <header th:replace="~{/layout/header :: header-basic}"></header>
 <main>
-    <input id="areaCode" th:value="${areaCode}" type="hidden">
-    <input id="contentId" th:value="${contentId}" type="hidden">
-    <p th:text="${areaCode}"></p>
-    <p th:text="${contentId}"></p>
     <section>
-        <div id="container">
-
+        <div class="search-bar-container">
+            <div class="search-bar">
+                <input type="hidden" id="user" th:value="${user}">
+                <div class="search-item">
+                    <label>체크인</label>
+                    <input id="checkIn" th:value="${checkIn}" type="date">
+                </div>
+                <div class="search-item">
+                    <label>체크아웃</label>
+                    <input id="checkOut" th:value="${checkOut}" type="date">
+                </div>
+                <div class="search-item">
+                    <label>여행자</label>
+                    <input id="userCnt" th:value="${userCnt}" type="number">
+                </div>
+            </div>
+        </div>
+    </section>
+    <input id="contentId" th:value="${contentId}" type="hidden">
+    <section>
+        <div class="container d-grid gap-2">
+            <div id="InfoContainer"></div>
+        </div>
+    </section>
+    <section>
+        <div class="container p-3">
+            <div id="roomInfoContainer" class="row"></div>
         </div>
     </section>
 </main>

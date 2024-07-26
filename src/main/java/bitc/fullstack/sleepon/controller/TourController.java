@@ -1,8 +1,11 @@
 package bitc.fullstack.sleepon.controller;
 
 import bitc.fullstack.sleepon.dto.FullDataItemDTO;
+import bitc.fullstack.sleepon.dto.detail.DataItemDTO;
 import bitc.fullstack.sleepon.dto.infor.DataComItemDTO;
 import bitc.fullstack.sleepon.dto.event.FullEventDataItemDTO;
+import bitc.fullstack.sleepon.model.SleepOnUser;
+import bitc.fullstack.sleepon.model.UserReservation;
 import bitc.fullstack.sleepon.service.TourService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -10,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
@@ -47,14 +47,10 @@ public class TourController {
     private String eventApiurl;
 
     @RequestMapping(value = {"", "/"})
-    public String SleepOnService(HttpServletRequest request, Model model) throws Exception {
-        HttpSession session = request.getSession(false);
-        if (session != null && session.getAttribute("user") != null) {
-            model.addAttribute("user", session.getAttribute("user"));
-        }
+    public String SleepOnService(HttpServletRequest request, Model model) {
+        addSessionAttributesToModel(request, model);
         return "page/SleepOnMain";
     }
-
 
     @GetMapping("/login")
     public String SleepOnLogin() throws Exception {
@@ -74,7 +70,6 @@ public class TourController {
         }
         return "redirect:/SleepOn";
     }
-
 
     // 숙소 정보 보기 ajax 통신
     @ResponseBody
@@ -126,7 +121,8 @@ public class TourController {
 
     // 지역 축제 View 페이지
     @RequestMapping("/Festival")
-    public ModelAndView AreaFestival(HttpSession session) throws Exception {
+    public ModelAndView AreaFestival(HttpSession session, HttpServletRequest request, Model model) throws Exception {
+        addSessionAttributesToModel(request, model);
         ModelAndView mv = new ModelAndView("page/SleepOnFestival");
 
         String areaCode = (String) session.getAttribute("areaCode");
@@ -171,7 +167,8 @@ public class TourController {
 
     @ResponseBody
     @RequestMapping("/SleepOnList")
-    public ModelAndView SleepOnList(HttpSession session) throws Exception {
+    public ModelAndView SleepOnList(HttpSession session, HttpServletRequest request, Model model) throws Exception {
+        addSessionAttributesToModel(request, model);
         // 세션에서 값 가져오기
         String areaCode = (String) session.getAttribute("areaCode");
         String sigunguCode = (String) session.getAttribute("sigunguCode");
@@ -193,24 +190,31 @@ public class TourController {
         return mv;
     }
 
-    // 숙소 상세정보, contentId, areaCode, sigunguCode 값 받아오기
+    // 숙소 상세정보, contentId, sigunguCode 값 받아오기
     @RequestMapping("/Detail")
-    public String SleepOnDetail(@RequestParam("areaCode") String areaCode, @RequestParam("contentId") String contentId, HttpSession session) throws Exception {
-        session.setAttribute("areaCode", areaCode);
+    public String SleepOnDetail(@RequestParam("contentId") String contentId, @RequestParam("userCnt") String userCnt, @RequestParam("checkIn") String checkIn, @RequestParam("checkOut") String checkOut, HttpSession session) throws Exception {
         session.setAttribute("contentId", contentId);
+        session.setAttribute("userCnt", userCnt);
+        session.setAttribute("checkIn", checkIn);
+        session.setAttribute("checkOut", checkOut);
 
         return "redirect:/SleepOn/HotelDetail";
     }
 
     @RequestMapping("/HotelDetail")
-    public ModelAndView SleepOnDetail(HttpSession session) throws Exception {
+    public ModelAndView SleepOnDetail(HttpSession session, HttpServletRequest request, Model model) throws Exception {
+        addSessionAttributesToModel(request, model);
         ModelAndView mv = new ModelAndView("page/SleepOnHotelDetail");
 
-        String areaCode = (String) session.getAttribute("areaCode");
         String contentId = (String) session.getAttribute("contentId");
+        String userCnt = (String) session.getAttribute("userCnt");
+        String checkIn = (String) session.getAttribute("checkIn");
+        String checkOut = (String) session.getAttribute("checkOut");
 
-        mv.addObject("areaCode", areaCode);
         mv.addObject("contentId", contentId);
+        mv.addObject("userCnt", userCnt);
+        mv.addObject("checkIn", checkIn);
+        mv.addObject("checkOut", checkOut);
 
         return mv;
     }
@@ -218,7 +222,7 @@ public class TourController {
     @ResponseBody
     @RequestMapping("/HotelDetailInfo")
     public Object SleepOnDetail(@RequestParam("contentId") String contentId) throws Exception {
-
+        System.out.println("\n객실 공통 정보\n");
         // 공통 정보
         //http://apis.data.go.kr/B551011/KorService1/detailCommon1?ServiceKey=인증키&contentTypeId=32&contentId=142785&MobileOS=ETC&MobileApp=AppTest&defaultYN=Y&firstImageYN=Y&areacodeYN=Y&catcodeYN=Y&addrinfoYN=Y&mapinfoYN=Y&overviewYN=Y
 
@@ -229,20 +233,110 @@ public class TourController {
 
         List<DataComItemDTO> itemList = tourService.getInforItemList(APIInforUrl + opt1 + APIkey + opt2 + opt3 + contentId + opt4);
 
+        System.out.println(APIInforUrl + opt1 + APIkey + opt2 + opt3 + contentId + opt4);
+
         return itemList;
     }
 
-    // 객실 요금
-    //http://apis.data.go.kr/B551011/KorService1/detailInfo1?ServiceKey=인증키&contentTypeId=32&contentId=142785&MobileOS=ETC&MobileApp=AppTest
+    @ResponseBody
+    @RequestMapping("/HotelDetailRoom")
+    public Object SleepOnDetailRoom(@RequestParam("contentId") String contentId) throws Exception{
+        System.out.println("\n객실 상세 정보\n");
+        // 객실 요금
+        //https://apis.data.go.kr/B551011/KorService1/detailInfo1?serviceKey=&MobileOS=ETC&MobileApp=AppTest&contentId=2465071&contentTypeId=32&numOfRows=3&pageNo=1
 
-    // 마이 페이지
+        String opt1 = "?serviceKey=";
+        String opt2 = "&MobileOS=ETC&MobileApp=AppTest";
+        String opt3 = "&contentId=";
+        String opt4 = "&contentTypeId=32&numOfRows=3&pageNo=1";
+
+        List<DataItemDTO> RoomList = tourService.getDetailItemList(APIDetailUrl + opt1 + APIkey + opt2 + opt3 + contentId + opt4);
+
+        System.out.println(APIDetailUrl + opt1 + APIkey + opt2 + opt3 + contentId + opt4);
+        
+        return RoomList;
+    }
+
     @GetMapping("/myPage")
     public String myPage(HttpServletRequest request, Model model) {
+        addSessionAttributesToModel(request, model);
+        return model.containsAttribute("user") ? "member/myPage" : "redirect:/SleepOn/login";
+    }
+
+    private void addSessionAttributesToModel(HttpServletRequest request, Model model) {
         HttpSession session = request.getSession(false);
         if (session != null && session.getAttribute("user") != null) {
             model.addAttribute("user", session.getAttribute("user"));
-            return "member/myPage";
         }
-        return "redirect:/SleepOn/login"; // 로그인이 안되어 있으면 로그인 페이지로 리다이렉트
+    }
+
+    @RequestMapping("/Credit")
+    public String SleepOnCredit(@RequestParam("contentId") String contentId, @RequestParam("checkIn") String checkIn, @RequestParam("checkOut") String checkOut, @RequestParam("userCnt") String userCnt, @RequestParam("roomtitle") String roomtitle, HttpSession session) throws Exception{
+        session.setAttribute("contentId", contentId);
+        session.setAttribute("checkIn", checkIn);
+        session.setAttribute("checkOut", checkOut);
+        session.setAttribute("userCnt", userCnt);
+        session.setAttribute("roomtitle", roomtitle);
+
+        return "redirect:/SleepOn/Payment";
+    }
+
+    @RequestMapping("/Payment")
+    public ModelAndView SleepOnCredit(HttpSession session, HttpServletRequest request, Model model) {
+        addSessionAttributesToModel(request, model);
+
+        ModelAndView mv = new ModelAndView("page/SleepOnPayment");
+
+        String contentId = (String) session.getAttribute("contentId");
+        String userCnt = (String) session.getAttribute("userCnt");
+        String checkIn = (String) session.getAttribute("checkIn");
+        String checkOut = (String) session.getAttribute("checkOut");
+        String roomtitle = (String) session.getAttribute("roomtitle");
+
+        System.out.println(contentId);
+        System.out.println(userCnt);
+
+        mv.addObject("contentId", contentId);
+        mv.addObject("userCnt", userCnt);
+        mv.addObject("checkIn", checkIn);
+        mv.addObject("checkOut", checkOut);
+        mv.addObject("roomtitle", roomtitle);
+
+        return mv;
+    }
+
+    // 예약
+    @RequestMapping(value = "/reserve", method = RequestMethod.POST)
+    public String reserve(@RequestParam("contentId") String contentId,
+                          @RequestParam("checkIn") String checkIn,
+                          @RequestParam("checkOut") String checkOut,
+                          @RequestParam("roomtitle") String roomtitle,
+                          @RequestParam("userCnt") String userCnt,
+                          HttpSession session){
+        SleepOnUser user = (SleepOnUser) session.getAttribute("user");
+
+        System.out.println("\n예약시작\n");
+        if (user == null) {
+            return "redirect:/SleepOn/login";
+        }
+        UserReservation reservation = new UserReservation();
+        reservation.setUser(user);
+        reservation.setReservData(LocalDateTime.now());
+        reservation.setCheckinTime(checkIn);
+        reservation.setCheckoutTime(checkOut);
+        reservation.setContentId(contentId);
+        reservation.setReservCancel('N');
+        reservation.setRoomTitle(roomtitle);
+        reservation.setUserCnt(Integer.parseInt(userCnt));
+
+        tourService.saveReservation(reservation);
+
+        return "redirect:/SleepOn/reservationSuccess";
+    }
+
+    @RequestMapping("/reservationSuccess")
+    public String reservationSuccess(HttpServletRequest request, Model model) {
+        addSessionAttributesToModel(request, model);
+        return "member/reservationSuccess";
     }
 }

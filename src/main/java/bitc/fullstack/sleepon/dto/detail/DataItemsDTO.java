@@ -5,11 +5,11 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 
 import java.util.List;
 
-@XmlRootElement(name="items")
+@XmlRootElement(name = "items")
 public class DataItemsDTO {
     private List<DataItemDTO> itemList;
 
-    @XmlElement(name="item")
+    @XmlElement(name = "item")
     public List<DataItemDTO> getItemList() {
         return itemList;
     }

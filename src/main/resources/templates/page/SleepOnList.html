@@ -13,13 +13,16 @@
             const areaCode = $('#areaCode').val();
             let sigunguCode = $('#sigunguCode').val();
             let arrange = $('#arrangeSel option:selected').val();
-            const numOfRows = "1000";
+            let checkIn = $('#checkIn').val();
+            let checkOut = $('#checkOut').val();
+            let userCnt = $('#userCnt').val();
+            let numOfRows = "1000";
             let pageNo = "1";
 
             window.PageMove = function (button){
                 const contentId = $(button).val();
                 console.log(contentId);
-                window.location.href = "/SleepOn/Detail?areaCode=" + encodeURIComponent(areaCode) + "&contentId=" + encodeURIComponent(contentId);
+                window.location.href = "/SleepOn/Detail?contentId=" + encodeURIComponent(contentId) + "&userCnt=" + encodeURIComponent(userCnt) + "&checkIn=" + encodeURIComponent(checkIn) + "&checkOut=" + encodeURIComponent(checkOut);
             }
 
             function loadAreaData() {
@@ -109,9 +112,9 @@
             $('#Search-btn').on("click", function () {
                 const areaCode = $("#AreaSel option:selected").val();
                 const sigunguCode = $("#SiGunGuSel option:selected").val();
-                const checkIn = $('#checkIn').val();
-                const checkOut = $('#checkOut').val();
-                const userCnt = $('#userCnt').val();
+                checkIn = $('#checkIn').val();
+                checkOut = $('#checkOut').val();
+                userCnt = $('#userCnt').val();
 
                 if (!areaCode || !checkIn || !checkOut || !userCnt) {
                     return false;

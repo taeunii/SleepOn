@@ -27,10 +27,12 @@
                     <a class="nav-link" href="/SleepOn/register">회원가입</a>
                 </li>
                 <li class="nav-item" th:if="${user != null}">
-                    <a class="nav-link" href="#">[[${user.name}]]님, 반갑습니다</a>
+                    <label class="nav-link" th:if="${isManager}"><span th:text="${user.name}"></span></label>
+                    <label class="nav-link" th:unless="${isManager}"><span th:text="${user.name}"></span>님, 반갑습니다.</label>
                 </li>
                 <li class="nav-item" th:if="${user != null}">
-                    <a class="nav-link" href="/SleepOn/myPage">마이페이지</a>
+                    <a class="nav-link" href="#" th:if="${isManager}">상담 문의</a>
+                    <a class="nav-link btn" href="/SleepOn/myPage" th:unless="${isManager}">마이페이지</a>
                 </li>
                 <li class="nav-item" th:if="${user != null}">
                     <a class="nav-link" href="/SleepOn/logout">로그아웃</a>

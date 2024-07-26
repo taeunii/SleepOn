@@ -3,7 +3,7 @@ package bitc.fullstack.sleepon.dto.detail;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name="header")
+@XmlRootElement(name = "header")
 public class DataHeaderDTO {
     private String resultCode;
     private String resultMsg;
