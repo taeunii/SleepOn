@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>title</title>
+    <meta lang="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src=/js/bootstrap.bundle.js></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+<header th:replace="~{layout/header :: header-basic}"></header>
+<main>
+    <p th:text="${contentId}"/>
+    <p th:text="${checkIn}"/>
+    <p th:text="${checkOut}"/>
+    <p th:text="${userCnt}"/>
+    <p th:text="${roomtitle}"/>
+    <form action="/SleepOn/reserve" method="post">
+        <input type="hidden" id="contentId" name="contentId" th:value="${contentId}">
+        <input type="hidden" id="checkIn" name="checkIn" th:value="${checkIn}">
+        <input type="hidden" id="checkOut" name="checkOut" th:value="${checkOut}">
+        <input type="hidden" id="roomtitle" name="roomtitle" th:value="${roomtitle}">
+        <input type="hidden" id="userCnt" name="userCnt" th:value="${userCnt}">
+        <button type="submit" class="btn btn-primary" id="reserveBtn"
+        >예약 디비에 넣기(결제완료버튼)</button>
+    </form>
+</main>
+<footer th:replace="~{layout/footer :: footer}"></footer>
+</body>
+</html>
