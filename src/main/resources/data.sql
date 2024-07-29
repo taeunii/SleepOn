@@ -42,16 +42,16 @@ VALUES ('user1@gmail.com', 'user1234', 'User One', '2001-05-20', '010-1111-2222'
 --     FOREIGN KEY (user_id) REFERENCES sleep_on_user (id)
 --     );
 
-# CREATE TABLE sleep_on_cancel (
-#                                      idx INT NOT NULL AUTO_INCREMENT,
-#                                      id VARCHAR(45) NOT NULL,
-#                                      reserv_id INT NULL,
-#                                      title VARCHAR(100) NOT NULL,
-#                                      inquiry VARCHAR(2000) NOT NULL,
-#                                      reply VARCHAR(2000) NULL,
-#                                      create_date DATETIME NOT NULL,
-#                                      reply_date DATETIME NULL,
-#                                      PRIMARY KEY (idx),
-#                                      FOREIGN KEY (id) REFERENCES sleep_on_user(id),
-#                                      FOREIGN KEY (reserv_id) REFERENCES sleepOn_reservation(idx)
-# );
+-- # CREATE TABLE sleep_on_cancel (
+-- #                                      idx INT NOT NULL AUTO_INCREMENT,
+-- #                                      id VARCHAR(45) NOT NULL,
+-- #                                      reserv_id INT NULL,
+-- #                                      title VARCHAR(100) NOT NULL,
+-- #                                      inquiry VARCHAR(2000) NOT NULL,
+-- #                                      reply VARCHAR(2000) NULL,
+-- #                                      create_date DATETIME NOT NULL,
+-- #                                      reply_date DATETIME NULL,
+-- #                                      PRIMARY KEY (idx),
+-- #                                      FOREIGN KEY (id) REFERENCES sleep_on_user(id),
+-- #                                      FOREIGN KEY (reserv_id) REFERENCES sleepOn_reservation(idx)
+-- # );
