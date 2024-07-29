@@ -21,7 +21,7 @@ public interface UserCancleRepository extends JpaRepository<UserCancel, Integer>
     @Query("SELECT COUNT(c) FROM UserCancel c WHERE c.user.id = :id")
     int countByUserId(@Param("id") String id); // 고객 전용 내 문의 개수
 
-    List<UserCancel> findByUserId(@Param("id") String id); // 고객 및 관리자 전용 문의 내용
+    List<UserCancel> findByUserIdOrderByIdxDesc(@Param("id") String id); // 고객 전용 내 문의 내용
 
     void deleteByIdx(int id); // 고객 전용 삭제
 }

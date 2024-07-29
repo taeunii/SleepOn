@@ -1,37 +1,53 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>title</title>
+    <title>슬립온 - 문의 남기기</title>
     <meta lang="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="/css/bootstrap.css">
     <link rel="stylesheet" href="/css/styles.css">
     <script src=/js/bootstrap.bundle.js></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#back-btn').on('click', function () {
+                history.back();
+            });
+        });
+    </script>
 </head>
-<body>
+<body class="inquiry-Back_body">
 <header th:replace="~{layout/header :: header-basic}"></header>
 <main>
-    <form action="/SleepOn/SubmitInquiry" method="post">
-        <div>
-            <div>
-                <label for="inquiryTitle">제목:</label>
-                <input type="text" id="inquiryTitle" name="title" required>
+    <section class="container mt-3">
+        <form action="/SleepOn/SubmitInquiry" method="post">
+            <div class="inquiry-card">
+                <div class="inquiry-header">
+                    <h3>문의하기</h3>
+                </div>
+                <div class="inquiry-body">
+                    <div class="inquiry-grid">
+                        <label for="inquiryTitle" class="inquiry-label">제목</label>
+                        <input type="text" id="inquiryTitle" name="title" placeholder="제목을 입력하세요." required>
+                    </div>
+                    <div class="inquiry-grid">
+                        <label for="reserv-select" class="inquiry-label">예약 선택</label>
+                        <select id="reserv-select" name="reservId">
+                            <option value="">선택 없음</option>
+                            <option th:each="item : ${reservations}" th:value="${item.getIdx()}" th:text="${item.getRoomTitle()}"></option>
+                        </select>
+                    </div>
+                    <div>
+                        <textarea class="form-control inquiry-textarea" id="inquiryContent" name="inquiry" rows="4" required></textarea>
+                    </div>
+                    <div class="inquiry-btnContainer">
+                        <button type="button" class="btn reply-btn" id="back-btn">뒤로가기</button>
+                        <button type="submit" class="btn inquiry-btn">문의 제출</button>
+                    </div>
+                </div>
             </div>
-            <div>
-                <label for="inquiryContent">내용:</label>
-                <textarea id="inquiryContent" name="inquiry" rows="4" required></textarea>
-            </div>
-            <div>
-                <label for="reserv-select">예약 선택:</label>
-                <select id="reserv-select" name="reservId">
-                    <option value="">선택 없음</option>
-                    <option th:each="item : ${reservations}" th:value="${item.getIdx()}" th:text="${item.getRoomTitle()}"></option>
-                </select>
-            </div>
-            <button type="submit">문의 제출</button>
-        </div>
-    </form>
+        </form>
+    </section>
 </main>
 <footer th:replace="~{layout/footer :: footer}"></footer>
 </body>

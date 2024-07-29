@@ -69,7 +69,12 @@
                                             <p class="card-text"><strong>최대 인원:</strong> ${respData[i].roommaxcount}</p>
                                             <p class="card-text"><strong>가격:</strong> ${respData[i].roomoffseasonminfee1}원</p>
                                             <p class="card-text">${respData[i].roomintro}</p>
-                                            <button class btn btn-primary type="button" onclick="PayMentPage(this)" value="${respData[i].roomtitle}">예약</button>
+                                            <button class="btn inquiry-btn" type="button"
+                                            onclick="PayMentPage(this)"
+                                            data-roomtitle="${respData[i].roomtitle}"
+                                            data-roommaxcount="${respData[i].roommaxcount}">
+                                        예약
+                                    </button>
                                         </div>
                                     </div>
                                 </div>
@@ -90,7 +95,8 @@
 
             // 결제 창 이동
             window.PayMentPage = function (button){
-                const roomTitle = $(button).val();
+                const roomTitle = $(button).data("roomtitle");
+                const roomMaxCount = $(button).data("roommaxcount");
                 console.log("roomTitle : " + roomTitle);
                 const contentId = $('#contentId').val();
                 const user = $('#user').val();
@@ -106,6 +112,10 @@
                 else{
                     if (!checkIn || !checkOut || !userCnt) {
                         alert("체크인과 체크아웃 날짜, 인원수를 선택해주세요.")
+                        return false;
+                    }
+                    if (userCnt > roomMaxCount){
+                        alert("최대 인원 수가 " + roomMaxCount + "명입니다. 다른 방을 선택해주세요.");
                         return false;
                     }
                     // 선택된 값들을 URL 파라미터로 넘겨 페이지 이동

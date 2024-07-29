@@ -17,15 +17,17 @@
             <table class="table table-rounded text-center">
                 <colgroup>
                     <col style="width: 10%;">
-                    <col style="width: 55%;">
+                    <col style="width: 35%;">
                     <col style="width: 15%;">
                     <col style="width: 20%;">
+                    <col style="width: 20%;"
                 </colgroup>
                 <thead>
                 <th>번호</th>
                 <th>제목</th>
                 <th>고객 ID</th>
                 <th>작성일</th>
+                <th>답변일</th>
                 </thead>
                 <tbody>
                 <tr th:if="${#lists.size(itemList) > 0}" th:each="item : ${itemList}">
@@ -35,10 +37,16 @@
                            th:href="@{/SleepOn/inquiryDetail(id=${item.getIdx()})}"></a>
                     </td>
                     <td th:text="${item.getUser().getId()}"></td>
-                    <td th:text="${item.getCreateDate()}"></td>
+                    <td th:text="${#temporals.format(item.getCreateDate(), 'yyyy-MM-dd HH:mm')}"></td>
+                    <td th:if="${item.getReply() != null}">
+                        <span th:text="${#temporals.format(item.getReplyDate(), 'yyyy-MM-dd HH:mm')}"></span>
+                    </td>
+                    <td th:unless="${item.getReply() != null}">
+                        <span>답변 작성 전입니다.</span>
+                    </td>
                 </tr>
                 <tr th:unless="${#lists.size(itemList) > 0}">
-                    <td colspan="4">
+                    <td colspan="5">
                         상담 문의 없음
                     </td>
                 </tr>

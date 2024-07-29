@@ -198,7 +198,7 @@ public class TourServiceImpl implements TourService{
     // 고객 전용 내 문의 내역 보기
     @Override
     public List<UserCancel> getUserCancelList(String id) throws Exception {
-        return ucRepository.findByUserId(id);
+        return ucRepository.findByUserIdOrderByIdxDesc(id);
     }
 
     // 고객 전용 문의 작성

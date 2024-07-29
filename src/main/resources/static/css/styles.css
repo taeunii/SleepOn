@@ -17,24 +17,26 @@ body {
     display: flex;
     flex-direction: column;
 }
-main {
-    flex: 1;
-    display: grid;
-    align-items: center;
+
+header, main, footer {
+    width: 100%;
 }
 
 .navbar {
     background-color: #ffffff;
-    border-bottom: 1px solid #dddddd;
+    padding: 10px;
 }
 
-.navbar-brand {
+.navbar .logo {
+    font-family: "Montserrat", sans-serif;
     font-weight: bold;
     color: #ff5a5f;
+    font-size: 2em;
+    font-style: italic;
 }
 
 .navbar-nav {
-    margin-left: auto; /* Add this line */
+    margin-left: auto;
     margin-right: 5px;
 }
 
@@ -42,11 +44,21 @@ main {
     color: #333333;
 }
 
+.nav-btn {
+    border-color: #ff5a5f;
+    color: #ff5a5f;
+    animation: all ease-in 0.4s;
+}
+.nav-btn:hover{
+    background-color: #ff5a5f;
+    color: white;
+}
+
 .banner {
     background: url('../img/banner.jpg') no-repeat center center;
     background-size: cover;
     color: white;
-    padding: 150px 0;
+    height: 300px;
     position: relative;
 }
 
@@ -61,14 +73,21 @@ main {
 }
 
 .banner-content {
+    display: flex;
+    justify-content: center; /* 가로 정렬 */
+    align-items: center; /* 세로 정렬 */
+    width: 100%;
+    height: 100%;
     position: relative;
     font-family: "LINESeedKR-Bd";
     font-weight: bold;
     z-index: 1;
+    flex-direction: column; /* 세로로 정렬 */
 }
 
 .banner h1, .banner p {
     color: white;
+    margin: 0; /* 기본 여백 제거 */
 }
 
 .banner .btn-primary {
@@ -104,7 +123,7 @@ main {
 .card-container .card {
     height: 400px; /* 전체 카드 높이 고정 */
 }
-
+/* 검색 section */
 .search-input {
     margin-bottom: 20px;
 }
@@ -164,15 +183,31 @@ main {
     background-color: #ff5a5f; /* 동일한 색상으로 변경 */
     border: none;
 }
-
-.logo {
-    font-family: "Montserrat", sans-serif;
-    font-weight: bold;
-    font-size: 600;
-    font-style: italic;
-    padding-left: 20px;
+/* 어디로 갈까요? 부분 */
+.select-bar-container{
+    display: flex;
+    justify-content: center;
 }
-
+.custom-options {
+    width: 90%;
+    display: grid;
+    grid-template-columns: repeat(12, auto);
+    border-radius: 1.5em;
+    overflow: hidden;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.option-btn{
+    background-color: transparent;
+    border: none;
+    padding: 0.5em 1em;
+    transition: all 0.4s;
+}
+.option-btn:hover,
+.option-btn-select{
+    color: #ff5a5f;
+}
+/* footer */
 .footer {
     background-color: #f8f9fa;
     padding: 20px 0;
@@ -190,8 +225,9 @@ main {
     margin: 0 10px;
 }
 
-/* 드래그 방지*/
-div{ -webkit-touch-callout: none;
+/* 드래그 방지 */
+div {
+    -webkit-touch-callout: none;
     user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -236,17 +272,137 @@ div{ -webkit-touch-callout: none;
     animation: 0.3s;
     font-size: 1em;
 }
+
 .table-rounded tbody td,
-.table-rounded tbody a{
+.table-rounded tbody a {
     animation: 0.3s;
 }
-.table-rounded th{
+
+.table-rounded th {
     background-color: #ff5a5f;
     color: white;
     font-size: 1.2em;
 }
+
 .table-rounded tbody tr:hover td,
-.table-rounded tbody tr:hover a
-{
+.table-rounded tbody tr:hover a {
     color: #ff5a5f;
+}
+
+/* 관리자 문의 페이지 */
+.inquiry-Back_body {
+    background-color: #f8f9fa;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.inquiry-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.inquiry-header {
+    background-color: #ff5a5f;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+.inquiry-header h3 {
+    margin: 0;
+}
+
+.inquiry-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    gap: 0.5em;
+}
+
+.inquiry-grid {
+    display: grid;
+    grid-template-columns: 0.5fr 1.5fr;
+    gap: 0.5em;
+    align-items: center;
+    justify-items: center;
+    border-radius: 1.5em;
+    text-align: left;
+    overflow: hidden;
+    border: 1px solid #d3d3d3;
+}
+
+.inquiry-label {
+    grid-column: 1/2;
+    font-weight: bold;
+    background-color: #ff5a5f;
+    color: white;
+    padding: 0.3em;
+    width: 100%;
+    border-radius: 1.5em;
+    text-align: center;
+}
+
+.inquiry-btn {
+    background-color: #ff5a5f;
+    color: white;
+    animation: all ease-in 0.3s;
+}
+
+.inquiry-btn:hover {
+    background-color: white;
+    border-color: #ff5a5f;
+    color: #ff5a5f;
+}
+
+.reply-btn {
+    border-color: #88c996;
+    color: #88c996;
+    animation: all ease-in 0.3s;
+}
+
+.reply-btn:hover {
+    color: white;
+    background-color: #88c996;
+}
+
+.inquiry-textarea {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.inquiry-textarea[readonly] {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.reply-section {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+
+.reply-color {
+    background-color: #88c996;
+}
+
+.reply-date {
+    font-size: 0.8rem;
+    text-align: right;
+}
+
+.formatted-date {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.inquiry-btnContainer {
+    display: flex;
+    justify-content: end;
+    gap: 0.5em;
 }

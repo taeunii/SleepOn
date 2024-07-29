@@ -256,7 +256,7 @@ public class TourController {
         String opt1 = "?serviceKey=";
         String opt2 = "&MobileOS=ETC&MobileApp=AppTest";
         String opt3 = "&contentId=";
-        String opt4 = "&contentTypeId=32&numOfRows=3&pageNo=1";
+        String opt4 = "&contentTypeId=32&numOfRows=2&pageNo=1";
 
         List<DataItemDTO> RoomList = tourService.getDetailItemList(APIDetailUrl + opt1 + APIkey + opt2 + opt3 + contentId + opt4);
 
