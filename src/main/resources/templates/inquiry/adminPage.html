@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>상담사 페이지</title>
+    <meta lang="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src=/js/bootstrap.bundle.js></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+<header th:replace="~{layout/header :: header-basic}"></header>
+<main>
+    <section>
+        <div class="container p-3">
+            <table class="table table-rounded text-center">
+                <colgroup>
+                    <col style="width: 10%;">
+                    <col style="width: 55%;">
+                    <col style="width: 15%;">
+                    <col style="width: 20%;">
+                </colgroup>
+                <thead>
+                <th>번호</th>
+                <th>제목</th>
+                <th>고객 ID</th>
+                <th>작성일</th>
+                </thead>
+                <tbody>
+                <tr th:if="${#lists.size(itemList) > 0}" th:each="item : ${itemList}">
+                    <td th:text="${item.getIdx()}"></td>
+                    <td>
+                        <a href="#" th:text="${item.getTitle()}"
+                           th:href="@{/SleepOn/inquiryDetail(id=${item.getIdx()})}"></a>
+                    </td>
+                    <td th:text="${item.getUser().getId()}"></td>
+                    <td th:text="${item.getCreateDate()}"></td>
+                </tr>
+                <tr th:unless="${#lists.size(itemList) > 0}">
+                    <td colspan="4">
+                        상담 문의 없음
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+<footer th:replace="~{layout/footer :: footer}"></footer>
+</body>
+</html>

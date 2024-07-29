@@ -9,15 +9,19 @@ import bitc.fullstack.sleepon.dto.infor.DataComResponseDTO;
 import bitc.fullstack.sleepon.dto.event.FullEventDataItemDTO;
 import bitc.fullstack.sleepon.dto.event.FullEventDataResponseDTO;
 import bitc.fullstack.sleepon.mapper.LocationMapper;
+import bitc.fullstack.sleepon.model.UserCancel;
 import bitc.fullstack.sleepon.model.UserReservation;
+import bitc.fullstack.sleepon.repository.UserCancleRepository;
 import bitc.fullstack.sleepon.repository.UserReservationRepository;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.Unmarshaller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +33,9 @@ public class TourServiceImpl implements TourService{
 
     @Autowired
     UserReservationRepository reservationRepository;
+
+    @Autowired
+    UserCancleRepository ucRepository;
 
     @Override
     public List<FullDataItemDTO> getItemListUrl(String serviceUrl) throws Exception {
@@ -158,8 +165,52 @@ public class TourServiceImpl implements TourService{
         return itemList;
     }
 
+    // 예약 디비 저장
     @Override
     public void saveReservation(UserReservation reservation) {
         reservationRepository.save(reservation);
+    }
+
+    // 예약 내역 가져오기
+    @Override
+    public List<UserReservation> getUserReservation(String userId) throws Exception{
+        return reservationRepository.findByUserId(userId);
+    }
+
+    // 관리자 고객 상담 게시글 목록
+    @Override
+    public List<UserCancel> getAdminCancelList() throws Exception {
+        return ucRepository.findAllByOrderByIdxDesc();
+    }
+
+    // 관리자 전용 상담 답글
+    @Override
+    public void saveReply(int id, String reply) throws Exception {
+        ucRepository.updateReply(id, reply);
+    }
+
+    // 문의 내역
+    @Override
+    public int getCountCancelUser(String id) throws Exception {
+        return ucRepository.countByUserId(id);
+    }
+
+    // 고객 전용 내 문의 내역 보기
+    @Override
+    public List<UserCancel> getUserCancelList(String id) throws Exception {
+        return ucRepository.findByUserId(id);
+    }
+
+    // 고객 전용 문의 작성
+    @Override
+    public void saveUserCancel(UserCancel userCancel) throws Exception {
+        ucRepository.save(userCancel);
+    }
+
+    // 고객 문의 삭제
+    @Override
+    @Transactional
+    public void deleteUserCancel(int id) throws Exception {
+        ucRepository.deleteByIdx(id);
     }
 }

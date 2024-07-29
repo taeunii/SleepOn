@@ -5,7 +5,10 @@ import bitc.fullstack.sleepon.dto.detail.DataItemDTO;
 import bitc.fullstack.sleepon.dto.infor.DataComItemDTO;
 import bitc.fullstack.sleepon.dto.event.FullEventDataItemDTO;
 import bitc.fullstack.sleepon.model.SleepOnUser;
+import bitc.fullstack.sleepon.model.UserCancel;
 import bitc.fullstack.sleepon.model.UserReservation;
+import bitc.fullstack.sleepon.repository.UserCancleRepository;
+import bitc.fullstack.sleepon.repository.UserReservationRepository;
 import bitc.fullstack.sleepon.service.TourService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -45,6 +48,11 @@ public class TourController {
     // 지역 행사
     @Value("${SleepOnEvent.service.Url}")
     private String eventApiurl;
+
+    @Autowired
+    private UserReservationRepository userReservationRepository;
+    @Autowired
+    private UserCancleRepository userCancleRepository;
 
     @RequestMapping(value = {"", "/"})
     public String SleepOnService(HttpServletRequest request, Model model) {
@@ -258,9 +266,25 @@ public class TourController {
     }
 
     @GetMapping("/myPage")
-    public String myPage(HttpServletRequest request, Model model) {
+    public String myPage(HttpServletRequest request, Model model) throws Exception {
         addSessionAttributesToModel(request, model);
-        return model.containsAttribute("user") ? "member/myPage" : "redirect:/SleepOn/login";
+
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            SleepOnUser user = (SleepOnUser) session.getAttribute("user");
+            if (user != null) {
+                // 상담문의 수를 가져와서 모델에 추가
+                String userId = user.getId();
+                int cancelCount = tourService.getCountCancelUser(userId);
+                model.addAttribute("cancelCount", cancelCount);
+            } else {
+                return "redirect:/SleepOn/login";
+            }
+        } else {
+            return "redirect:/SleepOn/login";
+        }
+
+        return "member/myPage";
     }
 
     private void addSessionAttributesToModel(HttpServletRequest request, Model model) {
@@ -338,5 +362,139 @@ public class TourController {
     public String reservationSuccess(HttpServletRequest request, Model model) {
         addSessionAttributesToModel(request, model);
         return "member/reservationSuccess";
+    }
+
+    // 관리자 전용 페이지
+    @RequestMapping("/admin")
+    public ModelAndView admin(HttpServletRequest request, Model model) throws Exception {
+        addSessionAttributesToModel(request, model);
+
+        ModelAndView mv = new ModelAndView("inquiry/adminPage");
+
+        List<UserCancel> itemList = tourService.getAdminCancelList();
+        mv.addObject("itemList", itemList);
+
+        return mv;
+    }
+    @RequestMapping("/saveReply")
+    public String saveReply(@RequestParam("id") int id, @RequestParam("reply") String reply, HttpServletRequest request, Model model) throws Exception {
+        addSessionAttributesToModel(request, model);
+
+        tourService.saveReply(id, reply);
+        return "redirect:/SleepOn/admin";
+    }
+
+    // 고객 상담문의 페이지
+    @RequestMapping("/inquiry")
+    public String userInquiry (HttpServletRequest request, Model model) throws Exception {
+        addSessionAttributesToModel(request, model);
+
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            SleepOnUser user = (SleepOnUser) session.getAttribute("user");
+            if (user != null) {
+                String userId = user.getId();
+
+                List<UserCancel> userCancelList = tourService.getUserCancelList(userId);
+                model.addAttribute("userCancelList", userCancelList);
+
+                return "inquiry/UserInquiryList";
+            } else {
+                return "redirect:/SleepOn/login";
+            }
+        } else {
+            return "redirect:/SleepOn/login";
+        }
+    }
+
+    // 고객 문의글 작성 페이지
+    @RequestMapping("/inquiryWrite")
+    public String userInquiryWrite (HttpServletRequest request, Model model) throws Exception {
+        addSessionAttributesToModel(request, model);
+
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            SleepOnUser user = (SleepOnUser) session.getAttribute("user");
+            if (user != null) {
+                List<UserReservation> reservations = tourService.getUserReservation(user.getId());
+                model.addAttribute("reservations", reservations);
+                model.addAttribute("user", user);
+                return "inquiry/inquiryWrite";
+            }
+        }
+        return "redirect:/SleepOn/login";
+    }
+
+    // 고객 문의 접수
+    @RequestMapping("/SubmitInquiry")
+    public String submitInquiry (@RequestParam("title") String title, @RequestParam("inquiry") String inquiry, @RequestParam(name="reservId", required = false) String reservId,
+            HttpSession session, HttpServletRequest request, Model model) throws Exception {
+        addSessionAttributesToModel(request, model);
+
+        SleepOnUser user = (SleepOnUser) session.getAttribute("user");
+
+        System.out.println("\n문의 등록\n");
+        if (user == null) {
+            return "redirect:/SleepOn/login";
+        }
+        UserCancel userCancel = new UserCancel();
+        userCancel.setUser(user);
+        userCancel.setTitle(title);
+        userCancel.setInquiry(inquiry);
+        if (reservId != null && !reservId.isEmpty()) {
+            try {
+                Long reservationId = Long.parseLong(reservId);
+                UserReservation reservation = userReservationRepository.findById(reservationId).orElse(null);
+                userCancel.setReservation(reservation);
+            }
+            catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+        userCancel.setCreateDate(LocalDateTime.now());
+
+
+        tourService.saveUserCancel(userCancel);
+
+        return "redirect:/SleepOn/inquiryDetail?id=" + userCancel.getIdx();
+    }
+
+    // 문의 내용 보기
+    @RequestMapping("/inquiryDetail")
+    public String inquiryDetail (@RequestParam("id") int id, Model model, HttpServletRequest request) {
+        addSessionAttributesToModel(request, model);
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            SleepOnUser user = (SleepOnUser) session.getAttribute("user");
+            if (user != null) {
+                UserCancel inquiry = userCancleRepository.findById(id).orElse(null);
+                if (inquiry != null) {
+                    model.addAttribute("inquiry", inquiry);
+                    model.addAttribute("user", user);
+                    model.addAttribute("isManager", user.isManager());
+
+                    if (inquiry.getReservation() != null) {
+                        UserReservation reservation = inquiry.getReservation();
+                        model.addAttribute("reservation", reservation);
+                    }
+                    return "inquiry/inquiryDetail";
+                }
+                else {
+                    System.out.println("Inquiry is null");
+                }
+            } else {
+                System.out.println("User is null in session.");
+            }
+        } else {
+            System.out.println("Session is null.");
+        }
+        return "redirect:/SleepOn/login";
+    }
+
+    // 문의 삭제 (고객만)
+    @RequestMapping("/deleteInquiry")
+    public String deleteInquiry(@RequestParam("id") int id) throws Exception {
+        tourService.deleteUserCancel(id);
+        return "redirect:/SleepOn/inquiry";
     }
 }

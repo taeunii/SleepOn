@@ -20,21 +20,21 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item" th:if="${user == null}">
+                <li class="nav-item" th:if="${session.user == null}">
                     <a class="nav-link" href="/SleepOn/login">로그인</a>
                 </li>
-                <li class="nav-item" th:if="${user == null}">
+                <li class="nav-item" th:if="${session.user == null}">
                     <a class="nav-link" href="/SleepOn/register">회원가입</a>
                 </li>
-                <li class="nav-item" th:if="${user != null}">
-                    <label class="nav-link" th:if="${isManager}"><span th:text="${user.name}"></span></label>
-                    <label class="nav-link" th:unless="${isManager}"><span th:text="${user.name}"></span>님, 반갑습니다.</label>
+                <li class="nav-item" th:if="${session.user != null}">
+                    <label class="nav-link" th:if="${session.isManager}"><span th:text="${session.user.name}"></span></label>
+                    <label class="nav-link" th:unless="${session.isManager}"><span th:text="${session.user.name}"></span>님, 반갑습니다.</label>
                 </li>
-                <li class="nav-item" th:if="${user != null}">
-                    <a class="nav-link" href="#" th:if="${isManager}">상담 문의</a>
-                    <a class="nav-link btn" href="/SleepOn/myPage" th:unless="${isManager}">마이페이지</a>
+                <li class="nav-item" th:if="${session.user != null}">
+                    <a class="nav-link" href="/SleepOn/admin" th:if="${session.isManager}">상담 문의</a>
+                    <a class="nav-link btn" href="/SleepOn/myPage" th:unless="${session.isManager}">마이페이지</a>
                 </li>
-                <li class="nav-item" th:if="${user != null}">
+                <li class="nav-item" th:if="${session.user != null}">
                     <a class="nav-link" href="/SleepOn/logout">로그아웃</a>
                 </li>
             </ul>

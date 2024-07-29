@@ -120,9 +120,9 @@
             <p class="membership-status">안녕하세요! <span th:text="${user.name}"></span>님</p>
             <p><span th:text="${user.id}"></span></p>
             <div class="profile-stats">
-                <div>
-                    <span>등록된 숙소</span>
-                    <strong>24개</strong>
+                <div class="d-flex flex-column">
+                    <a href="/SleepOn/inquiry" class="btn btn-link text-decoration-none text-dark">문의 내역</a>
+                    <strong th:text="|${cancelCount}개|"></strong>
                 </div>
                 <div>
                     <span>읽은 리뷰</span>

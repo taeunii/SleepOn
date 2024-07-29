@@ -12,6 +12,17 @@
     box-sizing: border-box;
 }
 
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+main {
+    flex: 1;
+    display: grid;
+    align-items: center;
+}
+
 .navbar {
     background-color: #ffffff;
     border-bottom: 1px solid #dddddd;
@@ -211,4 +222,31 @@ div{ -webkit-touch-callout: none;
 #InfoContainer {
     display: grid;
     grid-template-columns: 1fr 1fr;
+}
+
+.table-rounded {
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 0.5em;
+    overflow: hidden;
+}
+
+.table-rounded td {
+    border: 1px solid #dee2e6;
+    animation: 0.3s;
+    font-size: 1em;
+}
+.table-rounded tbody td,
+.table-rounded tbody a{
+    animation: 0.3s;
+}
+.table-rounded th{
+    background-color: #ff5a5f;
+    color: white;
+    font-size: 1.2em;
+}
+.table-rounded tbody tr:hover td,
+.table-rounded tbody tr:hover a
+{
+    color: #ff5a5f;
 }

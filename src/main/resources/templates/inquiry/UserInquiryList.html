@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>title</title>
+    <meta lang="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src=/js/bootstrap.bundle.js></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+<header th:replace="~{layout/header :: header-basic}"></header>
+<main>
+    <table>
+        <thead>
+        <tr>제목</tr>
+        <tr>일시</tr>
+        </thead>
+        <tbody>
+        <tr th:if="${#lists.size(userCancelList) > 0}" th:each="item : ${userCancelList}">
+            <td>
+                <a href="#" th:href="@{/SleepOn/inquiryDetail(id=${item.getIdx()})}" th:text="${item.getTitle()}"></a>
+            </td>
+            <td>
+                <h1 th:text="${item.getCreateDate()}"></h1>
+            </td>
+        </tr>
+        <tr th:unless="${#lists.size(userCancelList) > 0}">
+            <td colspan="2">
+                문의 내역이 없습니다.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a href="/SleepOn/inquiryWrite" class="btn btn-primary">문의하기</a>
+</main>
+<footer th:replace="~{layout/footer :: footer}"></footer>
+</body>
+</html>

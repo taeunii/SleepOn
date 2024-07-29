@@ -88,7 +88,7 @@ public class SleepOnUser {
     }
 
     public boolean isManager() {
-//        return this.id.startsWith("SleepOn1");
+//        return this.id.startsWith("admin");
         // 매니저인 경우 true 반환
         return this.manager.equals("Y");
     }

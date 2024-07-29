@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>title</title>
+    <meta lang="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src=/js/bootstrap.bundle.js></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+<header th:replace="~{layout/header :: header-basic}"></header>
+<main>
+    <form action="/SleepOn/SubmitInquiry" method="post">
+        <div>
+            <div>
+                <label for="inquiryTitle">제목:</label>
+                <input type="text" id="inquiryTitle" name="title" required>
+            </div>
+            <div>
+                <label for="inquiryContent">내용:</label>
+                <textarea id="inquiryContent" name="inquiry" rows="4" required></textarea>
+            </div>
+            <div>
+                <label for="reserv-select">예약 선택:</label>
+                <select id="reserv-select" name="reservId">
+                    <option value="">선택 없음</option>
+                    <option th:each="item : ${reservations}" th:value="${item.getIdx()}" th:text="${item.getRoomTitle()}"></option>
+                </select>
+            </div>
+            <button type="submit">문의 제출</button>
+        </div>
+    </form>
+</main>
+<footer th:replace="~{layout/footer :: footer}"></footer>
+</body>
+</html>
