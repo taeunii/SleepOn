@@ -12,96 +12,102 @@
     <link href="/css/styles.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
-<body class="inquiry-Back_body">
+<body>
 <header th:replace="~{/layout/header :: header-basic}"></header>
 <header th:replace="~{layout/header :: header-banner}"></header>
 <main>
-    <section class="container mt-3">
-        <div class="inquiry-card">
-            <div class="inquiry-header">
-                <h3>문의 내역</h3>
+    <section class="container">
+        <div class="inquiryTitle">
+            <i class="fa-solid fa-circle-user"></i>
+            <span class="Score" th:if="${session.user.isManager()}">고객 상담 문의</span>
+            <span class="Score" th:unless="${session.user.isManager()}" th:text="|${user.name}님의 문의 내역|"></span>
+        </div>
+    </section>
+    <section class="container my-3">
+        <div class="inquiryCard">
+            <div class="inquiryProfile">
+                <span class="fa-solid fa-circle-question"></span>
             </div>
-            <div class="inquiry-body">
-                <div class="inquiry-grid">
-                    <div class="inquiry-label">회원 ID</div>
-                    <div th:text="${inquiry.getUser().getId()}"></div>
-                </div>
-                <div class="inquiry-grid">
-                    <div class="inquiry-label">제목</div>
-                    <div th:text="${inquiry.getTitle()}"></div>
-                </div>
-                <div class="inquiry-grid" th:if="${inquiry.reservation != null}">
-                    <div class="inquiry-label">객실 문의</div>
-                    <div>
-                        <span th:text="${inquiry.reservation.roomTitle}"></span>
-                    </div>
-                </div>
-                <div class="inquiry-grid" th:unless="${inquiry.reservation != null}">
-                    <div class="inquiry-label">문의 종류</div>
-                    <div>
-                        <span>일반 문의</span>
-                    </div>
-                </div>
-                <div class="inquiry-grid">
-                    <div class="inquiry-label">작성일</div>
-                    <div th:text="${#temporals.format(inquiry.getCreateDate(), 'yyyy-MM-dd HH:mm')}"></div>
-                </div>
-                <div>
-                    <textarea class="form-control inquiry-textarea" readonly rows="5"
-                              th:text="${inquiry.getInquiry()}"></textarea>
-                </div>
+            <div class="inquiryQuest text-start">
+                <span th:if="${inquiry.reservation != null}" th:text="|Q. ${inquiry.getTitle()} (객실문의 / ${inquiry.reservation.roomTitle})|"></span>
+                <span th:unless="${inquiry.reservation != null}" th:text="|Q. ${inquiry.getTitle()} (일반문의)|"></span>
+            </div>
+            <div class="inquiryBubble">
+                <span th:text="${inquiry.getInquiry()}"></span>
+            </div>
+            <div class="inquiryData justify-content-end">
+                <span th:text="${#temporals.format(inquiry.getCreateDate(), 'yyyy-MM-dd HH:mm')}"></span>
             </div>
         </div>
     </section>
-    <section class="container mt-3">
-        <div class="inquiry-card">
-            <div class="inquiry-header reply-color">
-                <h3>답변 내역</h3>
+    <section class="container my-3">
+        <div th:unless="${session.user.isManager()}" class="adminInquiryCard">
+            <div class="inquiryQuest text-start">
+                <span th:if="${inquiry.getReply() != null}">A. 답변 완료</span>
+                <span th:unless="${inquiry.getReply() != null}">A. 답변 작성 중</span>
             </div>
-            <div th:if="${session.user.isManager()}">
-                <div class="inquiry-body" th:if="${inquiry.getReply() == null}">
+            <div class="inquiryBubble">
+                <span th:if="${inquiry.getReply() != null}" th:text="${inquiry.getReply()}"></span>
+                <span th:unless="${inquiry.getReply() != null}">답변을 작성 중입니다.</span>
+            </div>
+            <div class="inquiryData justify-content-end">
+                <span th:text="${#temporals.format(inquiry.getReplyDate(), 'yyyy-MM-dd HH:mm')}"></span>
+            </div>
+            <div class="inquiryProfile">
+                <span th:if="${inquiry.getReply() != null}" class="fa-solid fa-circle-check"></span>
+                <span th:unless="${inquiry.getReply() != null}" class="inquiryProfileSpin fa-solid fa-spinner"></span>
+            </div>
+        </div>
+        <div th:if="${session.user.isManager()}">
+            <div th:if="${inquiry.getReply() == null}" class="adminInquiryCard">
+                <div class="inquiryQuest justify-content-end">
+                    <span>A. 답변 작성 예정</span>
+                </div>
+                <div class="inquiryBubble">
                     <form action="/SleepOn/saveReply" method="post">
                         <input name="id" th:value="${inquiry.getIdx()}" type="hidden">
                         <div class="form-group">
-                                <textarea class="form-control" id="reply-content" name="reply" placeholder="답변을 입력하세요"
+                                <textarea class="form-control BoxBorderNon" id="reply-content" name="reply" placeholder="답변을 입력하세요"
                                           rows="5"></textarea>
                         </div>
-                        <button class="btn reply-btn" type="submit">등록</button>
+                        <div class="d-flex justify-content-end">
+                            <button class="BackBlueBtn" type="submit">등록</button>
+                        </div>
                     </form>
                 </div>
-                <div class="inquiry-body" th:unless="${inquiry.getReply() == null}">
-                    <div class="inquiry-grid">
-                        <div class="inquiry-label reply-color">답변 완료</div>
-                        <div th:text="${#temporals.format(inquiry.getReplyDate(), 'yyyy-MM-dd HH:mm')}"></div>
-                    </div>
-                    <div class="form-group">
-                        <textarea class="form-control inquiry-textarea" readonly rows="5"
-                                  th:text="${inquiry.getReply()}"></textarea>
-                    </div>
+                <div class="inquiryData justify-content-end">
+                    <span>작성 중</span>
+                </div>
+                <div class="inquiryProfile">
+                    <span class="inquiryProfileSpin fa-solid fa-spinner"></span>
                 </div>
             </div>
-            <div class="inquiry-body" th:unless="${session.user.isManager()}">
-                <div class="inquiry-grid">
-                    <div class="inquiry-label reply-color">답변일</div>
+            <div th:unless="${inquiry.getReply() == null}" class="adminInquiryCard">
+                <div class="inquiryQuest justify-content-end">
+                    <span>A. 답변 완료</span>
+                </div>
+                <div class="inquiryBubble">
+                    <span th:text="${inquiry.getReply()}"></span>
+                </div>
+                <div class="inquiryData justify-content-end">
                     <span th:text="${#temporals.format(inquiry.getReplyDate(), 'yyyy-MM-dd HH:mm')}"></span>
                 </div>
-                <div>
-                    <textarea class="form-control inquiry-textarea" readonly rows="5"
-                              th:text="${inquiry.getReply()}"></textarea>
+                <div class="inquiryProfile">
+                    <span class="fa-solid fa-circle-check"></span>
                 </div>
             </div>
         </div>
     </section>
-    <section class="container mt-3">
-        <div th:if="${session.user.isManager()}" class="inquiry-btnContainer">
-            <button class="btn inquiry-btn back-btn" type="button">뒤로가기</button>
+    <section class="container my-3">
+        <div th:if="${session.user.isManager()}" class="inquiryBtn">
+            <button class="BackBtn back-btn" type="button">뒤로가기</button>
         </div>
         <div th:unless="${session.user.isManager()}">
             <form action="/SleepOn/deleteInquiry" method="post">
                 <input name="id" th:value="${inquiry.getIdx()}" type="hidden">
-                <div class="inquiry-btnContainer">
-                    <button class="btn inquiry-btn back-btn" type="button">뒤로가기</button>
-                    <button class="btn reply-btn" type="submit">문의 삭제</button>
+                <div class="inquiryBtn">
+                    <button class="BackBtn back-btn" type="button">뒤로가기</button>
+                    <button class="BackBlueBtn" type="submit">문의 삭제</button>
                 </div>
             </form>
         </div>

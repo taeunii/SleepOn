@@ -101,12 +101,12 @@
                 const accountNumber = $('#accountNumber').val();
                 console.log(paymentType);
                 if (paymentType === "card") {
-                    if (!cardNumber | !cardCvc | !cardExpiry) {
+                    if (!cardNumber || !cardCvc || !cardExpiry) {
                         alert("결제 정보를 모두 입력해주세요.");
                         return false;
                     }
                 } else {
-                    if (!bankName | !accountNumber) {
+                    if (!bankName || !accountNumber) {
                         alert("결제 정보를 모두 입력해주세요.");
                         return false;
                     }
@@ -180,8 +180,8 @@
         <input type="hidden" id="checkOut" name="checkOut" th:value="${checkOut}">
         <input type="hidden" id="roomtitle" name="roomtitle" th:value="${roomtitle}">
         <input type="hidden" id="userCnt" name="userCnt" th:value="${userCnt}">
-        <button type="click" class="btn btn-primary btn-reserve" id="reserveBtn"
-        >예약 디비에 넣기(결제완료버튼)
+        <button type="click" class="BackBlueBtn" id="reserveBtn"
+        >결제
         </button>
     </section>
 </main>

@@ -45,6 +45,7 @@ main {
 /* header - nav */
 .navbar {
     padding: 1em 1em 0em 1em;
+    background-color: white;
 }
 .navbar .logo {
     font-family: 'Yeongdo-Rg', sans-serif;
@@ -139,6 +140,18 @@ div {
 .Score{
     font-family: 'S-CoreDream-3Light';
 }
+/* textarea */
+.textarea {
+    background-color: #ffffff;
+    color: #000000;
+    resize: none;
+}
+
+.textarea[readonly] {
+    background-color: #ffffff;
+    color: #000000;
+    resize: none;
+}
 /* selectBox, input */
 .BoxBorderNon{
     border-style: none;
@@ -153,8 +166,8 @@ button {
     transition: all ease-in 0.3s;
 }
 .SearchBtn {
-    background-color: #6784b4;
-    border : 2px solid #6784b4;
+    background-color: #a0bcef;
+    border : 2px solid #a0bcef;
     color : white;
     border-radius: 50%;
     padding: 0.5em;
@@ -164,10 +177,17 @@ button {
 }
 .SearchBtn:hover{
     background-color: white;
-    border : 2px solid #6784b4;
-    color : #6784b4;
+    border : 2px solid #a0bcef;
+    color : #a0bcef;
 }
-
+.SelectBtn {
+    background-color: transparent;
+    border: none;
+}
+.SelectBtn:hover,
+.SelectBtn-select {
+    color: #87a3d5;
+}
 .BlueBtn {
     background-color: white;
     border: 2px solid #9db9ec;
@@ -176,15 +196,6 @@ button {
 .BlueBtn:hover {
     background-color: #9db9ec;
     color: white;
-}
-
-.SelectBtn {
-    background-color: transparent;
-    border: none;
-}
-.SelectBtn:hover,
-.SelectBtn-select {
-    color: #87a3d5;
 }
 .BackBlueBtn {
     background-color: #9db9ec;
@@ -196,28 +207,16 @@ button {
     border: 2px solid #9db9ec;
     color: #96b4ea;
 }
-.inquiry-btn {
-    background-color: #ff5a5f;
-    color: white;
-    animation: all ease-in 0.3s;
-}
-
-.inquiry-btn:hover {
+.BackBtn{
     background-color: white;
-    border-color: #ff5a5f;
-    color: #ff5a5f;
+    border: 2px solid #a3abbd;
+    color: #a3abbd;
+}
+.BackBtn:hover{
+    border: 2px solid #7a7e86;
+    color: #7a7e86;
 }
 
-.reply-btn {
-    border-color: #88c996;
-    color: #88c996;
-    animation: all ease-in 0.3s;
-}
-
-.reply-btn:hover {
-    color: white;
-    background-color: #88c996;
-}
 /* 로그인 및 회원가입 */
 .formContainer{
     display: flex;
@@ -349,9 +348,8 @@ button {
     flex-direction: column;
     gap: 0.8em;
     border-radius: 0.5em;
-    border: none;
-    background-color: white;
     overflow: hidden;
+    padding: 3em;
 }
 .profileHeader{
     display: grid;
@@ -362,45 +360,80 @@ button {
     font-size: 20px;
 }
 .profileBody{
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    background-color: white;
+    padding: 1em;
+    border-radius: 0.5em;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.profileCard {
+    border: 1px solid rgba(208, 208, 208, 0.45);
+    display: flex;
+    flex-direction: column;
+    padding: 1em;
+    border-radius: 0.3em;
+    text-align: center;
+    overflow: hidden;
+}
+.polaroidSection{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1em;
-    width: 100%;
 }
-.profileCard {
+.polaroidCard{
+    display: grid;
+    grid-template-rows: 1.5fr 0.5fr;
+    gap: 0.5em;
+}
+.polaroidHeaderBlue,
+.polaroidHeaderGreen{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.2em;
+    color: white;
+    font-size: 50px;
+}
+.polaroidHeaderBlue,
+.polaroidBlueBtn{
+    background-color: #9db9ec;
+}
+.polaroidHeaderGreen,
+.polaroidGreenBtn{
+    background-color: #bae8e0;
+}
+.polaroidBody{
     font-size: 20px;
     display: flex;
     flex-direction: column;
-    gap: 0.3em;
-    padding: 2em 1em;
-    border-radius: 0.5em;
-    box-shadow:  2px 2px 5px #d9d9d9,
-    -2px -2px 5px #ffffff;
-    border: 1px solid rgba(217, 217, 217, 0.73);
-    text-align: center;
+    text-align: left;
 }
-.profileIcon{
-    padding: 1em;
-    border-radius: 50%;
-    color:white;
-    background-color: #9db9ec;
-}
-.profileCard span{
+.polaroidBody span{
     font-size: 25px;
 }
-.profileCard strong {
-    color: #505050;
-}
-.profileCard a{
+.polaroidBody a{
+    font-size: 15px;
     text-decoration: none;
-    color: #505050;
+    color: white;
     padding: 0.3em 0.8em;
-    border-radius: 0.5em;
-    border: 1px solid #505050;
-    animation: all ease-in 0.3s;
+    border-radius: 1.5em;
+    transition: all ease-in 0.3s;
 }
-.profileCard a:hover{
+.polaroidBlueBtn {
+    border: 1px solid #9db9ec;
+}
+.polaroidGreenBtn{
+    border: 1px solid #bae8e0;
+}
+.polaroidBlueBtn:hover{
     color: #9db9ec;
+    background-color: white;
+}
+.polaroidGreenBtn:hover{
+    color: #bae8e0;
+    background-color: white;
 }
 .profile-info {
     background: #fff;
@@ -466,6 +499,13 @@ button {
 }
 /* my page - 예약 내역 */
 .reservation-item {
+    /*border: 1px solid rgba(208, 208, 208, 0.45);*/
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    /*padding: 1em;*/
+    /*border-radius: 0.3em;*/
+    /*text-align: center;*/
+    /*overflow: hidden;*/
     border: 1px solid #dee2e6;
     border-radius: 10px;
     background-color: #fff;
@@ -516,70 +556,129 @@ button {
     background-color: #fff;
     margin-bottom: 15px;
 }
-
-
-.table-rounded {
-    border-collapse: separate;
-    border-spacing: 0;
-    border-radius: 0.5em;
-    overflow: hidden;
+/* inquiry */
+/* inquiry, 관리자 및 고객 list */
+.inquiryTitle{
+    display: flex;
+    gap: 0.3em;
+    align-items: center;
+    padding: 1em;
+    border-bottom: 1px solid #dedede;
 }
-
-.table-rounded td {
-    border: 1px solid #dee2e6;
-    animation: 0.3s;
-    font-size: 1em;
+.inquiryTitle span{
+    font-size: 20px;
 }
-
-.table-rounded tbody td,
-.table-rounded tbody a {
-    animation: 0.3s;
+.inquiryTitle i{
+    font-size: 40px;
+    color:#9aa2db;
 }
-
-.table-rounded th {
-    background-color: #ff5a5f;
-    color: white;
-    font-size: 1.2em;
-}
-
-.table-rounded tbody tr:hover td,
-.table-rounded tbody tr:hover a {
-    color: #ff5a5f;
-}
-
-/* 관리자 문의 페이지 */
-.inquiry-Back_body {
-    background-color: #f8f9fa;
-    font-family: 'Montserrat', sans-serif;
-}
-
-.inquiry-card {
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-}
-
-.inquiry-header {
-    background-color: #ff5a5f;
-    color: white;
-    padding: 10px;
-    text-align: center;
-}
-
-.inquiry-header h3 {
-    margin: 0;
-}
-
-.inquiry-body {
-    padding: 20px;
+.inquiryContainer{
     display: flex;
     flex-direction: column;
-    align-content: center;
     gap: 0.5em;
 }
+.inquirySection{
+    text-align: center;
+    display: grid;
+    grid-template-columns: 0.3fr 1.2fr 0.8fr 1fr 0.8fr;
+    padding: 1em;
+}
+.inquiryHeader{
+    color: #989898;
+}
+.inquiryBody{
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 0.3em;
+    background-color: white;
+    color: #777777;
+    transition: transform 0.3s;
+}
+.inquiryBody a{
+    text-decoration: none;
+    color: black;
+}
+.inquiryBody:hover{
+    transform: scale(1.01);
+}
+.inquiryBtn{
+    display: flex;
+    justify-content: end;
+    gap: 0.5em;
+}
+.inquiryBtn a{
+    text-decoration: none;
+    padding: 0.3em 0.8em;
+    border-radius: 1.5em;
+    transition: all ease-in 0.3s;
+}
+/* inquiry - detail */
+.inquiryCard{
+    display: grid;
+    grid-template-columns: 0.1fr 1fr;
+    grid-template-rows: repeat(3, auto);
+    gap: 0.3em;
+}
+.adminInquiryCard{
+    display: grid;
+    grid-template-columns: 1fr 0.1fr;
+    grid-template-rows: repeat(3, auto);
+    gap: 0.3em;
+}
+.inquiryProfile {
+    grid-row: 1/4;
+    margin-bottom: 15px;
+    display: grid;
+    justify-items: center;
+    align-items: flex-end;
+    text-align: center;
+    color: #9db9ec;
+}
+.inquiryProfile span{
+    font-size: 50px;
+}
+.inquiryProfileSpin {
+    animation: spin 5s linear infinite;
+}
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+.inquiryQuest{
+    display: flex;
+    grid-row: 1/2;
+}
+.inquiryBubble{
+    grid-row: 2/3;
+    padding: 1em;
+    text-align: justify;
+    border-radius: 0.5em;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.inquiryData {
+    display: flex;
+    grid-row: 3/4;
+}
+.inquiryWrite {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    margin: 0.5em;
+}
+.inquiryWrite label{
+    padding-left: 15px;
+    font-size: 19px;
+}
+.inquiryInput{
+    border-radius: 1.5em;
+    padding: 0.5em;
+    border: 1px solid rgba(217, 217, 217, 0.73);
+    width: 100%;
+}
+.inquiryInput select{
+    width: 200px;
+}
 
-.inquiry-grid,
+
 .roomCommonGrid {
     display: grid;
     grid-template-columns: 0.5fr 1.5fr;
@@ -590,37 +689,6 @@ button {
     text-align: left;
     overflow: hidden;
     border: 1px solid #d3d3d3;
-}
-.inquiry-grid input{
-    width: 100%;
-}
-.inquiry-grid select,
-.inquiry-grid input{
-    outline: none;
-    border: none;
-}
-
-.inquiry-label {
-    grid-column: 1/2;
-    font-weight: bold;
-    background-color: #ff5a5f;
-    color: white;
-    padding: 0.3em;
-    width: 100%;
-    border-radius: 1.5em;
-    text-align: center;
-}
-
-.inquiry-textarea {
-    background-color: #ffffff;
-    color: #000000;
-    resize: none;
-}
-
-.inquiry-textarea[readonly] {
-    background-color: #ffffff;
-    color: #000000;
-    resize: none;
 }
 
 .reply-section {

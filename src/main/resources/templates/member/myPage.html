@@ -13,32 +13,38 @@
 </head>
 <body>
 <header th:replace="~{/layout/header :: header-basic}"></header>
-<header th:replace="~{layout/header :: header-banner}"></header>
+<header th:replace="~{/layout/header :: header-banner}"></header>
 <main>
-    <section class="ProfileSection container">
+    <section class="ProfileSection m-5">
         <div class="profileHeader">
             <span class="Yeongdo">My Page</span>
             <span class="Score" th:text="|${user.name}님, 반갑습니다.|"></span>
         </div>
         <div class="profileBody">
-            <div class="profileCard">
-                <div>
-                    <i class="profileIcon fa-regular fa-comments"></i>
+            <div class="polaroidSection">
+                <div class="profileCard polaroidCard">
+                    <div class="polaroidHeaderBlue">
+                        <i class="fa-regular fa-comments"></i>
+                    </div>
+                    <div class="polaroidBody">
+                        <span th:text="|${user.name}님의 문의 내역|"></span>
+                        <strong class="Score" th:text="|${cancelCount}개|"></strong>
+                        <div class="d-grid justify-content-end">
+                            <a class="Score polaroidBlueBtn" href="/SleepOn/inquiry">문의하기</a>
+                        </div>
+                    </div>
                 </div>
-                <span class="Score">문의 내역</span>
-                <strong th:text="|${cancelCount}개|"></strong>
-                <div>
-                    <a class="mt-1 Score" href="/SleepOn/inquiry">문의하기</a>
-                </div>
-            </div>
-            <div class="profileCard">
-                <div>
-                    <i class="profileIcon fa-regular fa-pen-to-square"></i>
-                </div>
-                <span class="Score">읽은 리뷰</span>
-                <strong>10개</strong>
-                <div>
-                    <a class="mt-1 Score" href="#">리뷰쓰기</a>
+                <div class="profileCard polaroidCard">
+                    <div class="polaroidHeaderGreen">
+                        <i class="fa-regular fa-pen-to-square"></i>
+                    </div>
+                    <div class="polaroidBody">
+                        <span th:text="|${user.name}님의 리뷰 내역|"></span>
+                        <strong class="Score">10개</strong>
+                        <div class="d-grid justify-content-end">
+                            <a class="Score polaroidGreenBtn" href="#">리뷰쓰기</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

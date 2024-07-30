@@ -14,36 +14,72 @@
             $('#back-btn').on('click', function () {
                 history.back();
             });
+            $('#reservType-select').on('change', function () {
+                const reservType = $(this).val();
+                const $reservSelect = $('#reserv-select');
+
+                if (reservType === '2') {
+                    // 객실 문의인 경우 "선택 없음" 옵션 제외한 나머지 옵션 표시
+                    $reservSelect.find('option:not(#noSelect)').show();
+                    $reservSelect.find('option#noSelect').hide();
+                } else {
+                    // 일반 문의인 경우 "선택 없음" 옵션만 표시
+                    $reservSelect.find('option:not(#noSelect)').hide();
+                    $reservSelect.find('option#noSelect').show();
+                }
+                // 첫 번째 옵션 선택
+                $reservSelect.find('option:visible').first().prop('selected', true);
+            });
+            // 페이지 로드 시 초기화
+            $('#reservType-select').trigger('change');
         });
     </script>
 </head>
-<body class="inquiry-Back_body">
+<body>
 <header th:replace="~{layout/header :: header-basic}"></header>
+<header th:replace="~{layout/header :: header-banner}"></header>
 <main>
-    <section class="container mt-3">
+    <section class="container my-3">
+        <div class="inquiryTitle">
+            <i class="fa-regular fa-comment-dots"></i>
+            <span class="Score">문의 남기기</span>
+        </div>
+    </section>
+    <section class="container my-3">
         <form action="/SleepOn/SubmitInquiry" method="post">
-            <div class="inquiry-card">
-                <div class="inquiry-header">
-                    <h3>문의하기</h3>
-                </div>
-                <div class="inquiry-body">
-                    <div class="inquiry-grid">
-                        <label for="inquiryTitle" class="inquiry-label">제목</label>
-                        <input type="text" id="inquiryTitle" name="title" placeholder="제목을 입력하세요." required>
+            <div class="profileCard">
+                <div class="inquiryWrite">
+                    <label for="inquiryTitle">제목</label>
+                    <div class="inquiryInput">
+                        <input class="Score BoxBorderNon" type="text" id="inquiryTitle" name="title" placeholder="제목을 입력하세요." required>
                     </div>
-                    <div class="inquiry-grid">
-                        <label for="reserv-select" class="inquiry-label">예약 선택</label>
-                        <select id="reserv-select" name="reservId">
-                            <option value="">선택 없음</option>
-                            <option th:each="item : ${reservations}" th:value="${item.getIdx()}" th:text="${item.getRoomTitle()}"></option>
+                </div>
+                <div class="inquiryWrite">
+                    <label>문의 종류</label>
+                    <div class="inquiryInput">
+                        <select id="reservType-select" class="Score BoxBorderNon">
+                            <option value="1" selected>일반 문의</option>
+                            <option value="2">객실 문의</option>
                         </select>
                     </div>
-                    <div>
-                        <textarea class="form-control inquiry-textarea" id="inquiryContent" name="inquiry" rows="4" required></textarea>
+                </div>
+                <div class="inquiryWrite">
+                    <label for="reserv-select">객실 선택</label>
+                    <div class="inquiryInput">
+                        <select id="reserv-select" name="reservId" class="Score BoxBorderNon">
+                            <option id="noSelect" value="">선택 없음</option>
+                            <option th:each="item : ${reservations}" th:id="'reservOption' + ${item.getIdx()}" th:value="${item.getIdx()}" th:text="${item.getRoomTitle()}"></option>
+                        </select>
                     </div>
-                    <div class="inquiry-btnContainer">
-                        <button type="button" class="btn reply-btn" id="back-btn">뒤로가기</button>
-                        <button type="submit" class="btn inquiry-btn">문의 제출</button>
+                </div>
+                <div class="inquiryWrite">
+                    <label for="inquiryContent">문의 내용</label>
+                    <textarea class="form-control inquiry-textarea" id="inquiryContent" name="inquiry" rows="4" required></textarea>
+                </div>
+                <div class="inquiryWrite">
+                    <div class="inquiryBtn">
+                        <button type="button" class="BackBtn" id="back-btn">뒤로가기</button>
+                        <button type="submit" class="BackBlueBtn">문의 제출</button>
                     </div>
                 </div>
             </div>
