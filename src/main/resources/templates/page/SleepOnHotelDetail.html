@@ -4,12 +4,17 @@
     <title>Hotel Details</title>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="/css/bootstrap.css" rel="stylesheet">
     <link href="/css/styles.css" rel="stylesheet">
     <script src="/js/bootstrap.bundle.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
+            function addCommas(num) {
+                return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            }
+
             function loadInfoData() {
                 const contentId = $('#contentId').val();
                 $.ajax({
@@ -17,23 +22,34 @@
                     type: "post",
                     data: {contentId: contentId},
                     success: function (respData) {
-                        const container = $('#InfoContainer');
+                        const container = $('#roomCommon');
                         container.empty();
 
                         if (respData.length > 0) {
                             for (let i = 0; i < respData.length; i++) {
                                 let imgToUrl = respData[i].firstimage || '/img/noimg.jpg';
+                                console.log("Image URL: ", imgToUrl);
                                 const tag = `
-                                <div class="card">
-                                        <img class="card-img-top" src="${imgToUrl}" alt="">
+                                <div>
+                                    <img alt="" src="${imgToUrl}" class="roomCommonImg">
+                                </div>
+                                <div class="roomCommonBody">
+                                    <div class="roomCommonGrid">
+                                        <span class="inquiry-label">호텔</span>
+                                        <span>${respData[i].title}</span>
                                     </div>
-                                    <div class="card">
-                                        <h5 class="card-title">${respData[i].title}</h5>
-                                            <p class="card-text">${respData[i].overview}</p>
-                                            <p class="card-text"><strong>주소:</strong> ${respData[i].addr1}</p>
-                                            <p class="card-text"><strong>지역 코드:</strong> ${respData[i].areacode}</p>
-                                            <p class="card-text"><strong>카테고리 코드:</strong> ${respData[i].catcode}</p>
+                                    <div class="roomCommonGrid">
+                                        <span class="inquiry-label">홈페이지</span>
+                                        <span>${respData[i].homepage}</span>
                                     </div>
+                                    <div class="roomCommonGrid">
+                                        <span class="inquiry-label">주소</span>
+                                        <span>${respData[i].addr1}</span>
+                                    </div>
+                                    <div class="roomCommonText">
+                                        <span>${respData[i].overview}</span>
+                                    </div>
+                                </div>
                                 `;
                                 container.append(tag);
                             }
@@ -47,7 +63,7 @@
                 });
             }
 
-            function loadRoomInfoData(){
+            function loadRoomInfoData() {
                 const contentId = $('#contentId').val();
                 console.log(contentId);
                 $.ajax({
@@ -55,30 +71,65 @@
                     type: "post",
                     data: {contentId: contentId},
                     success: function (respData) {
-                        const container = $('#roomInfoContainer');
+                        const container = $('#roomInfo');
                         container.empty();
 
                         if (respData.length > 0) {
                             for (let i = 0; i < respData.length; i++) {
+                                let imgToUrl = respData[i].roomimg1 || '/img/noimg.jpg';
+                                console.log("room Image URL: ", imgToUrl);
                                 const tag = `
-                                <div class="col-12 col-md-6 mb-4">
-                                    <div class="card h-100">
-                                        <div class="card-body">
-                                            <h5 class="card-title">객실 이름: ${respData[i].roomtitle}</h5>
-                                            <p class="card-text"><strong>기준 인원:</strong> ${respData[i].roombasecount}</p>
-                                            <p class="card-text"><strong>최대 인원:</strong> ${respData[i].roommaxcount}</p>
-                                            <p class="card-text"><strong>가격:</strong> ${respData[i].roomoffseasonminfee1}원</p>
-                                            <p class="card-text">${respData[i].roomintro}</p>
-                                            <button class="btn inquiry-btn" type="button"
+                        <div class="roomDetail">
+                            <div class="roomDetailHeader">
+                                <span>${respData[i].roomtitle}</span>
+                            </div>
+                            <div class="roomDetailBody">
+                                <img alt="" src="${imgToUrl}" class="roomDetailImg">
+                                <div class="roomCommonBody">
+                                    <div class="roomCommonGrid">
+                                        <span class="inquiry-label">기준/최대 인원</span>
+                                        <span>${respData[i].roombasecount}명 / ${respData[i].roommaxcount}명</span>
+                                    </div>
+                                    <div class="roomCommonGrid">
+                                        <span class="inquiry-label">주중 금액</span>
+                                        <span>${addCommas(respData[i].roomoffseasonminfee1)}원 (비성수기) / ${addCommas(respData[i].roompeakseasonminfee1)}원 (성수기)</span>
+                                    </div>
+                                    <div class="roomCommonGrid">
+                                        <span class="inquiry-label">주말 금액</span>
+                                        <span>${addCommas(respData[i].roomoffseasonminfee2)}원 (비성수기) /${addCommas(respData[i].roompeakseasonminfee2)}원 (성수기)</span>
+                                    </div>
+                                    <div class="roomDetailInfoGroup">
+                                        <div class="roomDetailOption">
+                                            <div class="roomDetailOptSection">
+                                                <div class="roomIcon ${respData[i].roombathfacility ? '' : 'roomIconNull'}"><i class="fas fa-shower"></i> 목욕시설</div>
+                                                <div class="roomIcon ${respData[i].roomdryer ? '' : 'roomIconNull'}"><i class="fas fa-wind"></i> 드라이기</div>
+                                                <div class="roomIcon ${respData[i].roombath ? '' : 'roomIconNull'}"><i class="fas fa-bath"></i> 욕조</div>
+                                                <div class="roomIcon ${respData[i].roomhometheater ? '' : 'roomIconNull'}"><i class="fas fa-tv"></i> 홈시어터</div>
+                                                <div class="roomIcon ${respData[i].roomaircondition ? '' : 'roomIconNull'}"><i class="fas fa-fan"></i> 에어컨</div>
+                                                <div class="roomIcon ${respData[i].roomtv ? '' : 'roomIconNull'}"><i class="fas fa-tv"></i> 티비</div>
+                                                <div class="roomIcon ${respData[i].roompc ? '' : 'roomIconNull'}"><i class="fas fa-desktop"></i> PC</div>
+                                                <div class="roomIcon ${respData[i].roomcable ? '' : 'roomIconNull'}"><i class="fas fa-tv"></i> 케이블 설치</div>
+                                                <div class="roomIcon ${respData[i].roominternet ? '' : 'roomIconNull'}"><i class="fas fa-globe"></i> 인터넷</div>
+                                                <div class="roomIcon ${respData[i].roomfridge ? '' : 'roomIconNull'}"><i class="fas fa-ice-cream"></i> 냉장고</div>
+                                                <div class="roomIcon ${respData[i].roomamenities ? '' : 'roomIconNull'}"><i class="fas fa-soap"></i> 세면도구</div>
+                                                <div class="roomIcon ${respData[i].roomsofa ? '' : 'roomIconNull'}"><i class="fas fa-couch"></i> 소파</div>
+                                                <div class="roomIcon ${respData[i].roomcooking ? '' : 'roomIconNull'}"><i class="fas fa-utensils"></i> 취사여부</div>
+                                                <div class="roomIcon ${respData[i].roomtable ? '' : 'roomIconNull'}"><i class="fas fa-table"></i> 테이블</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="inquiry-btnContainer">
+                                        <button class="btn inquiry-btn" type="button"
                                             onclick="PayMentPage(this)"
                                             data-roomtitle="${respData[i].roomtitle}"
                                             data-roommaxcount="${respData[i].roommaxcount}">
-                                        예약
-                                    </button>
-                                        </div>
+                                        예약하기
+                                        </button>
                                     </div>
                                 </div>
-                                `;
+                            </div>
+                        </div>
+                        `;
                                 container.append(tag);
                             }
                         } else {
@@ -144,13 +195,19 @@
                     $(this).val('');
                 }
             });
+
+            // 인원 수 선택, input 창 포커스 시 선택되어있던 인원 없애기
+            $('#userCnt').on('focus', function () {
+                $(this).val("");
+            });
         });
     </script>
 </head>
 <body>
 <header th:replace="~{/layout/header :: header-basic}"></header>
+<header th:replace="~{layout/header :: header-banner}"></header>
 <main>
-    <section>
+    <section class="mt-3">
         <div class="search-bar-container">
             <div class="search-bar">
                 <input type="hidden" id="user" th:value="${user}">
@@ -170,14 +227,14 @@
         </div>
     </section>
     <input id="contentId" th:value="${contentId}" type="hidden">
-    <section>
-        <div class="container d-grid gap-2">
-            <div id="InfoContainer"></div>
+    <section class="mt-3">
+        <div class="container">
+            <div id="roomCommon"></div>
         </div>
     </section>
-    <section>
-        <div class="container p-3">
-            <div id="roomInfoContainer" class="row"></div>
+    <section class="mt-3">
+        <div class="container">
+            <div id="roomInfo"></div>
         </div>
     </section>
 </main>

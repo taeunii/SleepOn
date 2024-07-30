@@ -9,101 +9,53 @@
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Montserrat', sans-serif;
-        }
-        .form-container {
-            background: #fff;
-            padding: 2rem;
-            border-radius: 0.25rem;
-            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-            margin-top: 50px;
-        }
-        .custom-form-group {
-            margin-bottom: 1.5rem;
-        }
-        .custom-form-control {
-            display: block;
-            width: 100%;
-            height: calc(1.5em + 0.75rem + 2px);
-            padding: 0.375rem 0.75rem;
-            font-size: 1rem;
-            font-weight: 400;
-            line-height: 1.5;
-            color: #495057;
-            background-color: #fff;
-            background-clip: padding-box;
-            border: 1px solid #ced4da;
-            border-radius: 0.25rem;
-            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-        }
-        .btn-block {
-            padding: 0.75rem;
-        }
-        .text-center a {
-            color: #707070;
-            text-decoration: none;
-        }
-        .text-center a:hover {
-            text-decoration: underline;
-        }
-        .btn-primary {
-            background-color: #ff5a5f;
-            border: none;
-        }
-        .btn-primary:hover, .btn-primary:focus {
-            background-color: #f18c8f;
-            border: none;
-            color: white;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
 <header th:replace="~{/layout/header :: header-basic}"></header>
-
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="form-container">
-                <h2 class="text-center">회원가입</h2>
-                <form id="registerForm">
-                    <div class="custom-form-group">
-                        <label for="name">이름</label>
-                        <input type="text" class="custom-form-control" id="name" name="name" placeholder="이름을 입력하세요" required>
+<header th:replace="~{layout/header :: header-banner}"></header>
+<main>
+    <section class="container my-4">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="formContainer">
+                    <h2 class="text-center Yeongdo">Sing Up</h2>
+                    <form id="registerForm" class="register">
+                        <div class="registerFormGroup Score">
+                            <label for="name">이름</label>
+                            <input type="text" id="name" name="name" placeholder="이름을 입력하세요" required>
+                        </div>
+                        <div class="registerFormGroup Score">
+                            <label for="email">이메일 주소</label>
+                            <input type="email" id="email" name="id" placeholder="이메일을 입력하세요" required>
+                        </div>
+                        <div class="registerFormGroup Score">
+                            <label for="password">비밀번호</label>
+                            <input type="text" id="password" name="pass" placeholder="비밀번호를 입력하세요" required>
+                        </div>
+                        <div class="registerFormGroup Score">
+                            <label for="confirmPassword">비밀번호 확인</label>
+                            <input type="password" id="confirmPassword" placeholder="비밀번호를 다시 입력하세요" required>
+                        </div>
+                        <div class="registerFormGroup Score">
+                            <label for="birthDate">생년월일</label>
+                            <input type="date" id="birthDate" name="age" required>
+                        </div>
+                        <div class="registerFormGroup Score">
+                            <label for="tel">전화번호</label>
+                            <input type="tel" id="tel" name="tel" placeholder="전화번호를 입력하세요">
+                        </div>
+                        <button type="submit" class="BackBlueBtn btn-block">회원가입</button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <a href="/SleepOn/login">이미 회원이신가요? 로그인</a>
                     </div>
-                    <div class="custom-form-group">
-                        <label for="email">이메일 주소</label>
-                        <input type="email" class="custom-form-control" id="email" name="id" placeholder="이메일을 입력하세요" required>
-                    </div>
-                    <div class="custom-form-group">
-                        <label for="password">비밀번호</label>
-                        <input type="text" class="custom-form-control" id="password" name="pass" placeholder="비밀번호를 입력하세요" required>
-                    </div>
-                    <div class="custom-form-group">
-                        <label for="confirmPassword">비밀번호 확인</label>
-                        <input type="password" class="custom-form-control" id="confirmPassword" placeholder="비밀번호를 다시 입력하세요" required>
-                    </div>
-                    <div class="custom-form-group">
-                        <label for="birthDate">생년월일</label>
-                        <input type="date" class="custom-form-control" id="birthDate" name="age" required>
-                    </div>
-                    <div class="custom-form-group">
-                        <label for="tel">전화번호</label>
-                        <input type="tel" class="custom-form-control" id="tel" name="tel" placeholder="전화번호를 입력하세요">
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block">회원가입</button>
-                </form>
-                <div class="text-center mt-3">
-                    <a href="/SleepOn/login">이미 회원이신가요? 로그인</a>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-
+    </section>
+</main>
 <footer th:replace="~{/layout/footer :: footer}"></footer>
-
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

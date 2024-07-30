@@ -6,6 +6,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <link href="/css/bootstrap.css" rel="stylesheet">
     <link href="/css/styles.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
           rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -13,6 +14,7 @@
 </head>
 <body>
 <header th:replace="~{layout/header :: header-basic}"></header>
+<header th:replace="~{layout/header :: header-banner}"></header>
 <main>
     <!--검색-->
     <section>
@@ -21,7 +23,7 @@
                 <div class="search-item">
                     <label>여행지</label>
                     <div class="d-flex gap-2">
-                        <select class="form-select" id="AreaSel" name="AreaSel">
+                        <select class="BoxBorderNon" id="AreaSel" name="AreaSel">
                             <option selected value="">여행지</option>
                             <option value="1">서울</option>
                             <option value="6">부산</option>
@@ -35,93 +37,93 @@
                             <option value="34">충청남도</option>
                             <option value="33">충청북도</option>
                         </select>
-                        <select class="form-select" id="SiGunGuSel" name="SiGunGuSel">
+                        <select class="BoxBorderNon" id="SiGunGuSel" name="SiGunGuSel">
                             <option selected value="">전국</option>
                         </select>
                     </div>
                 </div>
                 <div class="search-item">
                     <label>체크인</label>
-                    <input id="checkIn" type="date">
+                    <input class="BoxBorderNon" id="checkIn" type="date">
                 </div>
                 <div class="search-item">
                     <label>체크아웃</label>
-                    <input id="checkOut" type="date">
+                    <input class="BoxBorderNon" id="checkOut" type="date">
                 </div>
                 <div class="search-item">
                     <label>여행자</label>
-                    <input id="userCnt" min="1" type="number" value="1">
+                    <input class="BoxBorderNon" id="userCnt" min="1" type="number" value="1">
                 </div>
                 <div class="search-item">
-                    <button class="btn btn-search" id="Search-btn">
-                        <img src="https://img.icons8.com/ios-glyphs/30/ffffff/search--v1.png"/>
+                    <button class="SearchBtn" id="Search-btn">
+                        <i class="fa-solid fa-magnifying-glass"></i>
                     </button>
                 </div>
             </div>
         </div>
     </section>
     <!-- Popular Destinations -->
-    <section>
-        <div class="container popular-destinations">
-            <h2 class="text-center my-4">인기 여행지</h2>
-            <div class="row">
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card">
-                        <img alt="서울" class="card-img-top" src="/img/seoul.jpg">
-                        <div class="card-body">
-                            <h5 class="card-title">서울</h5>
-                            <p class="card-text">서울에서 함께 즐기기 좋은 행사를 찾아보세요.</p>
-                            <button class="btn btn-primary btn-view" id="seoul-btn" type="button">행사 보기</button>
-                        </div>
+    <section class="container my-3">
+        <div class="popularText">
+            <span class="SanTokki">2024년, 당신을 위한 특별한 축제</span>
+        </div>
+        <div class="popularDestinations">
+            <div class="card">
+                <img alt="서울" class="card-img-top" src="/img/seoul.jpg">
+                <div class="card-body">
+                    <h5 class="card-title">서울</h5>
+                    <p class="card-text">서울에서 함께 즐기기 좋은 행사를 찾아보세요.</p>
+                    <div class="d-grid justify-content-end">
+                        <button class="BlueBtn" id="seoul-btn" type="button">행사 보기</button>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card">
-                        <img alt="부산" class="card-img-top" src="/img/busan.jpg">
-                        <div class="card-body">
-                            <h5 class="card-title">부산</h5>
-                            <p class="card-text">부산에서 함께 즐기기 좋은 행사를 찾아보세요.</p>
-                            <button class="btn btn-primary btn-view" id="busan-btn" type="button">행사 보기</button>
-                        </div>
+            </div>
+            <div class="card">
+                <img alt="부산" class="card-img-top" src="/img/busan.jpg">
+                <div class="card-body">
+                    <h5 class="card-title">부산</h5>
+                    <p class="card-text">부산에서 함께 즐기기 좋은 행사를 찾아보세요.</p>
+                    <div class="d-grid justify-content-end">
+                        <button class="BlueBtn" id="busan-btn" type="button">행사 보기</button>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card">
-                        <img alt="제주" class="card-img-top" src="/img/jeju.jpg">
-                        <div class="card-body">
-                            <h5 class="card-title">제주</h5>
-                            <p class="card-text">제주에서 함께 즐기기 좋은 행사를 찾아보세요.</p>
-                            <button class="btn btn-primary btn-view" id="jeju-btn" type="button">행사 보기</button>
-                        </div>
+            </div>
+            <div class="card">
+                <img alt="제주" class="card-img-top" src="/img/jeju.jpg">
+                <div class="card-body">
+                    <h5 class="card-title">제주</h5>
+                    <p class="card-text">제주에서 함께 즐기기 좋은 행사를 찾아보세요.</p>
+                    <div class="d-grid justify-content-end">
+                        <button class="BlueBtn" id="jeju-btn" type="button">행사 보기</button>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <section>
+    <section class="container my-3">
         <!-- 숙박업소 정보 -->
-        <div class="container">
-            <h2 class="text-center my-4">어디로 갈까요?</h2>
-            <div class="select-bar-container">
-                <div class="custom-options">
-                    <button class="option-btn option-btn-select" data-value="">전국</button>
-                    <button class="option-btn" data-value="1">서울</button>
-                    <button class="option-btn" data-value="6">부산</button>
-                    <button class="option-btn" data-value="39">제주</button>
-                    <button class="option-btn" data-value="31">경기</button>
-                    <button class="option-btn" data-value="2">인천</button>
-                    <button class="option-btn" data-value="32">강원</button>
-                    <button class="option-btn" data-value="36">경상남도</button>
-                    <button class="option-btn" data-value="35">경상북도</button>
-                    <button class="option-btn" data-value="38">전라</button>
-                    <button class="option-btn" data-value="34">충청남도</button>
-                    <button class="option-btn" data-value="33">충청북도</button>
-                </div>
+        <div class="selectText">
+            <span class="SanTokki">완벽한 여행, 완벽한 숙소</span>
+        </div>
+        <div class="selectAreaBar">
+            <div class="selectAreaOpt">
+                <button class="SelectBtn SelectBtn-select" data-value="">전국</button>
+                <button class="SelectBtn" data-value="1">서울</button>
+                <button class="SelectBtn" data-value="6">부산</button>
+                <button class="SelectBtn" data-value="39">제주</button>
+                <button class="SelectBtn" data-value="31">경기</button>
+                <button class="SelectBtn" data-value="2">인천</button>
+                <button class="SelectBtn" data-value="32">강원</button>
+                <button class="SelectBtn" data-value="36">경상남도</button>
+                <button class="SelectBtn" data-value="35">경상북도</button>
+                <button class="SelectBtn" data-value="38">전라</button>
+                <button class="SelectBtn" data-value="34">충청남도</button>
+                <button class="SelectBtn" data-value="33">충청북도</button>
             </div>
-            <div class="row mt-4" id="card-container">
-                <div class="col-12">
-                    <p>조회된 데이터가 없습니다.</p>
-                </div>
+        </div>
+        <div class="row mt-4" id="card-container">
+            <div class="col-12">
+                <p>조회된 데이터가 없습니다.</p>
             </div>
         </div>
     </section>
@@ -207,13 +209,13 @@
         loadAreaData("");
 
         // select 값 변경 시 데이터 로드
-        $(".option-btn").on("click", function () {
+        $(".SelectBtn").on("click", function () {
             const areaCode = $(this).data("value");
             loadAreaData(areaCode);
 
             // 버튼 색상 변경
-            $(".option-btn").removeClass("option-btn-select");
-            $(this).addClass("option-btn-select");
+            $(".SelectBtn").removeClass("SelectBtn-select");
+            $(this).addClass("SelectBtn-select");
         });
 
         // 지역 선택 시 시군구 데이터 로드
@@ -297,6 +299,11 @@
                 alert("체크아웃 날짜는 체크인 날짜보다 이후여야 합니다.");
                 $(this).val('');
             }
+        });
+
+        // 인원 수 선택, input 창 포커스 시 선택되어있던 인원 없애기
+        $('#userCnt').on('focus', function () {
+            $(this).val("");
         });
 
         // 모달에 데이터 채우기

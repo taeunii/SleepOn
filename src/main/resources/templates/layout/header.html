@@ -5,17 +5,17 @@
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
     <title>슬립온 - 헤더</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com" rel="preconnect">
     <link href="/css/styles.css" rel="stylesheet">
     <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
           rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
 <body>
 <header th:fragment="header-basic">
     <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand logo" href="/SleepOn">SleepOn</a>
+    <nav class="navbar navbar-expand-lg">
+        <a class="navbar-brand logo" href="/SleepOn">Sleep On</a>
         <button aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
                 data-target="#navbarNav" data-toggle="collapse" type="button">
             <span class="navbar-toggler-icon"></span>
@@ -23,35 +23,45 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav" th:if="${session.user==null}">
                 <li class="nav-item">
-                    <a class="nav-link" href="/SleepOn/login">로그인</a>
+                    <a class="nav-link" href="/SleepOn/login">
+                        <span>Log in</span>
+                        <span class="nav-icon fa-solid fa-user-check"></span>
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/SleepOn/register">회원가입</a>
+                    <a class="nav-link" href="/SleepOn/register">
+                        <span>Sing Up Now</span>
+                        <span class="nav-icon fa-solid fa-user-plus"></span>
+                    </a>
                 </li>
             </ul>
-            <ul class="navbar-nav d-flex gap-2" th:unless="${session.user==null}">
+            <ul class="navbar-nav" th:unless="${session.user==null}">
                 <li class="nav-item">
-                    <label class="nav-link" th:if="${session.isManager}"><span
-                            th:text="${session.user.name}"></span></label>
-                    <label class="nav-link" th:unless="${session.isManager}"><span
-                            th:text="${session.user.name}"></span>님, 반갑습니다.</label>
+                    <a class="nav-link" href="/SleepOn/admin" th:if="${session.isManager}">
+                        <span th:text="${session.user.name}"></span>
+                        <span class="nav-icon fa-solid fa-comments"></span>
+                    </a>
+                    <a class="nav-link" href="/SleepOn/myPage" th:unless="${session.isManager}">
+                        <span th:text="${session.user.name}"></span>
+                        <span class="nav-icon fa-solid fa-house-chimney"></span>
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="btn nav-btn" href="/SleepOn/admin" th:if="${session.isManager}">상담 문의</a>
-                    <a class="btn nav-btn" href="/SleepOn/myPage" th:unless="${session.isManager}">마이페이지</a>
-                </li>
-                <li class="nav-item">
-                    <a class="btn reply-btn" href="/SleepOn/logout">로그아웃</a>
+                    <a class="nav-link" href="/SleepOn/logout">
+                        <span>Log out</span>
+                        <span class="nav-icon fa-solid fa-arrow-right-from-bracket"></span>
+                    </a>
                 </li>
             </ul>
         </div>
     </nav>
-
+</header>
+<header th:fragment="header-banner">
     <!-- Main Banner -->
-    <div class="container-fluid banner text-center">
+    <div class="banner text-center">
         <div class="banner-content">
-            <h1>어디에서나, 슬립온과 함께</h1>
-            <p>최고의 숙소를 찾아보세요</p>
+            <span>어디에서나, <span class="Yeongdo">Sleep On</span>과 함께</span>
+            <span>최고의 숙소를 찾아보세요</span>
         </div>
     </div>
 </header>

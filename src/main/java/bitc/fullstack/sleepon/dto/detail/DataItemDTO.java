@@ -7,31 +7,31 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 public class DataItemDTO {
     private String contentid;
     private String contenttypeid;
-    private String roomcode;
-    private String roomtitle;
-    private String roomsize1;
-    private String roomcount;
-    private String roombasecount;
-    private String roommaxcount;
-    private String roomoffseasonminfee1;
-    private String roomoffseasonminfee2;
-    private String roompeakseasonminfee1;
-    private String roompeakseasonminfee2;
-    private String roomintro;
-    private String roombathfacility;
-    private String roombath;
-    private String roomhometheater;
-    private String roomaircondition;
-    private String roomtv;
-    private String roompc;
-    private String roomcable;
-    private String roominternet;
-    private String roomrefrigerator;
-    private String roomtoiletries;
-    private String roomsofa;
-    private String roomcook;
-    private String roomtable;
-    private String roomhairdryer;
+    private String roomcode; // 객실코드
+    private String roomtitle; // 객실이름
+    private String roomsize1; // 객실크기
+    private String roomcount; // 객실수
+    private String roombasecount; // 기준인원
+    private String roommaxcount; // 최대인원
+    private String roomoffseasonminfee1; // 비수기 주중 
+    private String roomoffseasonminfee2; // 비수기 주말
+    private String roompeakseasonminfee1; // 성수기 주중 
+    private String roompeakseasonminfee2; // 성수기 주말
+    private String roomintro; // 소개
+    private String roombathfacility; // 목욕시설
+    private String roombath; // 욕조
+    private String roomhometheater; // 홈시어터
+    private String roomaircondition; // 에어컨
+    private String roomtv; // 티비
+    private String roompc; // PC
+    private String roomcable; // 케이블 설치
+    private String roominternet; //인터넷
+    private String roomrefrigerator; // 냉장고
+    private String roomtoiletries; // 세면도구
+    private String roomsofa; // 소파
+    private String roomcook; // 취사여부
+    private String roomtable; // 테이블
+    private String roomhairdryer; // 드라이기
     private String roomsize2;
     private String roomimg1;
     private String roomimg1alt;

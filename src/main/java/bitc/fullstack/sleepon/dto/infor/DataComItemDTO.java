@@ -14,8 +14,8 @@ public class DataComItemDTO {
     private String telName;
     private String homepage;
     private String bookTour;
-    private String firstImage;
-    private String firstImage2;
+    private String firstimage;
+    private String firstimage2;
     private String cpyrhtDivCd;
     private String areaCode;
     private String sigunguCode;
@@ -103,20 +103,20 @@ public class DataComItemDTO {
         this.bookTour = bookTour;
     }
 
-    public String getFirstImage() {
-        return firstImage;
+    public String getFirstimage() {
+        return firstimage;
     }
 
-    public void setFirstImage(String firstImage) {
-        this.firstImage = firstImage;
+    public void setFirstimage(String firstimage) {
+        this.firstimage = firstimage;
     }
 
-    public String getFirstImage2() {
-        return firstImage2;
+    public String getFirstimage2() {
+        return firstimage2;
     }
 
-    public void setFirstImage2(String firstImage2) {
-        this.firstImage2 = firstImage2;
+    public void setFirstimage2(String firstimage2) {
+        this.firstimage2 = firstimage2;
     }
 
     public String getCpyrhtDivCd() {

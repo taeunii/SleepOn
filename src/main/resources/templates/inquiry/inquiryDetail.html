@@ -10,9 +10,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
           rel="stylesheet">
     <link href="/css/styles.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body class="inquiry-Back_body">
 <header th:replace="~{/layout/header :: header-basic}"></header>
+<header th:replace="~{layout/header :: header-banner}"></header>
 <main>
     <section class="container mt-3">
         <div class="inquiry-card">
@@ -42,12 +44,11 @@
                 </div>
                 <div class="inquiry-grid">
                     <div class="inquiry-label">작성일</div>
-                    <div
-                            th:text="${#temporals.format(inquiry.getCreateDate(), 'yyyy-MM-dd HH:mm')}"></div>
+                    <div th:text="${#temporals.format(inquiry.getCreateDate(), 'yyyy-MM-dd HH:mm')}"></div>
                 </div>
                 <div>
-                        <textarea class="form-control inquiry-textarea" readonly rows="5"
-                                  th:text="${inquiry.getInquiry()}"></textarea>
+                    <textarea class="form-control inquiry-textarea" readonly rows="5"
+                              th:text="${inquiry.getInquiry()}"></textarea>
                 </div>
             </div>
         </div>

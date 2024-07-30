@@ -177,6 +177,12 @@ public class TourServiceImpl implements TourService{
         return reservationRepository.findByUserId(userId);
     }
 
+    // 내 예약 정보 가져오기
+    @Override
+    public List<UserReservation> getUserReservationDesc(String userId) throws Exception {
+        return reservationRepository.findByUserIdOrderByReservDataDesc(userId);
+    }
+
     // 관리자 고객 상담 게시글 목록
     @Override
     public List<UserCancel> getAdminCancelList() throws Exception {

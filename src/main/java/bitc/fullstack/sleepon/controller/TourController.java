@@ -14,11 +14,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -256,7 +260,7 @@ public class TourController {
         String opt1 = "?serviceKey=";
         String opt2 = "&MobileOS=ETC&MobileApp=AppTest";
         String opt3 = "&contentId=";
-        String opt4 = "&contentTypeId=32&numOfRows=2&pageNo=1";
+        String opt4 = "&contentTypeId=32&numOfRows=10&pageNo=1";
 
         List<DataItemDTO> RoomList = tourService.getDetailItemList(APIDetailUrl + opt1 + APIkey + opt2 + opt3 + contentId + opt4);
 
@@ -277,6 +281,10 @@ public class TourController {
                 String userId = user.getId();
                 int cancelCount = tourService.getCountCancelUser(userId);
                 model.addAttribute("cancelCount", cancelCount);
+
+                // 예약 내역 리스트
+                List<UserReservation> reservations = tourService.getUserReservationDesc(userId);
+                model.addAttribute("reservations", reservations);
             } else {
                 return "redirect:/SleepOn/login";
             }
@@ -294,6 +302,7 @@ public class TourController {
         }
     }
 
+    // 결제창 view
     @RequestMapping("/Credit")
     public String SleepOnCredit(@RequestParam("contentId") String contentId, @RequestParam("checkIn") String checkIn, @RequestParam("checkOut") String checkOut, @RequestParam("userCnt") String userCnt, @RequestParam("roomtitle") String roomtitle, HttpSession session) throws Exception{
         session.setAttribute("contentId", contentId);
@@ -305,6 +314,7 @@ public class TourController {
         return "redirect:/SleepOn/Payment";
     }
 
+    // 결제 후 DB 저장
     @RequestMapping("/Payment")
     public ModelAndView SleepOnCredit(HttpSession session, HttpServletRequest request, Model model) {
         addSessionAttributesToModel(request, model);
@@ -329,8 +339,39 @@ public class TourController {
         return mv;
     }
 
+    // my page 예약 취소
+    @PostMapping("/cancelReservation/{reservationId}")
+    public ResponseEntity<String> cancelReservation(@PathVariable Long reservationId) {
+        UserReservation reservation = userReservationRepository.findById(reservationId).orElse(null);
+
+        if (reservation != null) {
+            LocalDate checkinDate = LocalDate.parse(reservation.getCheckinTime());
+            LocalDate currentDate = LocalDate.now();
+
+            if (ChronoUnit.DAYS.between(currentDate, checkinDate) < 6) {
+                return ResponseEntity.badRequest().body("체크인 날짜가 6일 이내여서 취소할 수 없습니다. 고객센터에 문의해주세요.");
+            }
+
+            reservation.setReservCancel('Y');
+            userReservationRepository.save(reservation);
+            return ResponseEntity.ok("예약이 취소되었습니다.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("예약을 찾을 수 없습니다.");
+        }
+    }
+    // 예약 불러오기
+    @GetMapping("/reservations")
+    public ResponseEntity<List<UserReservation>> getReservations(HttpSession session) throws Exception {
+        SleepOnUser user = (SleepOnUser) session.getAttribute("user");
+        if (user != null) {
+            List<UserReservation> reservations = tourService.getUserReservationDesc(user.getId());
+            return ResponseEntity.ok(reservations);
+        }
+        return ResponseEntity.ok(List.of());
+    }
+
     // 예약
-    @RequestMapping(value = "/reserve", method = RequestMethod.POST)
+    @RequestMapping(value = "/reserve")
     public String reserve(@RequestParam("contentId") String contentId,
                           @RequestParam("checkIn") String checkIn,
                           @RequestParam("checkOut") String checkOut,

@@ -27,6 +27,8 @@ public interface TourService {
     void saveReservation(UserReservation reservation);
     // 예약 정보 가져오기
     List<UserReservation> getUserReservation(String userId) throws Exception;
+    // 고객 전용 예약 정보
+    List<UserReservation> getUserReservationDesc(String userId) throws Exception;
 
     // 관리자 전용 상담 게시글 목록
     List<UserCancel> getAdminCancelList() throws Exception;
