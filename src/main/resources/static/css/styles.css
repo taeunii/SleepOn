@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbit&display=swap');
 @font-face {
     font-family: 'LINESeedKR-Bd';
     src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/LINESeedKR-Bd.woff2') format('woff2');
@@ -56,7 +57,7 @@ main {
 }
 .navbar .logo {
     font-family: 'Yeongdo-Rg', sans-serif;
-    color: #9db9ec;
+    color: #FF385C;
     font-size: 3em;
 }
 .navbar-nav {
@@ -69,7 +70,7 @@ main {
     animation: all ease-in 0.4s;
 }
 .nav-link:hover{
-    color: #7491c2;
+    color: #FF585D;
 }
 .nav-icon{
     vertical-align: middle;
@@ -105,7 +106,6 @@ main {
 .scroll-btn:hover {
     background-color: #f0f0f0;
 }
-
 .scroll-btn i {
     font-size: 20px;
 }
@@ -193,7 +193,7 @@ main {
     margin: 0;
 }
 .footer a {
-    color: #87a3d5;
+    color: #FF385C;
     margin: 0 10px;
 }
 /* 기능 */
@@ -214,6 +214,11 @@ div {
 }
 .Score{
     font-family: 'S-CoreDream-3Light';
+}
+.orbit-regular {
+    font-family: "Orbit", sans-serif;
+    font-weight: 400;
+    font-style: normal;
 }
 /* textarea */
 .textarea {
@@ -241,8 +246,8 @@ button {
     transition: all ease-in 0.3s;
 }
 .SearchBtn {
-    background-color: #a0bcef;
-    border : 2px solid #a0bcef;
+    background-color: #FF585D;
+    border : 2px solid #FF585D;
     color : white;
     border-radius: 50%;
     padding: 0.5em;
@@ -252,8 +257,8 @@ button {
 }
 .SearchBtn:hover{
     background-color: white;
-    border : 2px solid #a0bcef;
-    color : #a0bcef;
+    border : 2px solid #FF585D;
+    color : #FF585D;
 }
 .SelectBtn {
     background-color: transparent;
@@ -261,26 +266,25 @@ button {
 }
 .SelectBtn:hover,
 .SelectBtn-select {
-    color: #87a3d5;
+    color: #FF585D;
 }
-.BlueBtn {
+.BoarderBtn {
     background-color: white;
-    border: 2px solid #9db9ec;
-    color: #9db9ec;
+    border: 2px solid #FF585D;
+    color: #FF585D;
 }
-.BlueBtn:hover {
-    background-color: #9db9ec;
-    color: white;
-}
-.BackBlueBtn {
-    background-color: #9db9ec;
-    border: 2px solid #9db9ec;
+.BoarderBtn:hover {
+    background-color: #FF585D;
     color : white;
 }
-.BackBlueBtn:hover{
+.BackRedBtn {
+    background-color: #FF585D;
+    color : white;
+    border: 2px solid #FF585D;
+}
+.BackRedBtn:hover{
     background-color: white;
-    border: 2px solid #9db9ec;
-    color: #96b4ea;
+    color: #FF585D;
 }
 .BackBtn{
     background-color: white;
@@ -541,7 +545,7 @@ button {
     align-items: center;
     justify-content: center;
     border-radius: 0.2em;
-    color: #c9d2e7;
+    color: #FF585D;
     font-size: 40px;
     padding: 0.5em;
     background-color: #ffffff;
@@ -566,15 +570,6 @@ button {
     transition: all ease-in 0.3s;
     display: block;
     margin-bottom: 50px; /* 버튼과 카드 하단의 간격 조정 */
-}
-.polaroidBlueBtn {
-    border: 1px solid #c9d2e7;
-    background-color: #9db9ec;
-    color: white;
-}
-.polaroidBlueBtn:hover{
-    color: #9db9ec;
-    background-color: white;
 }
 
 /* my page - 예약 내역 */
@@ -650,7 +645,7 @@ button {
 }
 .inquiryTitle i{
     font-size: 40px;
-    color:#9aa2db;
+    color:#FF585D;
 }
 .inquiryContainer{
     display: flex;
@@ -711,7 +706,7 @@ button {
     justify-items: center;
     align-items: flex-end;
     text-align: center;
-    color: #9db9ec;
+    color: #FF385C;
 }
 .inquiryProfile span{
     font-size: 50px;
@@ -764,8 +759,8 @@ button {
     margin-left: -15px;
     margin-top: -5px;
     margin-bottom: -5px;
-    background-color: #a0bcef;
-    border : 2px solid #a0bcef;
+    background-color: #FF385C;
+    border : 2px solid #FF385C;;
     color : white;
     border-radius: 50%;
     padding: 0.5em;
@@ -824,7 +819,7 @@ button {
 }
 .hotelIconAni{
     font-size: 20px;
-    color: #9db9ec;
+    color: #FF385C;;
     animation: pulse 2s infinite;
 }
 @keyframes pulse {
@@ -890,7 +885,7 @@ button {
     padding: 1em;
 }
 .roomIcon{
-    color: #9db9ec;
+    color: #FF385C;;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -910,7 +905,6 @@ button {
 /* 결제 페이지 */
 .paymentBody {
     background-color: #f5f5f5;
-    font-family: 'LINESeedKR-Bd', sans-serif;
 }
 .paymentContainer {
     width: 100%;
@@ -928,8 +922,8 @@ button {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 .paymentHeader{
-    border-color: #a0bcef;
-    color: #a0bcef;
+    border-color: #FF385C;
+    color: #FF385C;
     padding: 15px;
     border-radius: 5px;
     text-align: center;
@@ -950,13 +944,13 @@ button {
     width: 100%;
     padding: 15px;
     font-size: 1.2em;
-    background-color: #a0bcef;
+    background-color: #FF385C;
     border: none;
     color: white;
     border-radius: 5px;
 }
 .reservBtn:hover {
-    background-color: #8fa9d8;
+    background-color: #FF585D;
 }
 
 
