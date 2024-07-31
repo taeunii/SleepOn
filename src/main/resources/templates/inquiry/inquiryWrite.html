@@ -32,6 +32,20 @@
             });
             // 페이지 로드 시 초기화
             $('#reservType-select').trigger('change');
+
+            // 페이지 로드 시 버튼 숨기기
+            $('#scrollToTop').show();
+            $('#scrollToBottom').show();
+
+            // 맨 위로 스크롤
+            $('#scrollToTop').click(function () {
+                $('html, body').animate({scrollTop: 0}, 300); // 속도를 300 밀리초로 설정
+            });
+
+            // 맨 아래로 스크롤
+            $('#scrollToBottom').click(function () {
+                $('html, body').animate({scrollTop: $(document).height() - $(window).height()}, 300); // 속도를 300 밀리초로 설정
+            });
         });
     </script>
 </head>
@@ -85,6 +99,11 @@
             </div>
         </form>
     </section>
+    <!-- 스크롤 버튼 -->
+    <div id="scrollButtons">
+        <button id="scrollToTop" class="scroll-btn"><i class="fa-solid fa-chevron-up"></i></button>
+        <button id="scrollToBottom" class="scroll-btn"><i class="fa-solid fa-angle-down"></i></button>
+    </div>
 </main>
 <footer th:replace="~{layout/footer :: footer}"></footer>
 </body>

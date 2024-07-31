@@ -14,6 +14,20 @@
             $('#back-btn').on('click', function () {
                 history.back();
             });
+
+            // 페이지 로드 시 버튼 숨기기
+            $('#scrollToTop').show();
+            $('#scrollToBottom').show();
+
+            // 맨 위로 스크롤
+            $('#scrollToTop').click(function () {
+                $('html, body').animate({scrollTop: 0}, 300); // 속도를 300 밀리초로 설정
+            });
+
+            // 맨 아래로 스크롤
+            $('#scrollToBottom').click(function () {
+                $('html, body').animate({scrollTop: $(document).height() - $(window).height()}, 300); // 속도를 300 밀리초로 설정
+            });
         });
     </script>
 </head>
@@ -44,7 +58,7 @@
                 <span th:if="${item.getReply() != null}">답변이 등록되었습니다.</span>
                 <span th:unless="${item.getReply() != null}">답변이 등록되지 않았습니다.</span>
             </div>
-            <div th:unless="${#lists.size(userCancelList) > 0}" class="inquirySection inquiryBody">
+            <div th:unless="${#lists.size(userCancelList) > 0}" class="inquiryBody text-center p-3">
                 <span>문의 내역이 없습니다.</span>
             </div>
             <div class="inquiryBtn mt-5">
@@ -53,6 +67,11 @@
             </div>
         </div>
     </section>
+    <!-- 스크롤 버튼 -->
+    <div id="scrollButtons">
+        <button id="scrollToTop" class="scroll-btn"><i class="fa-solid fa-chevron-up"></i></button>
+        <button id="scrollToBottom" class="scroll-btn"><i class="fa-solid fa-angle-down"></i></button>
+    </div>
 </main>
 <footer th:replace="~{layout/footer :: footer}"></footer>
 </body>

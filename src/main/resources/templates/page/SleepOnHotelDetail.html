@@ -17,6 +17,7 @@
 
             function loadInfoData() {
                 const contentId = $('#contentId').val();
+                const hotelTitle = $('#hotelTitle');
                 $.ajax({
                     url: "/SleepOn/HotelDetailInfo",
                     type: "post",
@@ -27,6 +28,7 @@
 
                         if (respData.length > 0) {
                             for (let i = 0; i < respData.length; i++) {
+                                hotelTitle.text(respData[i].title + " 객실 정보");
                                 let imgToUrl = respData[i].firstimage || '/img/noimg.jpg';
                                 console.log("Image URL: ", imgToUrl);
                                 let homepage = respData[i].homepage || '홈페이지가 없습니다.';
@@ -116,10 +118,7 @@
                                     <span class="hotelRoomtitle">${respData[i].roomtitle}</span>
                                 </div>
                                 <div class="hotelRoomGrid">
-                                    <div class="hotelDetail">
-                                        <i class="fa-solid fa-users"></i>
-                                        <span>기준/최대 인원</span>
-                                    </div>
+                                    <span>기준/최대 인원</span>
                                     <span>${roombasecount}명/${roommaxcount}명</span>
                                 </div>
                                 <div class="hotelRoomGrid">
@@ -228,6 +227,20 @@
             $('#userCnt').on('focus', function () {
                 $(this).val("");
             });
+
+            // 페이지 로드 시 버튼 숨기기
+            $('#scrollToTop').show();
+            $('#scrollToBottom').show();
+
+            // 맨 위로 스크롤
+            $('#scrollToTop').click(function () {
+                $('html, body').animate({scrollTop: 0}, 300); // 속도를 300 밀리초로 설정
+            });
+
+            // 맨 아래로 스크롤
+            $('#scrollToBottom').click(function () {
+                $('html, body').animate({scrollTop: $(document).height() - $(window).height()}, 300); // 속도를 300 밀리초로 설정
+            });
         });
     </script>
 </head>
@@ -263,9 +276,18 @@
     </section>
     <section class="my-2">
         <div class="container">
+            <div class="inquiryTitle">
+                <span id="hotelTitle">객실 정보</span>
+                <span class="hotelIconAni fa-solid fa-cart-flatbed-suitcase"></span>
+            </div>
             <div id="roomInfo" class="hotelRoomSection"></div>
         </div>
     </section>
+    <!-- 스크롤 버튼 -->
+    <div id="scrollButtons">
+        <button id="scrollToTop" class="scroll-btn"><i class="fa-solid fa-chevron-up"></i></button>
+        <button id="scrollToBottom" class="scroll-btn"><i class="fa-solid fa-angle-down"></i></button>
+    </div>
 </main>
 <footer th:replace="~{/layout/footer :: footer}"></footer>
 </body>

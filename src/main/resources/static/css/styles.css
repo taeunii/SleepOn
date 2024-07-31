@@ -34,6 +34,7 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    padding-top: 30px; /* 네비바 높이만큼 패딩 추가 */
 }
 main {
     flex: 1;
@@ -44,8 +45,14 @@ main {
 /* header */
 /* header - nav */
 .navbar {
-    padding: 1em 1em 0em 1em;
     background-color: white;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000; /* 네비바가 항상 위에 오도록 설정 */
+}
+.carousel {
+    margin-top: 70px; /* 네비바와 배너 간격 조정 */
 }
 .navbar .logo {
     font-family: 'Yeongdo-Rg', sans-serif;
@@ -67,6 +74,40 @@ main {
 .nav-icon{
     vertical-align: middle;
     line-height: 1;
+}
+/* 스크롤 */
+.scroll-btn {
+    position: fixed;
+    right: 10px;
+    z-index: 1000;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    margin: 1em;
+}
+
+#scrollToTop {
+    bottom: 60px;
+}
+
+#scrollToBottom {
+    bottom: 10px;
+}
+
+.scroll-btn:hover {
+    background-color: #f0f0f0;
+}
+
+.scroll-btn i {
+    font-size: 20px;
 }
 /* header - banner *//* header - banner */
 .banner {
@@ -780,6 +821,22 @@ button {
     padding: 0.8em;
     border-radius: 0.5em;
     border : 1px solid #b6b6b6;
+}
+.hotelIconAni{
+    font-size: 20px;
+    color: #9db9ec;
+    animation: pulse 2s infinite;
+}
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 .hotelRoomSection {
     display: flex;

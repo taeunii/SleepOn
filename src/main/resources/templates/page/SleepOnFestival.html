@@ -52,22 +52,45 @@
                 });
             }
             loadFestival();
+
+            // 페이지 로드 시 버튼 숨기기
+            $('#scrollToTop').show();
+            $('#scrollToBottom').show();
+
+            // 맨 위로 스크롤
+            $('#scrollToTop').click(function () {
+                $('html, body').animate({scrollTop: 0}, 300); // 속도를 300 밀리초로 설정
+            });
+
+            // 맨 아래로 스크롤
+            $('#scrollToBottom').click(function () {
+                $('html, body').animate({scrollTop: $(document).height() - $(window).height()}, 300); // 속도를 300 밀리초로 설정
+            });
         });
     </script>
 </head>
 <body>
 <header th:replace="~{/layout/header :: header-basic}"></header>
 <header th:replace="~{layout/header :: header-banner}"></header>
-<div class="container">
-    <input type="hidden" th:value="${areaCode}" id="areaCode">
-    <input type="hidden" th:value="${areaName}" id="areaName">
-    <h2 class="text-center my-4"><span th:text="${areaName}"></span>의 행사 정보</h2>
-    <div class="sleepOnMainSection" id="card-container">
-        <div class="text-center">
-            <p>현재 진행 중인 지역 축제가 없습니다.</p>
+<main>
+    <section>
+        <div class="container">
+            <input type="hidden" th:value="${areaCode}" id="areaCode">
+            <input type="hidden" th:value="${areaName}" id="areaName">
+            <h2 class="text-center my-4"><span th:text="${areaName}"></span>의 행사 정보</h2>
+            <div class="sleepOnMainSection" id="card-container">
+                <div class="text-center">
+                    <p>현재 진행 중인 지역 축제가 없습니다.</p>
+                </div>
+            </div>
         </div>
+    </section>
+    <!-- 스크롤 버튼 -->
+    <div id="scrollButtons">
+        <button id="scrollToTop" class="scroll-btn"><i class="fa-solid fa-chevron-up"></i></button>
+        <button id="scrollToBottom" class="scroll-btn"><i class="fa-solid fa-angle-down"></i></button>
     </div>
-</div>
+</main>
 <footer th:replace="~{/layout/footer :: footer}"></footer>
 </body>
 </html>
