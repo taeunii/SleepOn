@@ -45,16 +45,47 @@
         </div>
         <!-- 예약 확인 -->
         <div class="reservationSection">
-            <div class="reservationHeader">
+            <div class="profileHeader reservationHeader">
+                <span class="orbit-regular">My Reservation</span>
                 <span class="orbit-regular" th:text="|${user.name}님의 예약 내역|"></span>
             </div>
-            <div class="profileBody" id="reservationList">
-
+            <div class="reservationBody" id="reservationList">
             </div>
         </div>
-        <div class="membership-info mb-4">
-            <h5 class="mb-3">예약 내역</h5>
-            <div id="reservation-list"></div>
+        <!-- 리뷰 쓸 예약 목록 -->
+        <div class="reservationSection">
+            <div class="profileHeader reviewHeader">
+                <span class="orbit-regular">My Review</span>
+                <span class="orbit-regular" th:text="|${user.name}님, 후기를 남겨주세요.|"></span>
+            </div>
+            <div class="reservationBody" th:if="${#lists.size(lastReserv) > 0}" th:each="item : ${lastReserv}">
+                <div class="reviewCardSection">
+                    <div class="reservationIcon">
+                        <i class="fa-solid fa-heart"></i>
+                    </div>
+                    <div class="reviewCard">
+                        <div class="reservationCardHeader">
+                            <span th:text="${item.getRoomTitle()}"></span>
+                        </div>
+                        <div class="reservationCardGrid">
+                            <span>체크인</span>
+                            <span th:text="${item.getCheckinTime()}"></span>
+                        </div>
+                        <div class="reservationCardGrid">
+                            <span>체크아웃</span>
+                            <span th:text="${item.getCheckoutTime()}"></span>
+                        </div>
+                        <div class="text-end">
+                            <button class="BackRedBtn">리뷰 쓰기</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="reservationBody" th:unless="${#lists.size(lastReserv) > 0}">
+                <div class="nonReviewCard text-center">
+
+                </div>
+            </div>
         </div>
         <div class="reviews-section">
             <h5 class="mb-3">내가 작성한 리뷰</h5>
@@ -115,24 +146,43 @@
                     if (data.length > 0) {
                         data.forEach(function (reservation) {
                             const formattedDate = formatDate(reservation.reservData);
+                            let reservCheck = "";
+                            let iconClass = "";
+                            if (reservation.reservCancle === 'Y') {
+                                reservCheck = "예약 취소";
+                                iconClass="fa-solid fa-ban";
+                            }
+                            else {
+                                reservCheck = "예약 확정";
+                                iconClass ="fa-regular fa-circle-check";
+                            }
                             const reservationItem = `
-                                <div class="reservation-item">
-                                    <div class="reservation-header">
-                                        <h6>${reservation.roomTitle}</h6>
-                                        <span class="badge badge-success">예약확정</span>
+                            <div class="reservationCardSection">
+                                <div class="reservationCard">
+                                    <div class="reservationCardHeader">
+                                        <span>${reservation.roomTitle}</span>
+                                        <span class="Score">(${reservCheck})</span>
                                     </div>
-                                    <div class="reservation-details">
-                                        <div>
-                                            <p>예약날짜: ${formattedDate}</p>
-                                            <p>체크인: ${reservation.checkinTime}</p>
-                                            <p>체크아웃: ${reservation.checkoutTime}</p>
-                                            <p>결제금액: ${reservation.price ? reservation.price.toLocaleString() : "N/A"}원</p>
-                                        </div>
+                                    <div class="reservationCardGrid">
+                                        <span>예약날짜</span>
+                                        <span>${formattedDate}</span>
                                     </div>
-                                    <div class="reservation-actions">
-                                        <button class="btn BackRedBtn" onclick="cancelReservation(${reservation.idx})">예약취소</button>
+                                    <div class="reservationCardGrid">
+                                        <span>체크인</span>
+                                        <span>${reservation.checkinTime}</span>
+                                    </div>
+                                    <div class="reservationCardGrid">
+                                        <span>체크아웃</span>
+                                        <span>${reservation.checkoutTime}</span>
+                                    </div>
+                                    <div class="reservationBtn">
+                                        <button class="BoarderBtn" onclick="cancelReservation(${reservation.idx})">예약취소</button>
                                     </div>
                                 </div>
+                                <div class="reservationIcon">
+                                    <i class="${iconClass}"></i>
+                                </div>
+                            </div>
                             `;
                             reservationList.append(reservationItem);
                         });

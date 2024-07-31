@@ -30,6 +30,8 @@ public interface TourService {
     List<UserReservation> getUserReservation(String userId) throws Exception;
     // 고객 전용 예약 정보
     List<UserReservation> getUserReservationDesc(String userId) throws Exception;
+    // 지난 예약 목록 - 예약 취소 안한 목록만
+    List<UserReservation> getUserLastReserv(String userId) throws Exception;
 
     // 관리자 전용 상담 게시글 목록
     List<UserCancel> getAdminCancelList() throws Exception;
@@ -50,4 +52,7 @@ public interface TourService {
     List<UserReview> getUserReviewList(String id) throws Exception;
     // 내가 작성한 리뷰 수
     int getCountReviewUser(String id) throws Exception;
+
+    // 내가 작성한 리뷰 보기
+    UserReview getReviewById(int id) throws Exception;
 }

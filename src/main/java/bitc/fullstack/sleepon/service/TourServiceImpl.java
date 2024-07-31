@@ -23,10 +23,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class TourServiceImpl implements TourService{
@@ -190,10 +193,36 @@ public class TourServiceImpl implements TourService{
         return reservationRepository.findByUserId(userId);
     }
 
-    // 내 예약 정보 가져오기
+    // 내 예약 정보 가져오기 (체크인 예정만)
     @Override
     public List<UserReservation> getUserReservationDesc(String userId) throws Exception {
-        return reservationRepository.findByUserIdOrderByReservDataDesc(userId);
+        List<UserReservation> reservations = reservationRepository.findByUserIdOrderByReservDataDesc(userId);
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        // 필터링을 통해 현재 날짜 이후의 체크인 날짜를 가진 예약만 반환
+        return reservations.stream()
+                .filter(reservation -> {
+                    LocalDate checkinDate = LocalDate.parse(reservation.getCheckinTime() , formatter);
+                    return checkinDate.isAfter(currentDate);
+                })
+                .collect(Collectors.toList());
+    }
+
+    // 지난 예약 정보 - 취소 안한 것만
+    @Override
+    public List<UserReservation> getUserLastReserv(String userId) throws Exception {
+        List<UserReservation> reservations = reservationRepository.findByUserIdLastReserv(userId);
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        // 필터링을 통해 체크아웃 날짜가 현재 날짜 이전인 예약만 반환
+        return reservations.stream()
+                .filter(reservation -> {
+                    LocalDate checkoutDate = LocalDate.parse(reservation.getCheckoutTime(), formatter);
+                    return checkoutDate.isBefore(currentDate);
+                })
+                .collect(Collectors.toList());
     }
 
     // 관리자 고객 상담 게시글 목록
@@ -243,5 +272,11 @@ public class TourServiceImpl implements TourService{
     @Override
     public int getCountReviewUser(String id) throws Exception {
         return reviewRepository.countByUserId(id);
+    }
+
+    // 내가 작성한 리뷰
+    @Override
+    public UserReview getReviewById(int id) throws Exception {
+        return reviewRepository.findById(id).orElse(null);
     }
 }

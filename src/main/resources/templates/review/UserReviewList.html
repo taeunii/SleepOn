@@ -2,108 +2,92 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>슬립온 - 리뷰 게시판</title>
-    <meta lang="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="/css/bootstrap.css">
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src=/js/bootstrap.bundle.js></script>
+    <script src="/js/bootstrap.bundle.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
             $('#back-btn').on('click', function () {
                 history.back();
             });
+
+            // 페이지 로드 시 버튼 숨기기
+            $('#scrollToTop').show();
+            $('#scrollToBottom').show();
+
+            // 맨 위로 스크롤
+            $('#scrollToTop').click(function () {
+                $('html, body').animate({scrollTop: 0}, 300); // 속도를 300 밀리초로 설정
+            });
+
+            // 맨 아래로 스크롤
+            $('#scrollToBottom').click(function () {
+                $('html, body').animate({scrollTop: $(document).height() - $(window).height()}, 300); // 속도를 300 밀리초로 설정
+            });
         });
     </script>
-
-    <style>
-        .nav-link {
-            color: black;
-        }
-
-        .nav-item a {
-            text-align: center;
-        }
-
-        .nav .nav-tabs.active {
-            background-color: #bae8e0;
-            color: white;
-            font-width: bold;
-        }
-    </style>
 </head>
 <body>
 <header th:replace="~{layout/header :: header-basic}"></header>
 <header th:replace="~{layout/header :: header-banner}"></header>
 <main>
     <section class="container">
-        <div class="reviewTitle">
-            <i class="fa-solid fa-circle-user"></i>
+        <div class="inquiryTitle">
+            <i class="fa-solid fa-circle-user" style="color: #FF585D;"></i>
             <span class="Score" th:text="|${user.name}님의 리뷰 내역|"></span>
         </div>
-        <div class="row">
-            <div class="col-sm mt-3">
-                <ul class="nav nav-justified reviewTab">
-                    <li class="nav-item active">
-                        <a href="#AvailableReviewList" class="nav-link nav-tabs active" data-bs-toggle="tab">리뷰 작성</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#MyReviewList" class="nav-link nav-tabs" data-bs-toggle="tab">나의 리뷰</a>
-                    </li>
-                </ul>
+        <div class="inquiryContainer">
+            <div class="inquirySection inquiryHeader">
+                <span></span>
+                <span>제목</span>
+                <span>숙소</span>
+                <span>작성일</span>
+                <span>별점</span>
             </div>
-        </div>
-        <div class="tab-content">
-            <div class="reviewContainer tab-pane active" id="AvailableReviewList">
-                <div class="reviewSection1 reviewHeader">
-                    <span></span>
-                    <span>숙소명</span>
-                    <span>작성기간</span>
-                    <span>리뷰 작성</span>
-                </div>
-                <div th:if="${#lists.size(myReviewList) > 0}" th:each="item, iterStat : ${myReviewList}"
-                     class="reviewSection1 reviewBody">
-                    <span th:text="${#lists.size(myReviewList) - iterStat.index}"></span>
-                    <a href="#" th:text="${item.reservation.getRoomTitle()}" th:href="@{/SleepOn/reviewDetail(id=${item.getIdx()})}"></a>
-                    <span th:text="${#temporals.format(item.getCreatedAt(), 'yyyy-MM-dd')}"></span>
-                    <div class="reviewBtn">
-                        <a href="/SleepOn/inquiryWrite" class="BackBlueBtn">리뷰 작성</a>
-                    </div>
-                </div>
-                <div th:unless="${#lists.size(myReviewList) > 0}" class="reviewSection1 reviewBody">
-                    <span>문의 내역이 없습니다.</span>
+            <div th:if="${#lists.size(myReviewList) > 0}" th:each="item, iterStat : ${myReviewList}"
+                 class="inquirySection inquiryBody">
+                <span th:text="${#lists.size(myReviewList) - iterStat.index}"></span>
+                <span th:if="${item.getReviewText() != null}">
+                    <a th:href="@{/SleepOn/reviewDetail(id=${item.getIdx()})}" th:text="${item.getReviewText()}"></a>
+                </span>
+                <span th:if="${item.getReviewText() == null}">-</span>
+                <span th:text="${item.reservation.getRoomTitle()}"></span>
+                <span th:text="${#temporals.format(item.getCreatedAt(), 'yyyy-MM-dd')}"></span>
+                <span>
+                    <span th:each="star, stat : ${#numbers.sequence(1, 5)}">
+                        <i class="fa-solid fa-star" th:classappend="${stat.index <= item.getReviewNum() - 1} ? 'filled-star' : 'empty-star'"></i>
+                    </span>
+                </span>
+                <div class="reviewBtn" th:if="${item.getReviewText() == null}">
+                    <a href="/SleepOn/inquiryWrite" class="BackRedBtn">리뷰 작성</a>
                 </div>
             </div>
-            <div class="reviewContainer tab-pane" id="MyReviewList">
-                <div class="reviewSection2 reviewHeader">
-                    <span></span>
-                    <span>숙소명</span>
-                    <span>리뷰 내용</span>
-                    <span>작성일</span>
-                    <span>수정 및 삭제</span>
-                </div>
-                <div th:if="${#lists.size(myReviewList) > 0}" th:each="item, iterStat : ${myReviewList}"
-                     class="reviewSection2 reviewBody">
-                    <span th:text="${#lists.size(myReviewList) - iterStat.index}"></span>
-                    <a href="#" th:text="${item.reservation.getRoomTitle()}" th:href="@{/SleepOn/reviewDetail(id=${item.getIdx()})}"></a>
-                    <div>
-                        <p th:text="${item.getReviewNum()}">별점 평균</p>
-                        <p th:text="${item.getReviewText()}">리뷰 내용</p>
-                    </div>
-                    <span th:text="${#temporals.format(item.getCreatedAt(), 'yyyy-MM-dd HH:mm')}"></span>
-                    <div class="reviewBtn">
-                        <a href="/SleepOn/inquiryEdit" class="BackBlueBtn">리뷰 수정</a>
-                        <button id="BackBlueBtn" class="BackBlueBtn" type="submit">리뷰 삭제</button>
-                    </div>
-                </div>
-                <div th:unless="${#lists.size(myReviewList) > 0}" class="reviewSection2 reviewBody">
-                    <span>문의 내역이 없습니다.</span>
-                </div>
+            <div th:unless="${#lists.size(myReviewList) > 0}" class="inquiryBody text-center p-3">
+                <span>리뷰 내역이 없습니다.</span>
+            </div>
+            <div class="inquiryBtn mt-5">
+                <button type="button" id="back-btn" class="BackBtn">뒤로가기</button>
             </div>
         </div>
     </section>
+    <!-- 스크롤 버튼 -->
+    <div id="scrollButtons">
+        <button id="scrollToTop" class="scroll-btn"><i class="fa-solid fa-chevron-up"></i></button>
+        <button id="scrollToBottom" class="scroll-btn"><i class="fa-solid fa-angle-down"></i></button>
+    </div>
 </main>
 <footer th:replace="~{layout/footer :: footer}"></footer>
+<style>
+    .filled-star {
+        color: #FFD700;
+    }
+    .empty-star {
+        color: #E0E0E0;
+    }
+</style>
 </body>
 </html>

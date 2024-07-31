@@ -287,6 +287,10 @@ public class TourController {
                 List<UserReservation> reservations = tourService.getUserReservationDesc(userId);
                 model.addAttribute("reservations", reservations);
 
+                // 지난 예약 - 취소 안한 것만
+                List<UserReservation> LastReserv = tourService.getUserLastReserv(userId);
+                model.addAttribute("lastReserv", LastReserv);
+
                 // 리뷰 수 가져와 모델에 추가
                 int reviewCount = tourService.getCountReviewUser(userId);
                 model.addAttribute("reviewCount", reviewCount);
@@ -565,5 +569,13 @@ public class TourController {
         } else {
             return "redirect:/SleepOn/login";
         }
+    }
+
+    // 리뷰 내역 상세보기 (일단 내가 쓴 것만)
+    @GetMapping("/reviewDetail")
+    public String reviewDetail(@RequestParam("id") int id, Model model) throws Exception {
+        UserReview review = tourService.getReviewById(id);
+        model.addAttribute("review", review);
+        return "review/UserReviewDetail";
     }
 }
