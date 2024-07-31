@@ -1,20 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbit&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Orbit&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap');
 @font-face {
     font-family: 'LINESeedKR-Bd';
     src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/LINESeedKR-Bd.woff2') format('woff2');
     font-weight: 700;
-    font-style: normal;
-}
-@font-face {
-    font-family: 'Yeongdo-Rg';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2202-2@1.0/Yeongdo-Rg.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
-@font-face {
-    font-family: 'HSSanTokki20-Regular';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2405@1.0/HSSanTokki20-Regular.woff2') format('woff2');
-    font-weight: normal;
     font-style: normal;
 }
 @font-face {
@@ -56,9 +45,11 @@ main {
     margin-top: 70px; /* 네비바와 배너 간격 조정 */
 }
 .navbar .logo {
-    font-family: 'Yeongdo-Rg', sans-serif;
+    font-family: 'Source Code Pro', sans-serif;
     color: #FF385C;
-    font-size: 3em;
+    font-size: 2em;
+    font-weight: bold;
+    padding-left: 15px;
 }
 .navbar-nav {
     margin-left: auto;
@@ -206,18 +197,18 @@ div {
     -webkit-user-select: none;
 }
 /* 글씨체 */
-.Yeongdo {
-    font-family: 'Yeongdo-Rg', sans-serif;
-}
-.SanTokki{
-    font-family: 'HSSanTokki20-Regular';
-}
 .Score{
     font-family: 'S-CoreDream-3Light';
 }
 .orbit-regular {
     font-family: "Orbit", sans-serif;
     font-weight: 400;
+    font-style: normal;
+}
+.source-code-pro-uniquifier {
+    font-family: "Source Code Pro", monospace;
+    font-optical-sizing: auto;
+    font-weight: bold;
     font-style: normal;
 }
 /* textarea */
@@ -493,11 +484,9 @@ button {
 }
 
 /* main my page */
-
 .ProfileSection{
     display: flex;
     flex-direction: column;
-    gap: 0.8em;
     border-radius: 0.5em;
     overflow: hidden;
     padding: 3em;
@@ -507,7 +496,7 @@ button {
     text-align: right;
     font-size: 30px;
 }
-.profileHeader .Score{
+.profileHeader:nth-child(2){
     font-size: 20px;
 }
 .profileBody{
@@ -573,6 +562,16 @@ button {
 }
 
 /* my page - 예약 내역 */
+.reservationSection {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.reservationHeader{
+    padding: 1em;
+    font-size: 25px;
+    text-align: left;
+}
 .reservation-item {
     /*border: 1px solid rgba(208, 208, 208, 0.45);*/
     /*display: flex;*/
@@ -820,17 +819,17 @@ button {
 .hotelIconAni{
     font-size: 20px;
     color: #FF385C;;
-    animation: pulse 2s infinite;
+    animation: moveBackAndForth 2s infinite;
 }
-@keyframes pulse {
+@keyframes moveBackAndForth {
     0% {
-        transform: scale(1);
+        transform: translateX(0);
     }
     50% {
-        transform: scale(1.2);
+        transform: translateX(10px); /* Adjust the distance as needed */
     }
     100% {
-        transform: scale(1);
+        transform: translateX(0);
     }
 }
 .hotelRoomSection {

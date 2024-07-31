@@ -15,11 +15,12 @@
 <header th:replace="~{layout/header :: header-basic}"></header>
 <header th:replace="~{layout/header :: header-banner}"></header>
 <main>
-    <section class="ProfileSection m-5">
+    <section class="ProfileSection">
         <div class="profileHeader">
-            <span class="Yeongdo">My Page</span>
-            <span class="Score" th:text="|${user.name}님, 반갑습니다.|"></span>
+            <span class="orbit-regular">My Page</span>
+            <span class="orbit-regular" th:text="|${user.name}님, 반갑습니다.|"></span>
         </div>
+        <!-- 리뷰, 문의 보기 -->
         <div class="profileBody">
             <div class="polaroidSection">
                 <div class="profileCard polaroidCard" onclick="location.href='/SleepOn/inquiry'">
@@ -40,6 +41,15 @@
                         <strong class="span1" th:text="|${reviewCount}개|"></strong>
                     </div>
                 </div>
+            </div>
+        </div>
+        <!-- 예약 확인 -->
+        <div class="reservationSection">
+            <div class="reservationHeader">
+                <span class="orbit-regular" th:text="|${user.name}님의 예약 내역|"
+            </div>
+            <div class="profileBody" id="reservationList">
+
             </div>
         </div>
         <div class="membership-info mb-4">
@@ -99,7 +109,7 @@
                 url: "/SleepOn/reservations",
                 type: "get",
                 success: function (data) {
-                    const reservationList = $("#reservation-list");
+                    const reservationList = $("#reservationList");
                     reservationList.empty();
 
                     if (data.length > 0) {
