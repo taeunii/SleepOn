@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Hotel Details</title>
+    <title>SleepOn - 호텔 정보</title>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -29,25 +29,35 @@
                             for (let i = 0; i < respData.length; i++) {
                                 let imgToUrl = respData[i].firstimage || '/img/noimg.jpg';
                                 console.log("Image URL: ", imgToUrl);
+                                let homepage = respData[i].homepage || '홈페이지가 없습니다.';
+                                let tel = respData[i].tel || '전화번호가 없습니다.';
                                 const tag = `
                                 <div>
-                                    <img alt="" src="${imgToUrl}" class="roomCommonImg">
+                                    <img alt="" src="${imgToUrl}" class="hotelDetailImg">
                                 </div>
-                                <div class="roomCommonBody">
-                                    <div class="roomCommonGrid">
-                                        <span class="inquiry-label">호텔</span>
+                                <div class="hotelDetailBody">
+                                    <div class="hotelTitle">
                                         <span>${respData[i].title}</span>
                                     </div>
-                                    <div class="roomCommonGrid">
-                                        <span class="inquiry-label">홈페이지</span>
-                                        <span>${respData[i].homepage}</span>
+                                    <div class="hotelDetail">
+                                        <i class="fa-solid fa-info-circle"></i>
+                                        <span>${respData[i].smallClassificationName}</span>
                                     </div>
-                                    <div class="roomCommonGrid">
-                                        <span class="inquiry-label">주소</span>
+                                    <div class="hotelDetail">
+                                        <i class="fa-solid fa-desktop"></i>
+                                        <span>${homepage}</a>
+                                    </div>
+                                    <div class="hotelDetail">
+                                        <i class="fa-solid fa-location-dot"></i>
                                         <span>${respData[i].addr1}</span>
                                     </div>
-                                    <div class="roomCommonText">
-                                        <span>${respData[i].overview}</span>
+                                    <div class="hotelDetail">
+                                        <i class="fa-solid fa-phone-volume"></i>
+                                        <span>${tel}</span>
+                                    </div>
+                                    <div class="hotelTextArea">
+                                        <span>&nbsp;</span>
+                                        <span class="Score">${respData[i].overview}</span>
                                     </div>
                                 </div>
                                 `;
@@ -78,27 +88,49 @@
                             for (let i = 0; i < respData.length; i++) {
                                 let imgToUrl = respData[i].roomimg1 || '/img/noimg.jpg';
                                 console.log("room Image URL: ", imgToUrl);
+                                let roombasecount = respData[i].roombasecount || '2';
+                                console.log(roombasecount);
+                                let roommaxcount = respData[i].roommaxcount || roombasecount;
+                                console.log(roommaxcount);
+                                // 주중 금액 (비성수기/성수기)
+                                let weekdayFee = "";
+                                console.log(respData[i].roomoffseasonminfee1);
+                                if (respData[i].roomoffseasonminfee1 !== "0" && respData[i].roompeakseasonminfee1 !== "0") {
+                                    weekdayFee = `${addCommas(respData[i].roomoffseasonminfee1)}원 (비성수기) / ${addCommas(respData[i].roompeakseasonminfee1)}원 (성수기)`;
+                                } else {
+                                    weekdayFee = "금액은 홈페이지에 문의해주시기 바랍니다.";
+                                }
+
+                                // 주말 금액 (비성수기/성수기)
+                                let weekendFee = "";
+                                if (respData[i].roomoffseasonminfee2 !== "0" && respData[i].roompeakseasonminfee2 !== "0") {
+                                    weekendFee = `${addCommas(respData[i].roomoffseasonminfee2)}원 (비성수기) / ${addCommas(respData[i].roompeakseasonminfee2)}원 (성수기)`;
+                                } else {
+                                    weekendFee = "금액은 홈페이지에 문의해주시기 바랍니다.";
+                                }
                                 const tag = `
-                        <div class="roomDetail">
-                            <div class="roomDetailHeader">
-                                <span>${respData[i].roomtitle}</span>
-                            </div>
-                            <div class="roomDetailBody">
-                                <img alt="" src="${imgToUrl}" class="roomDetailImg">
-                                <div class="roomCommonBody">
-                                    <div class="roomCommonGrid">
-                                        <span class="inquiry-label">기준/최대 인원</span>
-                                        <span>${respData[i].roombasecount}명 / ${respData[i].roommaxcount}명</span>
+                        <div class="hotelRoomDetail">
+                            <img class="hotelDetailImg" alt="" src="${imgToUrl}">
+                            <div class="hotelDetailBody">
+                                <div class="hotelTitle">
+                                    <span class="hotelRoomtitle">${respData[i].roomtitle}</span>
+                                </div>
+                                <div class="hotelRoomGrid">
+                                    <div class="hotelDetail">
+                                        <i class="fa-solid fa-users"></i>
+                                        <span>기준/최대 인원</span>
                                     </div>
-                                    <div class="roomCommonGrid">
-                                        <span class="inquiry-label">주중 금액</span>
-                                        <span>${addCommas(respData[i].roomoffseasonminfee1)}원 (비성수기) / ${addCommas(respData[i].roompeakseasonminfee1)}원 (성수기)</span>
-                                    </div>
-                                    <div class="roomCommonGrid">
-                                        <span class="inquiry-label">주말 금액</span>
-                                        <span>${addCommas(respData[i].roomoffseasonminfee2)}원 (비성수기) /${addCommas(respData[i].roompeakseasonminfee2)}원 (성수기)</span>
-                                    </div>
-                                    <div class="roomDetailInfoGroup">
+                                    <span>${roombasecount}명/${roommaxcount}명</span>
+                                </div>
+                                <div class="hotelRoomGrid">
+                                    <span>주중 금액</span>
+                                    <span>${weekdayFee}</span>
+                                </div>
+                                <div class="hotelRoomGrid">
+                                    <span>주말 금액</span>
+                                    <span>${weekendFee}</span>
+                                </div>
+                                <div class="roomDetailInfoGroup">
                                         <div class="roomDetailOption">
                                             <div class="roomDetailOptSection">
                                                 <div class="roomIcon ${respData[i].roombathfacility ? '' : 'roomIconNull'}"><i class="fas fa-shower"></i> 목욕시설</div>
@@ -118,14 +150,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="inquiry-btnContainer">
-                                        <button class="btn inquiry-btn" type="button"
-                                            onclick="PayMentPage(this)"
-                                            data-roomtitle="${respData[i].roomtitle}"
-                                            data-roommaxcount="${respData[i].roommaxcount}">
+                                <div class="hotelRoomBtn">
+                                    <button class="BackBlueBtn" type="button" onclick="PayMentPage(this)" data-roomtitle="${respData[i].roomtitle}" data-roommaxcount="${roommaxcount}">
                                         예약하기
-                                        </button>
-                                    </div>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -133,7 +161,7 @@
                                 container.append(tag);
                             }
                         } else {
-                            container.append('<div class="col-12"><p>조회된 데이터가 없습니다.</p></div>');
+                            container.append('<div class="text-center"><p>조회된 데이터가 없습니다.</p></div>');
                         }
                     },
                     error: function () {
@@ -207,34 +235,35 @@
 <header th:replace="~{/layout/header :: header-basic}"></header>
 <header th:replace="~{layout/header :: header-banner}"></header>
 <main>
-    <section class="mt-3">
+    <input id="contentId" th:value="${contentId}" type="hidden">
+    <section class="my-2">
         <div class="search-bar-container">
             <div class="search-bar">
                 <input type="hidden" id="user" th:value="${user}">
+                    <i class="search-bar-icon fa-solid fa-plane-departure"></i>
                 <div class="search-item">
                     <label>체크인</label>
-                    <input id="checkIn" th:value="${checkIn}" type="date">
+                    <input class="BoxBorderNon" id="checkIn" th:value="${checkIn}" type="date">
                 </div>
                 <div class="search-item">
                     <label>체크아웃</label>
-                    <input id="checkOut" th:value="${checkOut}" type="date">
+                    <input class="BoxBorderNon" id="checkOut" th:value="${checkOut}" type="date">
                 </div>
                 <div class="search-item">
                     <label>여행자</label>
-                    <input id="userCnt" th:value="${userCnt}" type="number">
+                    <input class="BoxBorderNon" id="userCnt" th:value="${userCnt}" type="number">
                 </div>
             </div>
         </div>
     </section>
-    <input id="contentId" th:value="${contentId}" type="hidden">
-    <section class="mt-3">
+    <section class="my-2">
         <div class="container">
-            <div id="roomCommon"></div>
+            <div id="roomCommon" class="hotelDetailSection"></div>
         </div>
     </section>
-    <section class="mt-3">
+    <section class="my-2">
         <div class="container">
-            <div id="roomInfo"></div>
+            <div id="roomInfo" class="hotelRoomSection"></div>
         </div>
     </section>
 </main>

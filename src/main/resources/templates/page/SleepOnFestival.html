@@ -22,7 +22,7 @@
                     type : "post",
                     data : {areaCode : areaCode},
                     success : function (respData) {
-                        const cardContainer = $("#busan-card-container");
+                        const cardContainer = $("#card-container");
                         cardContainer.empty();
 
                         if (respData.length > 0) {
@@ -32,15 +32,13 @@
                                     imgToUrl = "/img/noimg.jpg";
                                 }
                                 const card = `
-                                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                                    <div class="card" style="height: 100%;">
-                                        <img class="card-img-top" src="${imgToUrl}" alt="">
-                                        <div class="card-body">
-                                            <h5 class="card-title">${respData[i].title}</h5>
-                                            <p class="card-text">${respData[i].addr1}</p>
+                                    <div class="card">
+                                        <img class="cardImg" src="${imgToUrl}" alt="">
+                                        <div class="cardBody">
+                                            <span class="cardTitle">${respData[i].title}</span>
+                                            <span class="cardText">${respData[i].addr1}</span>
                                         </div>
                                     </div>
-                                </div>
                             `;
                                 cardContainer.append(card);
                             }
@@ -64,8 +62,8 @@
     <input type="hidden" th:value="${areaCode}" id="areaCode">
     <input type="hidden" th:value="${areaName}" id="areaName">
     <h2 class="text-center my-4"><span th:text="${areaName}"></span>의 행사 정보</h2>
-    <div class="row" id="busan-card-container">
-        <div class="col-12">
+    <div class="sleepOnMainSection" id="card-container">
+        <div class="text-center">
             <p>현재 진행 중인 지역 축제가 없습니다.</p>
         </div>
     </div>

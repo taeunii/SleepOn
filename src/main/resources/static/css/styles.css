@@ -68,17 +68,17 @@ main {
     vertical-align: middle;
     line-height: 1;
 }
-/* header - banner */
-.banner{
+/* header - banner *//* header - banner */
+.banner {
     background: url('../img/banner.jpg') no-repeat center center;
     border-radius: 1.5em;
     overflow: hidden;
     height: 450px;
-    margin: 0em 1em 1em 1em;
+    margin: 1em;
     background-size: cover;
     position: relative;
 }
-.banner::before{
+.banner::before {
     content: "";
     position: absolute;
     top: 0;
@@ -96,6 +96,7 @@ main {
     height: 100%;
     position: relative;
     z-index: 1;
+    animation: fadeIn 2s ease-in-out; /* 애니메이션 추가 */
 }
 .banner span {
     color: white;
@@ -103,8 +104,41 @@ main {
     vertical-align: middle;
     margin: 0; /* 기본 여백 제거 */
 }
-.banner span:nth-last-child(1){
+.banner span:nth-last-child(1) {
     font-size: 35px;
+}
+/* 스타일 조정 */
+.ProfileSection {
+    margin-top: 20px;
+}
+
+.carousel {
+    margin-bottom: 30px; /* 배너와 다른 요소들 간의 간격 조정 */
+}
+.carousel-item img {
+    height: 50vh; /* 높이를 50vh로 설정 */
+    object-fit: cover;
+    border-radius: 3em;
+    padding: 1em;
+    overflow: hidden;
+    background-size: cover;
+    position: relative;
+}
+.carousel-caption {
+    color: #fff; /* 글씨 색상 */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* 텍스트 그림자 */
+}
+.carousel-caption h5 {
+    font-size: 2rem; /* 제목 글씨 크기 */
+}
+.carousel-caption p {
+    font-size: 1.5rem; /* 설명 글씨 크기 */
+}
+.carousel-control-prev, .carousel-control-next {
+    width: 5%; /* 화살표 버튼 넓이 조정 */
+}
+.carousel-control-prev-icon, .carousel-control-next-icon {
+    background-size: 100%, 100%; /* 아이콘 크기 조정 */
 }
 /* footer */
 .footer {
@@ -216,6 +250,14 @@ button {
     border: 2px solid #7a7e86;
     color: #7a7e86;
 }
+.ModalBackBtn{
+    background-color: transparent;
+    border: none;
+    color: #606060;
+}
+.ModalBackBtn:hover{
+    color: black;
+}
 
 /* 로그인 및 회원가입 */
 .formContainer{
@@ -301,6 +343,12 @@ button {
     grid-template-columns: repeat(3, 1fr);
     gap: 0.8em;
 }
+.popularCardTitle{
+    font-size: 1.5em;
+}
+.popularCardText{
+    font-size: 1em;
+}
 .card {
     border: none;
     transition: transform 0.2s;
@@ -308,21 +356,23 @@ button {
 .card:hover {
     transform: scale(1.05);
 }
-.card-img-top {
-    border-radius: 8px;
+.cardImg {
+    border-radius: 0.5em;
     height: 200px; /* 이미지 높이 고정 */
     object-fit: cover; /* 이미지 비율 유지하며 꽉 채우기 */
 }
-.card-body {
-    padding: 1rem;
+.cardBody{
+    padding: 0.5em;
     height: 150px; /* 카드 본문 높이 고정 */
+    display: flex;
+    flex-direction: column;
+    gap: 0.3em;
 }
-.card-title {
-    font-size: 1.25rem;
-    margin-bottom: 0.5rem;
+.cardTitle {
+    font-size: 1.2em;
 }
-.card-container .card {
-    height: 400px; /* 전체 카드 높이 고정 */
+.cardText{
+    font-size: 1em;
 }
 /* main 어디로 갈까요? 부분 */
 .selectText{
@@ -342,7 +392,63 @@ button {
     border: 1px solid #ddd;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+/* main page, 숙소 리스트 */
+.sleepOnMainSection,
+.sleepOnListSection {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5em;
+    justify-content: flex-start;
+    align-items: center;
+}
+.sleepOnListSection{
+    gap: 1.3em 0.8em;
+}
+.sleepOnMainSection .card,
+.sleepOnListSection .card{
+    height: 350px; /* 전체 카드 높이 고정 */
+    width: 300px;
+}
+.sleepOnListSection .card{
+    border-radius: 0.5em;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.sleepOnListSection .cardBody{
+    padding: 0.5em;
+}
+.sleepOnBtn {
+    height: 100%;
+    display: flex;
+    justify-content: end;
+    align-items: flex-end;
+}
+/* main page - list, area 및 정렬 */
+.listSortSection{
+    display: flex;
+    justify-content: space-between;
+}
+.listAreaText{
+    font-size: 1.3em;
+}
+.listSortSection select{
+    width: 120px;
+}
+/* modal */
+.modalText{
+    display: flex;
+    flex-direction: column;
+    gap: 0.2em;
+}
+.modalText i{
+    padding-right: 0.3em;
+    color: #505050;
+}
+.modalTitle{
+    font-size: 1.2em;
+}
+
 /* main my page */
+
 .ProfileSection{
     display: flex;
     flex-direction: column;
@@ -382,27 +488,22 @@ button {
     grid-template-columns: repeat(2, 1fr);
     gap: 1em;
 }
-.polaroidCard{
+.polaroidCard {
     display: grid;
     grid-template-rows: 1.5fr 0.5fr;
     gap: 0.5em;
+    width: 100%;
+    height: 200px; /* 높이 조정 */
 }
-.polaroidHeaderBlue,
-.polaroidHeaderGreen{
+.polaroidHeader{
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 0.2em;
-    color: white;
-    font-size: 50px;
-}
-.polaroidHeaderBlue,
-.polaroidBlueBtn{
-    background-color: #9db9ec;
-}
-.polaroidHeaderGreen,
-.polaroidGreenBtn{
-    background-color: #bae8e0;
+    color: #c9d2e7;
+    font-size: 40px;
+    padding: 0.5em;
+    background-color: #ffffff;
 }
 .polaroidBody{
     font-size: 20px;
@@ -410,8 +511,10 @@ button {
     flex-direction: column;
     text-align: left;
 }
-.polaroidBody span{
-    font-size: 25px;
+.polaroidBody span,
+.polaroidBody strong{
+    font-size: 20px;
+    text-align: center;
 }
 .polaroidBody a{
     font-size: 15px;
@@ -420,83 +523,19 @@ button {
     padding: 0.3em 0.8em;
     border-radius: 1.5em;
     transition: all ease-in 0.3s;
+    display: block;
+    margin-bottom: 50px; /* 버튼과 카드 하단의 간격 조정 */
 }
 .polaroidBlueBtn {
-    border: 1px solid #9db9ec;
-}
-.polaroidGreenBtn{
-    border: 1px solid #bae8e0;
+    border: 1px solid #c9d2e7;
+    background-color: #9db9ec;
+    color: white;
 }
 .polaroidBlueBtn:hover{
     color: #9db9ec;
     background-color: white;
 }
-.polaroidGreenBtn:hover{
-    color: #bae8e0;
-    background-color: white;
-}
-.profile-info {
-    background: #fff;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
 
-.profile-title {
-    font-size: 1.5rem;
-    color: #ff5a5f;
-    margin-bottom: 20px;
-}
-
-.profile-item {
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-    color: #555;
-}
-.profile-header h3 {
-    margin-bottom: 5px;
-}
-
-.profile-header p {
-    margin-bottom: 0;
-}
-
-.profile-body {
-    padding: 20px;
-}
-
-.membership-status {
-    margin: 20px 0;
-    font-size: 1.2rem;
-}
-
-.profile-stats {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 20px;
-}
-
-.profile-stats div {
-    text-align: center;
-}
-
-.profile-stats span {
-    display: block;
-    color: #888;
-}
-
-.profile-stats strong {
-    font-size: 1.5rem;
-    color: #333;
-}
-
-.membership-info {
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-}
 /* my page - 예약 내역 */
 .reservation-item {
     /*border: 1px solid rgba(208, 208, 208, 0.45);*/
@@ -678,130 +717,106 @@ button {
     width: 200px;
 }
 
-
-.roomCommonGrid {
-    display: grid;
-    grid-template-columns: 0.5fr 1.5fr;
-    gap: 0.5em;
-    align-items: center;
-    justify-items: left;
-    border-radius: 1.5em;
-    text-align: left;
-    overflow: hidden;
-    border: 1px solid #d3d3d3;
-}
-
-.reply-section {
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5em;
-}
-
-.reply-color {
-    background-color: #88c996;
-}
-
-.reply-date {
-    font-size: 0.8rem;
-    text-align: right;
-}
-
-.formatted-date {
-    font-size: 0.9rem;
-    color: #555;
-}
-
-.inquiry-btnContainer{
-    display: flex;
-    justify-content: end;
-    gap: 0.5em;
-}
-
-/* hotel detail */
-#roomCommon,
-#roomInfo {
+/* main page - hotel detail */
+.search-bar-icon{
+    font-size: 25px;
+    margin-left: -15px;
+    margin-top: -5px;
+    margin-bottom: -5px;
+    background-color: #a0bcef;
+    border : 2px solid #a0bcef;
+    color : white;
+    border-radius: 50%;
+    padding: 0.5em;
     display: flex;
     align-items: center;
-    gap: 0.5em;
-    padding: 10px;
+    justify-content: center;
+}
+.hotelDetailSection {
+    display: flex;
+    gap : 1em;
+    align-items: center;
+    padding: 1em;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
 }
-
-#roomInfo {
-    display: flex;
-    flex-direction: column;
-    padding: 0;
-    box-shadow: none;
-}
-
-.roomCommonBody {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    gap: 0.5em;
-}
-
-.roomCommonGrid {
-    border: none;
-}
-
-.roomCommonImg {
+.hotelDetailImg{
     border-radius: 8px;
     height: 300px;
     object-fit: cover; /* 이미지 비율 유지하며 꽉 채우기 */
 }
-
-.roomCommonText {
-    border: 1px solid #b9b9b9;
-    border-radius: 0.5em;
-    padding: 0.5em;
-}
-
-.roomDetail {
-    display: grid;
-    gap: 0.5em;
+.hotelDetailBody{
     width: 100%;
-    align-items: center;
-    border: none;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 15px;
-    overflow: hidden;
-}
-
-.roomDetailBody {
     display: flex;
-    gap: 0.5em;
+    flex-direction: column;
+    justify-content: left;
+    align-items: center;
+}
+.hotelTitle{
     width: 100%;
-    align-items: center;
-    padding: 10px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #b0b0b0;
+    font-size: 25px;
 }
-
-.roomDetailHeader {
-    background-color: #ff5a5f;
-    color: white;
-    padding: 10px;
+.hotelDetail{
+    display: grid;
+    grid-template-columns: 0.1fr 1.5fr;
+    width: 100%;
+    text-align: left;
+    font-size: 16px;
+}
+.hotelDetail i {
     text-align: center;
-    align-items: center;
-    font-size: 1.5em;
 }
-
-.roomDetailImg {
-    border-radius: 8px;
-    height: 250px;
-    object-fit: cover; /* 이미지 비율 유지하며 꽉 채우기 */
+.hotelDetail span{
+    padding-left: 3px;
 }
-
+.hotelTextArea {
+    width: 100%;
+    font-size: 13px;
+    color : #484848;
+    margin-top: 15px;
+    padding: 0.8em;
+    border-radius: 0.5em;
+    border : 1px solid #b6b6b6;
+}
+.hotelRoomSection {
+    display: flex;
+    flex-direction: column;
+    gap : 1em;
+    overflow: hidden;
+    justify-content: center;
+    align-items: flex-start;
+}
+.hotelRoomDetail{
+    width: 100%;
+    display: flex;
+    gap: 1em;
+    transition: all ease-in 0.3s;
+    padding: 1em;
+    border-radius: 0.5em;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.hotelRoomDetail:hover{
+    transform: scale(1.01);
+}
+.hotelRoomtitle {
+    font-size: 20px;
+}
+.hotelRoomGrid{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 0.5fr 1.6fr;
+    font-size: 18px;
+}
 .roomDetailInfoGroup {
+    font-size: 15px;
+    margin-top: 10px;
+    width: 100%;
     display: flex;
     justify-content: center;
 }
-
 .roomDetailOption {
     width: 100%;
     display: grid;
@@ -818,7 +833,7 @@ button {
     padding: 1em;
 }
 .roomIcon{
-    color: #ff5a5f;
+    color: #9db9ec;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -826,4 +841,11 @@ button {
 }
 .roomIconNull{
     color: #9d9d9d;
+}
+.hotelRoomBtn{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    align-items: flex-end;
 }

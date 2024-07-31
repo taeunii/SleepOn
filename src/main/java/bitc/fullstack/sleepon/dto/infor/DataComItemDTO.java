@@ -29,6 +29,8 @@ public class DataComItemDTO {
     private String mapy;
     private String mlevel;
     private String overview;
+    private String smallClassificationName; // 소분류 이름 필드 추가
+
 
     @XmlElement
     public String getContentId() {
@@ -221,5 +223,13 @@ public class DataComItemDTO {
 
     public void setOverview(String overview) {
         this.overview = overview;
+    }
+
+    public String getSmallClassificationName() { // 소분류 이름 getter 추가
+        return smallClassificationName;
+    }
+
+    public void setSmallClassificationName(String smallClassificationName) { // 소분류 이름 setter 추가
+        this.smallClassificationName = smallClassificationName;
     }
 }

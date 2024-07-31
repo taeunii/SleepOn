@@ -45,25 +45,31 @@
                         if (respData.length > 0) {
                             for (let i = 0; i < respData.length; i++) {
                                 let imgToUrl = respData[i].firstimage;
+                                let title = respData[i].title;
+
+// [한국~~] 패턴과 괄호로 시작되는 내용 제거
+                                title = title.replace(/\[한국.*?\]|\(.*?\)/g, '').trim();
+                                console.log(title);
+
                                 if ((respData[i].firstimage).toString() === '') {
                                     imgToUrl = "/img/noimg.jpg";
                                 }
                                 const card = `
-                                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                                    <div class="card" style="height: 100%;">
-                                        <img class="card-img-top" src="${imgToUrl}" alt="">
-                                        <div class="card-body">
-                                            <h5 class="card-title">${respData[i].title}</h5>
-                                            <p class="card-text">${respData[i].addr1}</p>
-                                            <button class="btn btn-primary btn-view" type="button" onclick="PageMove(this)" value="${respData[i].contentid}">예약</button>
+                                    <div class="card">
+                                        <img class="cardImg" src="${imgToUrl}" alt="">
+                                        <div class="cardBody">
+                                            <span class="cardTitle">${title}</span>
+                                            <span class="cardText">${respData[i].addr1}</span>
+                                            <div class="sleepOnBtn">
+                                                <button class="BackBlueBtn" type="button" onclick="PageMove(this)" value="${respData[i].contentid}">예약</button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
                             `;
                                 cardContainer.append(card);
                             }
                         } else {
-                            cardContainer.append('<div class="col-12"><p>조회된 데이터가 없습니다.</p></div>');
+                            cardContainer.append('<div class="text-center"><p>조회된 데이터가 없습니다.</p></div>');
                         }
                     },
                     error: function () {
@@ -160,13 +166,13 @@
 <header th:replace="~{layout/header :: header-basic}"></header>
 <header th:replace="~{layout/header :: header-banner}"></header>
 <main>
-    <section>
+    <section class="my-2">
         <div class="search-bar-container">
             <div class="search-bar">
                 <div class="search-item">
                     <label>여행지</label>
                     <div class="d-flex gap-2">
-                        <select class="form-select" id="AreaSel" name="AreaSel">
+                        <select class="BoxBorderNon" id="AreaSel" name="AreaSel">
                             <option value="1">서울</option>
                             <option value="6">부산</option>
                             <option value="39">제주</option>
@@ -179,35 +185,35 @@
                             <option value="34">충청남도</option>
                             <option value="33">충청북도</option>
                         </select>
-                        <select class="form-select" id="SiGunGuSel" name="SiGunGuSel">
+                        <select class="BoxBorderNon" id="SiGunGuSel" name="SiGunGuSel">
                             <option selected value="">전국</option>
                         </select>
                     </div>
                 </div>
                 <div class="search-item">
                     <label>체크인</label>
-                    <input id="checkIn" th:value="${checkIn}" type="date">
+                    <input class="BoxBorderNon" id="checkIn" th:value="${checkIn}" type="date">
                 </div>
                 <div class="search-item">
                     <label>체크아웃</label>
-                    <input id="checkOut" th:value="${checkOut}" type="date">
+                    <input class="BoxBorderNon" id="checkOut" th:value="${checkOut}" type="date">
                 </div>
                 <div class="search-item">
                     <label>여행자</label>
-                    <input id="userCnt" min="1" th:value="${userCnt}" type="number" value="1">
+                    <input class="BoxBorderNon" id="userCnt" min="1" th:value="${userCnt}" type="number" value="1">
                 </div>
                 <div class="search-item">
-                    <button class="btn btn-search" id="Search-btn">
-                        <img src="https://img.icons8.com/ios-glyphs/30/ffffff/search--v1.png"/>
+                    <button class="SearchBtn" id="Search-btn">
+                        <i class="fa-solid fa-magnifying-glass"></i>
                     </button>
                 </div>
             </div>
         </div>
     </section>
-    <section>
-        <div class="container d-grid gap-2">
-            <div class="row">
-                <div class="col-sm justify-content-start text-start">
+    <section class="my-2">
+        <div class="container">
+            <div class="listSortSection">
+                <div class="listAreaText">
                     <div th:if="${sigunguCode} == ''">
                         <span th:text="${areaName}"></span>의 완벽한 밤, SleepOn 추천 숙소
                     </div>
@@ -215,14 +221,18 @@
                         <span th:text="${sigunguName}"></span>의 완벽한 밤, SleepOn 추천 숙소
                     </div>
                 </div>
-                <div class="col-sm-2 justify-content-end">
-                    <select class="form-select" id="arrangeSel" name="arrangeSel">
+                <div>
+                    <select class="form-select Score" id="arrangeSel" name="arrangeSel">
                         <option selected value="A">제목순</option>
                         <option value="D">최신순</option>
                     </select>
                 </div>
             </div>
-            <div class="row" id="card-container">
+        </div>
+    </section>
+    <section class="my-2">
+        <div class="container">
+            <div class="sleepOnListSection" id="card-container">
                 <input id="areaCode" th:value="${areaCode}" type="hidden">
                 <input id="sigunguCode" th:value="${sigunguCode}" type="hidden">
             </div>

@@ -1,25 +1,25 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <title>SleepOn - 회원가입</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>슬립온 - 회원가입</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="stylesheet" href="/css/styles.css">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/styles.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="/js/bootstrap.bundle.js"></script>
 </head>
 <body>
-<header th:replace="~{/layout/header :: header-basic}"></header>
-<header th:replace="~{layout/header :: header-banner}"></header>
+<header th:replace="~{layout/header :: header-basic}"></header>
+<header th:replace="~{/layout/header :: header-banner}"></header>
 <main>
     <section class="container my-4">
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="formContainer">
-                    <h2 class="text-center Yeongdo">Sing Up</h2>
+                    <h2 class="text-center">Sing Up</h2>
                     <form id="registerForm" class="register">
                         <div class="registerFormGroup Score">
                             <label for="name">이름</label>

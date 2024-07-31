@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <title>SleepOn - 마이페이지</title>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>슬립온 - 마이페이지</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="/css/bootstrap.css" rel="stylesheet">
     <link href="/css/styles.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
-          rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="/js/bootstrap.bundle.js"></script>
 </head>
 <body>
-<header th:replace="~{/layout/header :: header-basic}"></header>
-<header th:replace="~{/layout/header :: header-banner}"></header>
+<header th:replace="~{layout/header :: header-basic}"></header>
+<header th:replace="~{layout/header :: header-banner}"></header>
 <main>
     <section class="ProfileSection m-5">
         <div class="profileHeader">
@@ -22,39 +22,30 @@
         </div>
         <div class="profileBody">
             <div class="polaroidSection">
-                <div class="profileCard polaroidCard">
-                    <div class="polaroidHeaderBlue">
+                <div class="profileCard polaroidCard" onclick="location.href='/SleepOn/inquiry'">
+                    <div class="polaroidHeader">
                         <i class="fa-regular fa-comments"></i>
                     </div>
                     <div class="polaroidBody">
                         <span th:text="|${user.name}님의 문의 내역|"></span>
-                        <strong class="Score" th:text="|${cancelCount}개|"></strong>
-                        <div class="d-grid justify-content-end">
-                            <a class="Score polaroidBlueBtn" href="/SleepOn/inquiry">문의하기</a>
-                        </div>
+                        <strong class="span1" th:text="|${cancelCount}개|"></strong>
                     </div>
                 </div>
                 <div class="profileCard polaroidCard">
-                    <div class="polaroidHeaderGreen">
+                    <div class="polaroidHeader">
                         <i class="fa-regular fa-pen-to-square"></i>
                     </div>
                     <div class="polaroidBody">
                         <span th:text="|${user.name}님의 리뷰 내역|"></span>
-                        <strong class="Score">10개</strong>
-                        <div class="d-grid justify-content-end">
-                            <a class="Score polaroidGreenBtn" href="#">리뷰쓰기</a>
-                        </div>
+                        <strong class="span1">10개</strong>
                     </div>
                 </div>
             </div>
         </div>
-
         <div class="membership-info mb-4">
             <h5 class="mb-3">예약 내역</h5>
-            <div id="reservation-list">
-            </div>
+            <div id="reservation-list"></div>
         </div>
-
         <div class="reviews-section">
             <h5 class="mb-3">내가 작성한 리뷰</h5>
             <div class="review-item p-3 mb-3">
@@ -73,6 +64,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
     $(document).ready(function (){
+        // 예약 취소 함수
         window.cancelReservation = function(reservationId) {
             $.ajax({
                 url: `/SleepOn/cancelReservation/${reservationId}`,
@@ -87,7 +79,7 @@
             });
         }
 
-        // 날짜 데이터 포맷
+        // 날짜 데이터 포맷 함수
         function formatDate(dateString) {
             const date = new Date(dateString);
             const year = date.getFullYear();
@@ -96,6 +88,7 @@
             return `${year}-${month}-${day}`;
         }
 
+        // 예약 데이터 로드 함수
         function loadReservationData() {
             $.ajax({
                 url: "/SleepOn/reservations",
@@ -108,25 +101,25 @@
                         data.forEach(function (reservation) {
                             const formattedDate = formatDate(reservation.reservData);
                             const reservationItem = `
-                            <div class="reservation-item">
-                                <div class="reservation-header">
-                                    <h6>${reservation.roomTitle}</h6>
-                                    <span class="badge badge-success">예약확정</span>
-                                </div>
-                                <div class="reservation-details">
-                                    <div>
-                                        <p>예약날짜: ${formattedDate}</p>
-                                        <p>체크인: ${reservation.checkinTime}</p>
-                                        <p>체크아웃: ${reservation.checkoutTime}</p>
-                                        <p>결제금액: ${reservation.price ? reservation.price.toLocaleString() : "N/A"}원</p>
+                                <div class="reservation-item">
+                                    <div class="reservation-header">
+                                        <h6>${reservation.roomTitle}</h6>
+                                        <span class="badge badge-success">예약확정</span>
                                     </div>
-                                    <img src="${reservation.imageUrl || '/img/noimg.jpg'}" alt="${reservation.roomTitle}">
+                                    <div class="reservation-details">
+                                        <div>
+                                            <p>예약날짜: ${formattedDate}</p>
+                                            <p>체크인: ${reservation.checkinTime}</p>
+                                            <p>체크아웃: ${reservation.checkoutTime}</p>
+                                            <p>결제금액: ${reservation.price ? reservation.price.toLocaleString() : "N/A"}원</p>
+                                        </div>
+                                        <img src="${reservation.imageUrl || '/img/noimg.jpg'}" alt="${reservation.roomTitle}" class="img-fluid">
+                                    </div>
+                                    <div class="reservation-actions">
+                                        <button class="btn BlueBtn" onclick="cancelReservation(${reservation.idx})">예약취소</button>
+                                    </div>
                                 </div>
-                                <div class="reservation-actions">
-                                    <button class="btn btn-outline-danger btn-sm" onclick="cancelReservation(${reservation.idx})">예약취소</button>
-                                </div>
-                            </div>
-                        `;
+                            `;
                             reservationList.append(reservationItem);
                         });
                     } else {
@@ -138,7 +131,14 @@
                 }
             });
         }
+
+        // 예약 데이터 로드
         loadReservationData();
+
+        // 캐러셀 자동 슬라이드 설정
+        $('.carousel').carousel({
+            interval: 5000 // 5초마다 슬라이드 전환
+        });
     });
 </script>
 </body>

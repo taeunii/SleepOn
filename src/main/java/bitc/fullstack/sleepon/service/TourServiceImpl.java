@@ -125,7 +125,15 @@ public class TourServiceImpl implements TourService{
 
             DataComResponseDTO fullData = (DataComResponseDTO)
                     um.unmarshal(url);
+
             itemList = fullData.getBody().getItems().getItemList();
+
+            // 소분류 코드에 해당하는 이름 가져오기
+            for (DataComItemDTO item : itemList) {
+                String smallClassificationCode = item.getCat3();
+                String smallClassificationName = locationMapper.getSmallClassificationName(smallClassificationCode);
+                item.setSmallClassificationName(smallClassificationName); // 수동으로 필드 설정
+            }
         }
         catch (Exception e) {
             e.printStackTrace();

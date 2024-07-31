@@ -271,4 +271,44 @@ public class LocationMapper {
 
         return sigunguMap;
     }
+
+    public String getSmallClassificationName(String code) {
+        String name = "";
+        switch (code) {
+            case "B02010100":
+                name = "관광호텔";
+                break;
+            case "B02010500":
+                name = "콘도미니엄";
+                break;
+            case "B02010600":
+                name = "유스호스텔";
+                break;
+            case "B02010700":
+                name = "펜션";
+                break;
+            case "B02010900":
+                name = "모텔";
+                break;
+            case "B02011000":
+                name = "민박";
+                break;
+            case "B02011100":
+                name = "게스트하우스";
+                break;
+            case "B02011200":
+                name = "홈스테이";
+                break;
+            case "B02011300":
+                name = "서비스드레지던스";
+                break;
+            case "B02011600":
+                name = "한옥";
+                break;
+            default:
+                name = "알 수 없음";
+                break;
+        }
+        return name;
+    }
 }
