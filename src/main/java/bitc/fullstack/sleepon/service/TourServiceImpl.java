@@ -11,8 +11,10 @@ import bitc.fullstack.sleepon.dto.event.FullEventDataResponseDTO;
 import bitc.fullstack.sleepon.mapper.LocationMapper;
 import bitc.fullstack.sleepon.model.UserCancel;
 import bitc.fullstack.sleepon.model.UserReservation;
+import bitc.fullstack.sleepon.model.UserReview;
 import bitc.fullstack.sleepon.repository.UserCancleRepository;
 import bitc.fullstack.sleepon.repository.UserReservationRepository;
+import bitc.fullstack.sleepon.repository.UserReviewRepository;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.Unmarshaller;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,9 @@ public class TourServiceImpl implements TourService{
 
     @Autowired
     UserCancleRepository ucRepository;
+
+    @Autowired
+    UserReviewRepository reviewRepository;
 
     @Override
     public List<FullDataItemDTO> getItemListUrl(String serviceUrl) throws Exception {
@@ -226,5 +231,17 @@ public class TourServiceImpl implements TourService{
     @Transactional
     public void deleteUserCancel(int id) throws Exception {
         ucRepository.deleteByIdx(id);
+    }
+
+    // 고객 전용 내가 작성한 리뷰 내역 보기
+    @Override
+    public List<UserReview> getUserReviewList(String id) throws Exception {
+        return reviewRepository.findByUserIdOrderByCreatedAtDesc(id);
+    }
+
+    // 내가 작성한 리뷰 수
+    @Override
+    public int getCountReviewUser(String id) throws Exception {
+        return reviewRepository.countByUserId(id);
     }
 }

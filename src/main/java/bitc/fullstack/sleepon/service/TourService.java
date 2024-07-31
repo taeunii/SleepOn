@@ -6,6 +6,7 @@ import bitc.fullstack.sleepon.dto.infor.DataComItemDTO;
 import bitc.fullstack.sleepon.dto.event.FullEventDataItemDTO;
 import bitc.fullstack.sleepon.model.UserCancel;
 import bitc.fullstack.sleepon.model.UserReservation;
+import bitc.fullstack.sleepon.model.UserReview;
 
 import java.util.List;
 import java.util.Map;
@@ -44,4 +45,9 @@ public interface TourService {
     void saveUserCancel(UserCancel userCancel) throws Exception;
     // 고객 문의 삭제
     void deleteUserCancel(int id) throws Exception;
+
+    // 고객 전용 내가 작성한 리뷰 내역
+    List<UserReview> getUserReviewList(String id) throws Exception;
+    // 내가 작성한 리뷰 수
+    int getCountReviewUser(String id) throws Exception;
 }

@@ -31,13 +31,13 @@
                         <strong class="span1" th:text="|${cancelCount}개|"></strong>
                     </div>
                 </div>
-                <div class="profileCard polaroidCard">
+                <div class="profileCard polaroidCard" onclick="location.href='/SleepOn/review'">
                     <div class="polaroidHeader">
                         <i class="fa-regular fa-pen-to-square"></i>
                     </div>
                     <div class="polaroidBody">
                         <span th:text="|${user.name}님의 리뷰 내역|"></span>
-                        <strong class="span1">10개</strong>
+                        <strong class="span1" th:text="|${reviewCount}개|"></strong>
                     </div>
                 </div>
             </div>

@@ -7,6 +7,7 @@ import bitc.fullstack.sleepon.dto.event.FullEventDataItemDTO;
 import bitc.fullstack.sleepon.model.SleepOnUser;
 import bitc.fullstack.sleepon.model.UserCancel;
 import bitc.fullstack.sleepon.model.UserReservation;
+import bitc.fullstack.sleepon.model.UserReview;
 import bitc.fullstack.sleepon.repository.UserCancleRepository;
 import bitc.fullstack.sleepon.repository.UserReservationRepository;
 import bitc.fullstack.sleepon.service.TourService;
@@ -285,6 +286,10 @@ public class TourController {
                 // 예약 내역 리스트
                 List<UserReservation> reservations = tourService.getUserReservationDesc(userId);
                 model.addAttribute("reservations", reservations);
+
+                // 리뷰 수 가져와 모델에 추가
+                int reviewCount = tourService.getCountReviewUser(userId);
+                model.addAttribute("reviewCount", reviewCount);
             } else {
                 return "redirect:/SleepOn/login";
             }
@@ -537,5 +542,28 @@ public class TourController {
     public String deleteInquiry(@RequestParam("id") int id) throws Exception {
         tourService.deleteUserCancel(id);
         return "redirect:/SleepOn/inquiry";
+    }
+
+    // 고객 리뷰목록 페이지 - 작성한 댓글
+    @GetMapping("/review")
+    public String userReview (HttpServletRequest request, Model model) throws Exception {
+        addSessionAttributesToModel(request, model);
+
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            SleepOnUser user = (SleepOnUser) session.getAttribute("user");
+            if (user != null) {
+                String userId = user.getId();
+
+                List<UserReview> myReviewList = tourService.getUserReviewList(userId);
+                model.addAttribute("myReviewList", myReviewList);
+
+                return "review/UserReviewList";
+            } else {
+                return "redirect:/SleepOn/login";
+            }
+        } else {
+            return "redirect:/SleepOn/login";
+        }
     }
 }
