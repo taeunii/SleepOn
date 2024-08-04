@@ -165,17 +165,13 @@ public class UserReview {
         this.reviewSubmitted = reviewSubmitted;
     }
 
-    //    별점 평균
-    public int avg_reviewnum() {
-        int avgReviewNum;
-
-        avgReviewNum = (getReviewLocationNum() + getReviewCheckinNum() + getReviewCommunicationNum() + getReviewCleanlinessNum() + getReviewSatisfactionNum()) / 5;
-
-        return avgReviewNum;
-    }
-
     //    리뷰가 제출된 경우 true 반환
     public boolean isReviewSubmitted() {
         return "Y".equals(reviewSubmitted);
+    }
+
+    // 별점 평균 내기
+    public void updateReviewNum() {
+        this.reviewNum = (this.reviewLocationNum + this.reviewCheckinNum + this.reviewCommunicationNum + this.reviewCleanlinessNum + this.reviewSatisfactionNum) / 5;
     }
 }

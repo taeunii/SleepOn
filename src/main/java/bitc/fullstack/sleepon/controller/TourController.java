@@ -10,6 +10,7 @@ import bitc.fullstack.sleepon.model.UserReservation;
 import bitc.fullstack.sleepon.model.UserReview;
 import bitc.fullstack.sleepon.repository.UserCancleRepository;
 import bitc.fullstack.sleepon.repository.UserReservationRepository;
+import bitc.fullstack.sleepon.repository.UserReviewRepository;
 import bitc.fullstack.sleepon.service.TourService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -58,6 +59,8 @@ public class TourController {
     private UserReservationRepository userReservationRepository;
     @Autowired
     private UserCancleRepository userCancleRepository;
+    @Autowired
+    private UserReviewRepository userReviewRepository;
 
     @RequestMapping(value = {"", "/"})
     public String SleepOnService(HttpServletRequest request, Model model) {
@@ -287,8 +290,8 @@ public class TourController {
                 List<UserReservation> reservations = tourService.getUserReservationDesc(userId);
                 model.addAttribute("reservations", reservations);
 
-                // 지난 예약 - 취소 안한 것만
-                List<UserReservation> LastReserv = tourService.getUserLastReserv(userId);
+                // 지난 예약 - 취소 안한 것만, 리뷰 안쓴것만
+                List<UserReservation> LastReserv = tourService.getUserLastReservWithoutReview(userId);
                 model.addAttribute("lastReserv", LastReserv);
 
                 // 리뷰 수 가져와 모델에 추가
@@ -577,5 +580,131 @@ public class TourController {
         UserReview review = tourService.getReviewById(id);
         model.addAttribute("review", review);
         return "review/UserReviewDetail";
+    }
+
+    // 리뷰 작성 페이지
+    @GetMapping("/reviewWrite")
+    public String userReviewWrite (@RequestParam("idx") int idx, HttpServletRequest request, Model model) throws Exception {
+        addSessionAttributesToModel(request, model);
+
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            SleepOnUser user = (SleepOnUser) session.getAttribute("user");
+            if (user != null) {
+                UserReservation reservation = tourService.getUserReservationIdx(idx);
+                model.addAttribute("reservation", reservation);
+                model.addAttribute("user", user);
+                return "review/UserReviewWrite";
+            }
+        }
+        return "redirect:/SleepOn/login";
+    }
+
+    // 리뷰 작성, 데이터베이스 등록
+    @RequestMapping("/SubmitReview")
+    public String submitReview(@RequestParam("reviewLocationNum") int reviewLocationNum,
+                               @RequestParam("reviewCheckinNum") int reviewCheckinNum,
+                               @RequestParam("reviewCommunicationNum") int reviewCommunicationNum,
+                               @RequestParam("reviewCleanlinessNum") int reviewCleanlinessNum,
+                               @RequestParam("reviewSatisfactionNum") int reviewSatisfactionNum,
+                               @RequestParam("reviewText") String reviewText,
+                               @RequestParam("contentId") String contentId,
+                               @RequestParam("reservId") int reservId,
+                               HttpServletRequest request, Model model) throws Exception {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            SleepOnUser user = (SleepOnUser) session.getAttribute("user");
+            if (user != null) {
+                UserReview userReview = new UserReview();
+                userReview.setUser(user);
+                userReview.setReviewLocationNum(reviewLocationNum);
+                userReview.setReviewCheckinNum(reviewCheckinNum);
+                userReview.setReviewCommunicationNum(reviewCommunicationNum);
+                userReview.setReviewCleanlinessNum(reviewCleanlinessNum);
+                userReview.setReviewSatisfactionNum(reviewSatisfactionNum);
+                userReview.setReviewText(reviewText);
+                userReview.setContentId(contentId);
+                userReview.setCreatedAt(LocalDateTime.now());
+                userReview.setReviewSubmitted("Y");
+
+                // 예약 정보를 설정
+                UserReservation reservation = tourService.getUserReservationIdx(reservId);
+                userReview.setReservation(reservation);
+
+                // 리뷰 저장
+                tourService.saveUserReview(userReview);
+
+                return "redirect:/SleepOn/review";
+            }
+        }
+        return "redirect:/SleepOn/login";
+    }
+
+    // 리뷰 상세보기
+    @RequestMapping("/reviewDetail")
+    public String reviewDetail (@RequestParam("idx") int idx, Model model, HttpServletRequest request) {
+        addSessionAttributesToModel(request, model);
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            SleepOnUser user = (SleepOnUser) session.getAttribute("user");
+            if (user != null) {
+                UserReview review = userReviewRepository.findById(idx).orElse(null);
+                if (review != null) {
+                    model.addAttribute("review", review);
+                    model.addAttribute("user", user);
+
+                    if (review.getReservation() != null) {
+                        UserReservation reservation = review.getReservation();
+                        model.addAttribute("reservation", reservation);
+                    }
+                    return "review/UserReviewDetail";
+                }
+                else {
+                    System.out.println("Review is null");
+                }
+            } else {
+                System.out.println("User is null in session.");
+            }
+        } else {
+            System.out.println("Session is null.");
+        }
+        return "redirect:/SleepOn/login";
+    }
+
+    // 리뷰 수정
+    @RequestMapping("/updateReview")
+    public String updateReview(@RequestParam("id") int id,
+                               @RequestParam("reviewLocationNum") int reviewLocationNum,
+                               @RequestParam("reviewCheckinNum") int reviewCheckinNum,
+                               @RequestParam("reviewCommunicationNum") int reviewCommunicationNum,
+                               @RequestParam("reviewCleanlinessNum") int reviewCleanlinessNum,
+                               @RequestParam("reviewSatisfactionNum") int reviewSatisfactionNum,
+                               @RequestParam("reviewText") String reviewText,
+                               HttpServletRequest request, Model model) throws Exception {
+        addSessionAttributesToModel(request, model);
+
+        tourService.updateUserReview(id, reviewLocationNum, reviewCheckinNum, reviewCommunicationNum, reviewCleanlinessNum, reviewSatisfactionNum, reviewText);
+
+        return "redirect:/SleepOn/review";
+    }
+
+    // 리뷰 삭제
+    @RequestMapping("/deleteReview")
+    public String deleteReview(@RequestParam("id") int id) throws Exception {
+        tourService.deleteUserReview(id);
+        return "redirect:/SleepOn/review";
+    }
+
+    // 호텔별 리뷰목록 페이지 - 작성한 댓글
+    @RequestMapping("/hotelReviewList")
+    public ModelAndView hotelReviewList(@RequestParam("contentId") String contentId, HttpServletRequest request, Model model) throws Exception {
+        addSessionAttributesToModel(request, model);
+
+        ModelAndView mv = new ModelAndView("review/HotelReviewList");
+
+        List<UserReview> itemList = tourService.getHotelReviewList();
+        mv.addObject("itemList", itemList);
+
+        return mv;
     }
 }

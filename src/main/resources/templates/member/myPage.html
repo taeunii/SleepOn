@@ -76,26 +76,16 @@
                             <span th:text="${item.getCheckoutTime()}"></span>
                         </div>
                         <div class="text-end">
-                            <button class="BackRedBtn">리뷰 쓰기</button>
+                            <button type="button" th:value="${item.getIdx()}" class="BackRedBtn" onclick="PageWrite(this)">리뷰 쓰기</button>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="reservationBody" th:unless="${#lists.size(lastReserv) > 0}">
                 <div class="nonReviewCard text-center">
-
+                    <p>작성할 후기가 없습니다.</p>
                 </div>
             </div>
-        </div>
-        <div class="reviews-section">
-            <h5 class="mb-3">내가 작성한 리뷰</h5>
-            <div class="review-item p-3 mb-3">
-                <h6>서울 게스트하우스</h6>
-                <p>평점: ★★★★★</p>
-                <p>리뷰 내용: 아주 편안하고 깨끗한 숙소였습니다. 추천합니다!</p>
-                <p>작성일: 2024.07.20</p>
-            </div>
-            <!-- 추가 리뷰 항목을 여기다 추가 -->
         </div>
     </section>
     <!-- 스크롤 버튼 -->
@@ -212,6 +202,12 @@
         $('#scrollToBottom').click(function () {
             $('html, body').animate({scrollTop: $(document).height() - $(window).height()}, 300); // 속도를 300 밀리초로 설정
         });
+
+        // 리뷰 작성
+        window.PageWrite = function(button){
+            const idx = button.value;
+            window.location.href = "/SleepOn/reviewWrite?idx=" + encodeURIComponent(idx);
+        }
     });
 </script>
 </body>

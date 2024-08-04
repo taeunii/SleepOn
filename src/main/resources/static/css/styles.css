@@ -637,12 +637,42 @@ button {
 }
 .reviewCard{
     border: 1px solid rgba(208, 208, 208, 0.45);
-    border-right: 3px solid #FF385C;
+    border-right: 3px solid #ff5a5f;
     padding: 1em;
     border-top-left-radius: 2em;
     border-bottom-left-radius: 2em;
     display: flex;
     flex-direction: column;
+}
+/* 리뷰 작성 */
+.reviewGrid{
+    display: grid;
+    grid-template-columns: 0.2fr 1.5fr;
+    padding: 0.5em;
+    text-align: left;
+}
+.reviewTitle{
+    font-size: 25px;
+}
+.reviewStarGrid{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 0.5em;
+}
+.reviewText{
+    padding: 0.3em;
+}
+.reviewInput{
+    width: 100%;
+    border-radius: 1.5em;
+    border: 1px solid rgba(208, 208, 208, 0.45);
+    padding: 0.3em;
+    text-align: left;
+    justify-self: left;
+}
+.reviewInput select{
+    width: 100%;
 }
 /* inquiry */
 /* inquiry, 관리자 및 고객 list */

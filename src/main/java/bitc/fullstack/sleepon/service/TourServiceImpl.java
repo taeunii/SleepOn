@@ -209,10 +209,9 @@ public class TourServiceImpl implements TourService{
                 .collect(Collectors.toList());
     }
 
-    // 지난 예약 정보 - 취소 안한 것만
     @Override
-    public List<UserReservation> getUserLastReserv(String userId) throws Exception {
-        List<UserReservation> reservations = reservationRepository.findByUserIdLastReserv(userId);
+    public List<UserReservation> getUserLastReservWithoutReview(String userId) throws Exception {
+        List<UserReservation> reservations = reservationRepository.findUserLastReservWithoutReview(userId);
         LocalDate currentDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -278,5 +277,53 @@ public class TourServiceImpl implements TourService{
     @Override
     public UserReview getReviewById(int id) throws Exception {
         return reviewRepository.findById(id).orElse(null);
+    }
+
+    // 내가 예약한 숙소 정보 가져오기
+    @Override
+    public UserReservation getUserReservationIdx(int idx) throws Exception {
+        return reservationRepository.findByIdx(idx);
+    }
+
+
+    // 고객 전용 리뷰 저장
+    @Override
+    public void saveUserReview(UserReview userReview) throws Exception {
+        userReview.updateReviewNum(); // 리뷰 저장 전에 reviewNum 업데이트
+        reviewRepository.save(userReview);
+    }
+
+    // 고객 전용 리뷰 수정
+    @Override
+    public void updateUserReview(int id,
+                                 int reviewLocationNum,
+                                 int reviewCheckinNum,
+                                 int reviewCommunicationNum,
+                                 int reviewCleanlinessNum,
+                                 int reviewSatisfactionNum,
+                                 String reviewText) throws Exception {
+        UserReview userReview = reviewRepository.findById(id).orElseThrow(() -> new Exception("리뷰를 찾을 수 없습니다."));
+        userReview.setReviewLocationNum(reviewLocationNum);
+        userReview.setReviewCheckinNum(reviewCheckinNum);
+        userReview.setReviewCommunicationNum(reviewCommunicationNum);
+        userReview.setReviewCleanlinessNum(reviewCleanlinessNum);
+        userReview.setReviewSatisfactionNum(reviewSatisfactionNum);
+        userReview.setReviewText(reviewText);
+        userReview.setUpdatedAt(LocalDateTime.now());
+        userReview.updateReviewNum(); // 리뷰 수정 전에 reviewNum 업데이트
+        reviewRepository.save(userReview);
+    }
+
+    // 고객 리뷰 삭제
+    @Override
+    @Transactional
+    public void deleteUserReview(int id) throws Exception {
+        reviewRepository.deleteByIdx(id);
+    }
+
+    // 호텔별 고객 리뷰 목록
+    @Override
+    public List<UserReview> getHotelReviewList() throws Exception {
+        return reviewRepository.findByContentIdOrderByCreatedAtDesc();
     }
 }

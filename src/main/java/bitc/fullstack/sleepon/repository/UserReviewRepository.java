@@ -4,8 +4,10 @@ import bitc.fullstack.sleepon.model.UserCancel;
 import bitc.fullstack.sleepon.model.UserReservation;
 import bitc.fullstack.sleepon.model.UserReview;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,4 +18,9 @@ public interface UserReviewRepository extends JpaRepository<UserReview, Integer>
 
     @Query("SELECT COUNT(c) FROM UserReview c WHERE c.user.id = :id AND c.reviewSubmitted = 'Y'")
     int countByUserId(@Param("id") String id); // 고객 전용 내가 작성한 리뷰 개수
+
+    void deleteByIdx(int id); // 리뷰 삭제
+
+    @Query("SELECT c FROM UserReview c WHERE c.contentId = :contentId ORDER BY c.createdAt DESC")
+    List<UserReview> findByContentIdOrderByCreatedAtDesc(); // 호텔별 고객 리뷰 목록 보기
 }

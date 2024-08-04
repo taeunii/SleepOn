@@ -31,7 +31,7 @@ public interface TourService {
     // 고객 전용 예약 정보
     List<UserReservation> getUserReservationDesc(String userId) throws Exception;
     // 지난 예약 목록 - 예약 취소 안한 목록만
-    List<UserReservation> getUserLastReserv(String userId) throws Exception;
+    List<UserReservation> getUserLastReservWithoutReview(String userId) throws Exception;
 
     // 관리자 전용 상담 게시글 목록
     List<UserCancel> getAdminCancelList() throws Exception;
@@ -55,4 +55,25 @@ public interface TourService {
 
     // 내가 작성한 리뷰 보기
     UserReview getReviewById(int id) throws Exception;
+
+    // 내가 예약한 숙소정보 가져오기
+    UserReservation getUserReservationIdx(int idx) throws Exception;
+
+    // 고객 전용 리뷰 작성
+    void saveUserReview(UserReview userReview) throws Exception;
+
+    // 고객 전용 리뷰 수정
+    void updateUserReview(int id,
+                          int reviewLocationNum,
+                          int reviewCheckinNum,
+                          int reviewCommunicationNum,
+                          int reviewCleanlinessNum,
+                          int reviewSatisfactionNum,
+                          String reviewText) throws Exception;
+
+    // 고객 리뷰 삭제
+    void deleteUserReview(int id) throws Exception;
+
+    // 호텔별 리뷰 목록
+    List<UserReview> getHotelReviewList() throws Exception;
 }
