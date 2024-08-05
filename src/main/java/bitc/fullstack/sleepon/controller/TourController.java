@@ -232,6 +232,9 @@ public class TourController {
         mv.addObject("checkIn", checkIn);
         mv.addObject("checkOut", checkOut);
 
+        List<UserReview> hotelReviews = tourService.getReviewsByContentId(contentId);
+        mv.addObject("hotelReviews", hotelReviews);
+
         return mv;
     }
 
@@ -269,7 +272,7 @@ public class TourController {
         List<DataItemDTO> RoomList = tourService.getDetailItemList(APIDetailUrl + opt1 + APIkey + opt2 + opt3 + contentId + opt4);
 
         System.out.println(APIDetailUrl + opt1 + APIkey + opt2 + opt3 + contentId + opt4);
-        
+
         return RoomList;
     }
 
@@ -371,6 +374,20 @@ public class TourController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("예약을 찾을 수 없습니다.");
         }
     }
+    // 관리자 예약 취소
+    @PostMapping("/AdminCancelReservation")
+    public ResponseEntity<String> AdminCancelReservation(@RequestParam("reservationId") Long reservationId) {
+        UserReservation reservation = userReservationRepository.findById(reservationId).orElse(null);
+
+        if (reservation != null) {
+            reservation.setReservCancel('Y');
+            userReservationRepository.save(reservation);
+            return ResponseEntity.ok("예약이 취소되었습니다.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("예약을 찾을 수 없습니다.");
+        }
+    }
+
     // 예약 불러오기
     @GetMapping("/reservations")
     public ResponseEntity<List<UserReservation>> getReservations(HttpSession session) throws Exception {
@@ -481,7 +498,7 @@ public class TourController {
     // 고객 문의 접수
     @RequestMapping("/SubmitInquiry")
     public String submitInquiry (@RequestParam("title") String title, @RequestParam("inquiry") String inquiry, @RequestParam(name="reservId", required = false) String reservId,
-            HttpSession session, HttpServletRequest request, Model model) throws Exception {
+                                 HttpSession session, HttpServletRequest request, Model model) throws Exception {
         addSessionAttributesToModel(request, model);
 
         SleepOnUser user = (SleepOnUser) session.getAttribute("user");
@@ -551,7 +568,7 @@ public class TourController {
         return "redirect:/SleepOn/inquiry";
     }
 
-    // 고객 리뷰목록 페이지 - 작성한 댓글
+    // 고객 리뷰목록 페이지
     @GetMapping("/review")
     public String userReview (HttpServletRequest request, Model model) throws Exception {
         addSessionAttributesToModel(request, model);
@@ -626,6 +643,7 @@ public class TourController {
                 userReview.setContentId(contentId);
                 userReview.setCreatedAt(LocalDateTime.now());
                 userReview.setReviewSubmitted("Y");
+                userReview.updateReviewNum();
 
                 // 예약 정보를 설정
                 UserReservation reservation = tourService.getUserReservationIdx(reservId);
@@ -693,18 +711,5 @@ public class TourController {
     public String deleteReview(@RequestParam("id") int id) throws Exception {
         tourService.deleteUserReview(id);
         return "redirect:/SleepOn/review";
-    }
-
-    // 호텔별 리뷰목록 페이지 - 작성한 댓글
-    @RequestMapping("/hotelReviewList")
-    public ModelAndView hotelReviewList(@RequestParam("contentId") String contentId, HttpServletRequest request, Model model) throws Exception {
-        addSessionAttributesToModel(request, model);
-
-        ModelAndView mv = new ModelAndView("review/HotelReviewList");
-
-        List<UserReview> itemList = tourService.getHotelReviewList();
-        mv.addObject("itemList", itemList);
-
-        return mv;
     }
 }

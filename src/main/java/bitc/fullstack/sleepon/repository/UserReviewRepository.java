@@ -21,6 +21,9 @@ public interface UserReviewRepository extends JpaRepository<UserReview, Integer>
 
     void deleteByIdx(int id); // 리뷰 삭제
 
-    @Query("SELECT c FROM UserReview c WHERE c.contentId = :contentId ORDER BY c.createdAt DESC")
-    List<UserReview> findByContentIdOrderByCreatedAtDesc(); // 호텔별 고객 리뷰 목록 보기
+    @Query("SELECT u FROM UserReview u WHERE u.reservation.contentId = :contentId ORDER BY u.createdAt DESC")
+    List<UserReview> findByContentIdOrderByCreatedAtDesc(@Param("contentId") String contentId);
+
+    @Query("SELECT COUNT(u) FROM UserReview u WHERE u.reservation.contentId = :contentId AND u.reviewSubmitted = 'Y'")
+    int countByContentId(@Param("contentId") String contentId); // 숙소별 작성된 리뷰 개수
 }

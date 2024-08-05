@@ -75,5 +75,8 @@ public interface TourService {
     void deleteUserReview(int id) throws Exception;
 
     // 호텔별 리뷰 목록
-    List<UserReview> getHotelReviewList() throws Exception;
+    List<UserReview> getReviewsByContentId(String contentId) throws Exception;
+
+    // 숙소별 작성한 리뷰 수
+    int getCountReviewContentId(String contentId) throws Exception;
 }

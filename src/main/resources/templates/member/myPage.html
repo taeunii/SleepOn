@@ -64,18 +64,18 @@
                         <i class="fa-solid fa-heart"></i>
                     </div>
                     <div class="reviewCard">
-                        <div class="reservationCardHeader">
+                        <div class="reviewCardHeader">
                             <span th:text="${item.getRoomTitle()}"></span>
                         </div>
-                        <div class="reservationCardGrid">
+                        <div class="reviewCardGrid">
                             <span>체크인</span>
                             <span th:text="${item.getCheckinTime()}"></span>
                         </div>
-                        <div class="reservationCardGrid">
+                        <div class="reviewCardGrid">
                             <span>체크아웃</span>
                             <span th:text="${item.getCheckoutTime()}"></span>
                         </div>
-                        <div class="text-end">
+                        <div class="text-start">
                             <button type="button" th:value="${item.getIdx()}" class="BackRedBtn" onclick="PageWrite(this)">리뷰 쓰기</button>
                         </div>
                     </div>
@@ -138,9 +138,11 @@
                             const formattedDate = formatDate(reservation.reservData);
                             let reservCheck = "";
                             let iconClass = "";
-                            if (reservation.reservCancle === 'Y') {
+                            let btnDisable = "";
+                            if (reservation.reservCancel === 'Y') {
                                 reservCheck = "예약 취소";
                                 iconClass="fa-solid fa-ban";
+                                btnDisable = "disabled";
                             }
                             else {
                                 reservCheck = "예약 확정";
@@ -166,7 +168,7 @@
                                         <span>${reservation.checkoutTime}</span>
                                     </div>
                                     <div class="reservationBtn">
-                                        <button class="BoarderBtn" onclick="cancelReservation(${reservation.idx})">예약취소</button>
+                                        <button class="BoarderBtn" ${btnDisable} onclick="cancelReservation(${reservation.idx})">예약취소</button>
                                     </div>
                                 </div>
                                 <div class="reservationIcon">

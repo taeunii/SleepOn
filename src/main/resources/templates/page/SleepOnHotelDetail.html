@@ -19,6 +19,7 @@
             function loadInfoData() {
                 const contentId = $('#contentId').val();
                 const hotelTitle = $('#hotelTitle');
+                const reviewTitle = $('#hotelReviewTitle');
                 $.ajax({
                     url: "/SleepOn/HotelDetailInfo",
                     type: "post",
@@ -30,6 +31,7 @@
                         if (respData.length > 0) {
                             for (let i = 0; i < respData.length; i++) {
                                 hotelTitle.text(respData[i].title + " 객실 정보");
+                                reviewTitle.text(respData[i].title + " 호텔 리뷰");
                                 let imgToUrl = respData[i].firstimage || '/img/noimg.jpg';
                                 console.log("Image URL: ", imgToUrl);
                                 let homepage = respData[i].homepage || '홈페이지가 없습니다.';
@@ -67,7 +69,7 @@
                                 container.append(tag);
                             }
                         } else {
-                            container.append('<div class="col-12"><p>조회된 데이터가 없습니다.</p></div>');
+                            container.append('<div class="text-center"><p>조회된 데이터가 없습니다.</p></div>');
                         }
                     },
                     error: function () {
@@ -91,9 +93,15 @@
                             for (let i = 0; i < respData.length; i++) {
                                 let imgToUrl = respData[i].roomimg1 || '/img/noimg.jpg';
                                 console.log("room Image URL: ", imgToUrl);
-                                let roombasecount = respData[i].roombasecount || '2';
+                                let roombasecount = respData[i].roombasecount;
+                                if(roombasecount === '0'){
+                                    roombasecount = '2';
+                                }
                                 console.log(roombasecount);
-                                let roommaxcount = respData[i].roommaxcount || roombasecount;
+                                let roommaxcount = respData[i].roommaxcount;
+                                if(roommaxcount === '0'){
+                                    roommaxcount = roombasecount;
+                                }
                                 console.log(roommaxcount);
                                 // 주중 금액 (비성수기/성수기)
                                 let weekdayFee = "";
@@ -151,7 +159,7 @@
                                         </div>
                                     </div>
                                 <div class="hotelRoomBtn">
-                                    <button class="BoarderBtn" type="button" onclick="PayMentPage(this)" data-roomtitle="${respData[i].roomtitle}" data-roommaxcount="${respData[i].roommaxcount}">
+                                    <button class="BoarderBtn" type="button" onclick="PayMentPage(this)" data-roomtitle="${respData[i].roomtitle}" data-roommaxcount="${roommaxcount}">
                                         예약하기
                                     </button>
                                 </div>
@@ -171,7 +179,6 @@
             }
             loadInfoData();
             loadRoomInfoData();
-
             // 결제 창 이동
             window.PayMentPage = function (button){
                 const roomTitle = $(button).data("roomtitle");
@@ -185,7 +192,7 @@
                 const userCnt = $('#userCnt').val();
                 if (user.toString() === '') {
                     console.log("회원가입");
-                    alert("회원가입 후 사용");
+                    alert("로그인 후 예약이 가능합니다.");
                     return false;
                 }
                 else{
@@ -243,30 +250,6 @@
                 $('html, body').animate({scrollTop: $(document).height() - $(window).height()}, 300); // 속도를 300 밀리초로 설정
             });
 
-
-            // 리뷰
-            function loadReviewData() {
-                const contentId = $('#contentId').val();
-                console.log(contentId);
-                $.ajax({
-                    url: "/SleepOn/reviewDetail",
-                    type: "post",
-                    data: {contentId: contentId},
-                    success: function (respData) {
-                        const container = $('#hotelReview');
-                        container.empty();
-
-                        if (respData.length > 0) {
-                            for (let i = 0; i < respData.length; i++) {
-                                const tag = `
-                                <span th:text="${item.getReviewText()}">리뷰</span>
-                                `;
-                                container.append(tag);
-                            }
-                        }
-                    },
-                });
-            }
         });
     </script>
 </head>
@@ -312,9 +295,35 @@
 
     <section class="my-2">
         <div class="container">
-            <div id="hotelReview" class="hotelReviewSection"></div>
+            <div class="inquiryTitle">
+                <span id="hotelReviewTitle">호텔 리뷰</span>
+            </div>
+            <div class="mt-4 HotelReviewSection" th:if="${#lists.size(hotelReviews) > 0}" th:each="review : ${hotelReviews}">
+                <div class="HotelReviewCard">
+                    <div class="HotelReviewName">
+                        <span th:text="${review.user.name}"></span>
+                    </div>
+                    <div class="HotelReviewText">
+                        <div class="HotelReviewStar">
+                            <span class="stars" th:each="star, stat : ${#numbers.sequence(1, 5)}">
+                                <i class="fa-solid fa-star" th:classappend="${stat.index < review.getReviewNum()} ? 'filled-star' : 'empty-star'"></i>
+                            </span>
+                            <div class="HotelReviewDate">
+                                <span class="Score" th:text="${#temporals.format(review.getCreatedAt(), 'yyyy-MM-dd HH:mm')}"></span>
+                            </div>
+                        </div>
+                        <span th:text="${review.getReviewText()}"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4 HotelReviewSection" th:unless="${#lists.size(hotelReviews) > 0}">
+                <div class="HotelReviewCard">
+                    <span class="nonHotelReview text-center">등록된 리뷰가 없습니다.</span>
+                </div>
+            </div>
         </div>
     </section>
+
     <!-- 스크롤 버튼 -->
     <div id="scrollButtons">
         <button id="scrollToTop" class="scroll-btn"><i class="fa-solid fa-chevron-up"></i></button>

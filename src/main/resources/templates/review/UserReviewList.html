@@ -7,6 +7,14 @@
     <link rel="stylesheet" href="/css/bootstrap.css">
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .filled-star {
+            color: #FFD700; /* 금색 */
+        }
+        .empty-star {
+            color: #D3D3D3; /* 회색 */
+        }
+    </style>
     <script src="/js/bootstrap.bundle.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
@@ -59,7 +67,7 @@
                 <span th:text="${#temporals.format(item.getCreatedAt(), 'yyyy-MM-dd')}"></span>
                 <span>
                     <span th:each="star, stat : ${#numbers.sequence(1, 5)}">
-                        <i class="fa-solid fa-star" th:classappend="${stat.index <= item.getReviewNum() - 1} ? 'filled-star' : 'empty-star'"></i>
+                        <i class="fa-solid fa-star" th:classappend="${stat.index < item.getReviewNum()} ? 'filled-star' : 'empty-star'"></i>
                     </span>
                 </span>
                 <div class="reviewBtn" th:if="${item.getReviewText() == null}">
@@ -81,13 +89,5 @@
     </div>
 </main>
 <footer th:replace="~{layout/footer :: footer}"></footer>
-<style>
-    .filled-star {
-        color: #FFD700;
-    }
-    .empty-star {
-        color: #E0E0E0;
-    }
-</style>
 </body>
 </html>

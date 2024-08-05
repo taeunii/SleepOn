@@ -190,7 +190,16 @@ public class TourServiceImpl implements TourService{
     // 예약 내역 가져오기
     @Override
     public List<UserReservation> getUserReservation(String userId) throws Exception{
-        return reservationRepository.findByUserId(userId);
+        List<UserReservation> allReservations = reservationRepository.findByUserId(userId);
+        LocalDate now = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // 날짜 형식에 맞게 패턴을 설정
+        return allReservations.stream()
+                .filter(reservation -> {
+                    LocalDate checkinDate = LocalDate.parse(reservation.getCheckinTime(), formatter);
+                    LocalDate checkoutDate = LocalDate.parse(reservation.getCheckoutTime(), formatter);
+                    return !checkinDate.isBefore(now) || !checkoutDate.isBefore(now);
+                })
+                .collect(Collectors.toList());
     }
 
     // 내 예약 정보 가져오기 (체크인 예정만)
@@ -289,7 +298,6 @@ public class TourServiceImpl implements TourService{
     // 고객 전용 리뷰 저장
     @Override
     public void saveUserReview(UserReview userReview) throws Exception {
-        userReview.updateReviewNum(); // 리뷰 저장 전에 reviewNum 업데이트
         reviewRepository.save(userReview);
     }
 
@@ -323,7 +331,13 @@ public class TourServiceImpl implements TourService{
 
     // 호텔별 고객 리뷰 목록
     @Override
-    public List<UserReview> getHotelReviewList() throws Exception {
-        return reviewRepository.findByContentIdOrderByCreatedAtDesc();
+    public List<UserReview> getReviewsByContentId(String contentId) throws Exception {
+        List<UserReview> hotelReviews = reviewRepository.findByContentIdOrderByCreatedAtDesc(contentId);
+        return  hotelReviews;
+    }
+
+    @Override
+    public int getCountReviewContentId(String contentId) throws Exception {
+        return reviewRepository.countByContentId(contentId);
     }
 }

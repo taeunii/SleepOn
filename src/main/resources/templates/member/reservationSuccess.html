@@ -30,9 +30,20 @@
 <header th:replace="~{layout/header :: header-banner}"></header>
 <main>
     <section class="container">
-        <h1>예약 성공</h1>
-        <p>숙소 예약이 성공적으로 완료되었습니다.</p>
-        <a href="/SleepOn" class="btn btn-primary">메인 페이지로 이동</a>
+        <div class="reservationCardSection">
+            <div class="reservationCard">
+                <div class="reservationCardHeader">
+                    <span>예약 성공</span>
+                </div>
+                <span>숙소 예약이 성공적으로 완료되었습니다.</span>
+                <div class="reservationBtn">
+                    <a href="/SleepOn" class="btn BoarderBtn">확인</a>
+                </div>
+            </div>
+            <div class="reservationIcon">
+                <i class="fa-solid fa-hotel"></i>
+            </div>
+        </div>
     </section>
     <!-- 스크롤 버튼 -->
     <div id="scrollButtons">

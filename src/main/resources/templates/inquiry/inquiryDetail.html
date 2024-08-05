@@ -67,8 +67,7 @@
                     <form action="/SleepOn/saveReply" method="post">
                         <input name="id" th:value="${inquiry.getIdx()}" type="hidden">
                         <div class="form-group">
-                                <textarea class="form-control BoxBorderNon" id="reply-content" name="reply" placeholder="답변을 입력하세요"
-                                          rows="5"></textarea>
+                            <textarea class="form-control BoxBorderNon" id="reply-content" name="reply" placeholder="답변을 입력하세요" rows="5"></textarea>
                         </div>
                         <div class="d-flex justify-content-end">
                             <button class="BackRedBtn" type="submit">등록</button>
@@ -100,14 +99,22 @@
     </section>
     <section class="container my-3">
         <div th:if="${session.user.isManager()}" class="inquiryBtn">
-            <button class="BackBtn back-btn" type="button">뒤로가기</button>
+            <div th:if="${inquiry.reservation != null}" class="me-auto">
+                <div th:if="${inquiry.reservation.reservCancel eq 'N'}">
+                    <button class="BoarderBtn" type="button" th:value="${inquiry.reservation.idx}" onclick="AdminCancelReservation(this)">예약취소</button>
+                </div>
+                <div th:unless="${inquiry.reservation.reservCancel eq 'N'}">
+                    <button class="BoarderBtn" type="button" disabled>예약취소 완료</button>
+                </div>
+            </div>
+            <button class="BackBtn" type="button">뒤로가기</button>
         </div>
         <div th:unless="${session.user.isManager()}">
             <form action="/SleepOn/deleteInquiry" method="post">
                 <input name="id" th:value="${inquiry.getIdx()}" type="hidden">
                 <div class="inquiryBtn">
-                    <button class="BackBtn back-btn" type="button">뒤로가기</button>
-                    <button class="BackBlueBtn" type="submit">문의 삭제</button>
+                    <button class="BackBtn" type="button">뒤로가기</button>
+                    <button class="BackRedBtn" type="submit">문의 삭제</button>
                 </div>
             </form>
         </div>
@@ -124,9 +131,26 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
     $(document).ready(function () {
-        $('.back-btn').on('click', function () {
+        $('.BackBtn').on('click', function () {
             history.back();
         });
+
+        // 예약 취소 함수
+        window.AdminCancelReservation = function(button) {
+            const id = button.value;
+            $.ajax({
+                url: `/SleepOn/AdminCancelReservation`,
+                type: "POST",
+                data: { reservationId: id },
+                success: function (response) {
+                    alert(response);
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    alert("예약 취소 중 오류가 발생했습니다: " + xhr.responseText);
+                }
+            });
+        }
 
         // 페이지 로드 시 버튼 숨기기
         $('#scrollToTop').show();
