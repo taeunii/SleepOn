@@ -209,11 +209,11 @@ public class TourServiceImpl implements TourService{
         LocalDate currentDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        // 필터링을 통해 현재 날짜 이후의 체크인 날짜를 가진 예약만 반환
+        // 필터링을 통해 현재 날짜 이후 또는 오늘의 체크인 날짜를 가진 예약만 반환
         return reservations.stream()
                 .filter(reservation -> {
-                    LocalDate checkinDate = LocalDate.parse(reservation.getCheckinTime() , formatter);
-                    return checkinDate.isAfter(currentDate);
+                    LocalDate checkinDate = LocalDate.parse(reservation.getCheckinTime(), formatter);
+                    return checkinDate.isEqual(currentDate) || checkinDate.isAfter(currentDate);
                 })
                 .collect(Collectors.toList());
     }

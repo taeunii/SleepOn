@@ -100,10 +100,10 @@
     <section class="container my-3">
         <div th:if="${session.user.isManager()}" class="inquiryBtn">
             <div th:if="${inquiry.reservation != null}" class="me-auto">
-                <div th:if="${inquiry.reservation.reservCancel eq 'N'}">
+                <div th:if="${reservCancel == 'N'}">
                     <button class="BoarderBtn" type="button" th:value="${inquiry.reservation.idx}" onclick="AdminCancelReservation(this)">예약취소</button>
                 </div>
-                <div th:unless="${inquiry.reservation.reservCancel eq 'N'}">
+                <div th:unless="${reservCancel == 'N'}">
                     <button class="BoarderBtn" type="button" disabled>예약취소 완료</button>
                 </div>
             </div>

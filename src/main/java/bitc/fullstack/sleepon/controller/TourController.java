@@ -543,6 +543,10 @@ public class TourController {
                     model.addAttribute("user", user);
                     model.addAttribute("isManager", user.isManager());
 
+                    // 예약 취소 확인
+                    String reservCancel = String.valueOf(inquiry.getReservation().getReservCancel());
+                    model.addAttribute("reservCancel", reservCancel);
+
                     if (inquiry.getReservation() != null) {
                         UserReservation reservation = inquiry.getReservation();
                         model.addAttribute("reservation", reservation);
