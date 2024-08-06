@@ -45,6 +45,8 @@ public interface TourService {
     List<UserCancel> getUserCancelList(String id) throws Exception;
     // 고객 전용 문의 작성
     void saveUserCancel(UserCancel userCancel) throws Exception;
+    // 객실 문의 (예약 취소된 것, 이미 사용한 객실 제외)
+    List<UserReservation> getUserNotCancelList(String userId) throws Exception;
     // 고객 문의 삭제
     void deleteUserCancel(int id) throws Exception;
 

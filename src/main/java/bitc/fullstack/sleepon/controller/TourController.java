@@ -486,7 +486,7 @@ public class TourController {
         if (session != null) {
             SleepOnUser user = (SleepOnUser) session.getAttribute("user");
             if (user != null) {
-                List<UserReservation> reservations = tourService.getUserReservation(user.getId());
+                List<UserReservation> reservations = tourService.getUserNotCancelList(user.getId());
                 model.addAttribute("reservations", reservations);
                 model.addAttribute("user", user);
                 return "inquiry/inquiryWrite";

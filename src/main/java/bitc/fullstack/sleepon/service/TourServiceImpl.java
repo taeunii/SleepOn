@@ -263,6 +263,21 @@ public class TourServiceImpl implements TourService{
         ucRepository.save(userCancel);
     }
 
+    @Override
+    public List<UserReservation> getUserNotCancelList(String userId) throws Exception{
+        List<UserReservation> reservations = reservationRepository.findByUserNotCancel(userId);
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        // 필터링을 통해 체크인 날짜가 현재 날짜 이후인 데이터만
+        return reservations.stream()
+                .filter(reservation -> {
+                    LocalDate checkinDate = LocalDate.parse(reservation.getCheckinTime(), formatter);
+                    return checkinDate.isAfter(currentDate);
+                })
+                .collect(Collectors.toList());
+    }
+
     // 고객 문의 삭제
     @Override
     @Transactional
@@ -293,7 +308,6 @@ public class TourServiceImpl implements TourService{
     public UserReservation getUserReservationIdx(int idx) throws Exception {
         return reservationRepository.findByIdx(idx);
     }
-
 
     // 고객 전용 리뷰 저장
     @Override

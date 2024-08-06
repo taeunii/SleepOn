@@ -8,10 +8,15 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface UserReservationRepository extends JpaRepository<UserReservation, Long> {
+
     List<UserReservation> findByUserId(String userId);
 
     @Query("SELECT u FROM UserReservation u WHERE u.user.id = :userId ORDER BY u.idx DESC, u.reservCancel ASC")
     List<UserReservation> findByUserIdOrderByReservDataDesc(@Param("userId") String userId);
+
+    // 문의 작성 시 예약 목록
+    @Query("SELECT u FROM UserReservation u WHERE u.user.id = :userId AND u.reservCancel = 'N' ORDER BY u.idx DESC")
+    List<UserReservation> findByUserNotCancel(@Param("userId") String userId);
 
     // 지난 예약 목록 - 리뷰 작성 안한 예약 목록만 출력
     @Query("SELECT r FROM UserReservation r LEFT JOIN UserReview u ON r.idx = u.reservation.idx " +
