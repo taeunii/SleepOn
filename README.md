@@ -29,3 +29,9 @@
 관리자는 회원, 비회원이 작성한 문의에 댓글 작성 및 7일 이내 예약에 대한 취소 요청 시 예약 취소 가능
 
 
+
+### 실행화면
+
+---
+
+<img src="https://github.com/user-attachments/assets/2f4fd604-ee67-4d7a-b357-06b6472f45d5">
