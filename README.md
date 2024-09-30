@@ -34,17 +34,17 @@
 * 메인 페이지(지역 축제 및 숙소 목록), 숙소 상세 페이지 구현
 
 <img src="https://github.com/user-attachments/assets/2da63f5c-c164-4bba-ac49-9852b28f1d24" style="width: 600px">
-<br><br>
+<br><br><br>
 
 * 회원가입 및 로그인 페이지, 숙소 검색 및 예약 기능, 결제 페이지 구현
 
 <img src="https://github.com/user-attachments/assets/49322914-4932-4999-834d-023a94768bb0" style="width: 600px">
-<br><br>
+<br><br><br>
 
 * 회원 페이지(예약, 리뷰, 문의 내역) 구현
 
 <img src="https://github.com/user-attachments/assets/f3b75a5d-f193-489d-b304-f15e98a21d35" style="width: 600px">
-<br><br>
+<br><br><br>
 
 * 로그인 페이지(관리자), 관리자 페이지(문의 답변, 예약 취소) 구현
 
