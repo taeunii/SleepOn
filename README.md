@@ -1,4 +1,4 @@
-# Sleep On(숙소 예약 웹사이트)
+# Sleep On(숙소 예약 웹사이트)  
 
 
 
@@ -7,7 +7,7 @@
 
 ---
 
-사용자가 원하는 조건에 맞는 숙소 또는 각 지원의 숙소 정보를 공유하고 쉽게 예약할 수 있도록하는 여행 예약 웹 애플리케이션을 구현하였습니다.
+사용자가 원하는 조건에 맞는 숙소 또는 각 지원의 숙소 정보를 공유하고 쉽게 예약할 수 있도록하는 여행 예약 웹 애플리케이션을 구현하였습니다.  
 
 
 
@@ -37,19 +37,19 @@
 
 * 메인 페이지(지역 축제 및 숙소 목록), 숙소 상세 페이지 구현
 
-<img src="https://github.com/user-attachments/assets/2da63f5c-c164-4bba-ac49-9852b28f1d24" style="width: 600px">
+<img src="https://github.com/user-attachments/assets/2da63f5c-c164-4bba-ac49-9852b28f1d24" style="width: 600px">  
 
 
 
 * 회원가입 및 로그인 페이지, 숙소 검색 및 예약 기능, 결제 페이지 구현
 
-<img src="https://github.com/user-attachments/assets/49322914-4932-4999-834d-023a94768bb0" style="width: 600px">
+<img src="https://github.com/user-attachments/assets/49322914-4932-4999-834d-023a94768bb0" style="width: 600px">  
 
 
 
 * 회원 페이지(예약, 리뷰, 문의 내역) 구현
 
-<img src="https://github.com/user-attachments/assets/f3b75a5d-f193-489d-b304-f15e98a21d35" style="width: 600px">
+<img src="https://github.com/user-attachments/assets/f3b75a5d-f193-489d-b304-f15e98a21d35" style="width: 600px">  
 
 
 
