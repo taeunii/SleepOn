@@ -34,4 +34,4 @@
 
 ---
 
-<img src="https://github.com/user-attachments/assets/2f4fd604-ee67-4d7a-b357-06b6472f45d5">
+<img src="https://github.com/user-attachments/assets/2f4fd604-ee67-4d7a-b357-06b6472f45d5" style="width: 600px">
