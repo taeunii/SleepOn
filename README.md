@@ -32,7 +32,6 @@
 * 담당 역할 :
 
   리뷰 관리 기능(작성, 수정, 삭제) 구현
-
 <br><br>
 
 ### 실행화면 (https://youtu.be/kNhbiTyu-Lo)
