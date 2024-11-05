@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/b02f8af0-cdef-4f06-b3ed-9d5879ba0781)# Sleep On(숙소 예약 웹사이트)
+# Sleep On(숙소 예약 웹사이트)
 <br>
 
 ### 프로젝트 소개
