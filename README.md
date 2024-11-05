@@ -1,4 +1,4 @@
-# Sleep On(숙소 예약 웹사이트)
+![image](https://github.com/user-attachments/assets/b02f8af0-cdef-4f06-b3ed-9d5879ba0781)# Sleep On(숙소 예약 웹사이트)
 <br>
 
 ### 프로젝트 소개
@@ -8,7 +8,7 @@
 사용자가 원하는 조건에 맞는 숙소 또는 각 지원의 숙소 정보를 공유하고 쉽게 예약할 수 있도록하는 여행 예약 웹 애플리케이션을 구현하였습니다.
 <br>
 
-<a target="_blank" style="text-decoration:none; color:black;" href="http://43.201.166.4:8080/SleepOn">SleepOn 페이지</a>
+<a target="_blank" style="text-decoration:none; color:black;" href="http://43.201.166.4:8081/SleepOn">SleepOn 페이지</a>
 <br><br>
 
 ### 내용
