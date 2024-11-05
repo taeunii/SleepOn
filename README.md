@@ -8,7 +8,7 @@
 사용자가 원하는 조건에 맞는 숙소 또는 각 지원의 숙소 정보를 공유하고 쉽게 예약할 수 있도록하는 여행 예약 웹 애플리케이션을 구현하였습니다.
 <br>
 
-[SleepOn 페이지]("http://43.201.166.4:8081/SleepOn")
+<a target="_blank" style="text-decoration:none; color:black;" href="http://43.201.166.4:8081/SleepOn">SleepOn 페이지</a>
 <br><br>
 
 ### 내용
